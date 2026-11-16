@@ -1,0 +1,1376 @@
+{
+  "id": "shadowgraph-demo-70",
+  "name": "Демонстрационная сеть",
+  "nodes": [
+    {
+      "id": "p0",
+      "type": "person",
+      "label": "Алексей Тестов",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 273.51182103976396,
+      "y": 115.59818320268633,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 2",
+          "rule": "Учебный пример",
+          "snippet": "ФИО: Алексей Тестов",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n0_0",
+      "type": "email",
+      "label": "demo00@example.com",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 281.94331610896234,
+      "y": 278.6442583928376,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 3",
+          "rule": "Учебный пример",
+          "snippet": "email: demo00@example.com",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n0_1",
+      "type": "phone",
+      "label": "+1 202 555 0101",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 437.6717470661698,
+      "y": 41.14008706025054,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 4",
+          "rule": "Учебный пример",
+          "snippet": "phone: +1 202 555 0101",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n0_2",
+      "type": "organization",
+      "label": "ООО «Пример 0»",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 147.52881993487574,
+      "y": 170.09242351517346,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 5",
+          "rule": "Учебный пример",
+          "snippet": "organization: ООО «Пример 0»",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n0_3",
+      "type": "address",
+      "label": "Примерск, Тестовая улица, 3",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 428.4056528814835,
+      "y": 466.81737631496753,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 6",
+          "rule": "Учебный пример",
+          "snippet": "address: Примерск, Тестовая улица, 3",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n0_4",
+      "type": "employment",
+      "label": "Аналитик проекта 0",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 704.7246118363107,
+      "y": 534.0745871505075,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 7",
+          "rule": "Учебный пример",
+          "snippet": "employment: Аналитик проекта 0",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n0_5",
+      "type": "date",
+      "label": "01.01.1990",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 54.13729302684733,
+      "y": 361.9180772887395,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 8",
+          "rule": "Учебный пример",
+          "snippet": "date: 01.01.1990",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n0_6",
+      "type": "email",
+      "label": "demo06@example.com",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 349.9331076929942,
+      "y": 515.8872233688539,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 9",
+          "rule": "Учебный пример",
+          "snippet": "email: demo06@example.com",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n0_7",
+      "type": "phone",
+      "label": "+1 202 555 0107",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 531.0187152383096,
+      "y": 266.7951986450948,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 10",
+          "rule": "Учебный пример",
+          "snippet": "phone: +1 202 555 0107",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n0_8",
+      "type": "organization",
+      "label": "ООО «Пример 0»",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 205.72563108005133,
+      "y": 130.6814064918707,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 11",
+          "rule": "Учебный пример",
+          "snippet": "organization: ООО «Пример 0»",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n0_9",
+      "type": "address",
+      "label": "Примерск, Тестовая улица, 9",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 330.7085744098753,
+      "y": 425.2311131198884,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 12",
+          "rule": "Учебный пример",
+          "snippet": "address: Примерск, Тестовая улица, 9",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n0_10",
+      "type": "employment",
+      "label": "Аналитик проекта 0",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 77.57699382105378,
+      "y": 563.3471005975452,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 13",
+          "rule": "Учебный пример",
+          "snippet": "employment: Аналитик проекта 0",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n0_11",
+      "type": "date",
+      "label": "01.01.1990",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 374.1271248727118,
+      "y": 365.4346709687903,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 14",
+          "rule": "Учебный пример",
+          "snippet": "date: 01.01.1990",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n0_12",
+      "type": "email",
+      "label": "demo012@example.com",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 206.76953968677313,
+      "y": 273.65897911851107,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 15",
+          "rule": "Учебный пример",
+          "snippet": "email: demo012@example.com",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n0_13",
+      "type": "phone",
+      "label": "+1 202 555 0113",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 138.10130004722632,
+      "y": 415.86090705293987,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 16",
+          "rule": "Учебный пример",
+          "snippet": "phone: +1 202 555 0113",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n0_14",
+      "type": "organization",
+      "label": "ООО «Пример 0»",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 259.35168112374515,
+      "y": 377.94566282649333,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 17",
+          "rule": "Учебный пример",
+          "snippet": "organization: ООО «Пример 0»",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "p1",
+      "type": "person",
+      "label": "Анна Примерова",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 893.3360075372601,
+      "y": 165.19389854591068,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 18",
+          "rule": "Учебный пример",
+          "snippet": "ФИО: Анна Примерова",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n1_0",
+      "type": "email",
+      "label": "demo10@example.com",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 76.3162149333244,
+      "y": 355.50125363586886,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 19",
+          "rule": "Учебный пример",
+          "snippet": "email: demo10@example.com",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n1_1",
+      "type": "phone",
+      "label": "+1 202 555 0101",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 286.73456237668745,
+      "y": 243.03164227804817,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 20",
+          "rule": "Учебный пример",
+          "snippet": "phone: +1 202 555 0101",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n1_2",
+      "type": "organization",
+      "label": "ООО «Пример 1»",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 88.46753424646579,
+      "y": 172.12988508391712,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 21",
+          "rule": "Учебный пример",
+          "snippet": "organization: ООО «Пример 1»",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n1_3",
+      "type": "address",
+      "label": "Примерск, Тестовая улица, 3",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 531.6348315447594,
+      "y": 6.201972697860514,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 22",
+          "rule": "Учебный пример",
+          "snippet": "address: Примерск, Тестовая улица, 3",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n1_4",
+      "type": "employment",
+      "label": "Аналитик проекта 1",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 104.54408867261489,
+      "y": 86.82576848350149,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 23",
+          "rule": "Учебный пример",
+          "snippet": "employment: Аналитик проекта 1",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n1_5",
+      "type": "date",
+      "label": "01.01.1991",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 168.26238421622423,
+      "y": 33.91842972963212,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 24",
+          "rule": "Учебный пример",
+          "snippet": "date: 01.01.1991",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "p2",
+      "type": "person",
+      "label": "Иван Демонстрационный",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 249.65362082665192,
+      "y": 269.1003966150224,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 25",
+          "rule": "Учебный пример",
+          "snippet": "ФИО: Иван Демонстрационный",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n2_0",
+      "type": "email",
+      "label": "demo20@example.com",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 842.8010186971674,
+      "y": 136.21227651493655,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 26",
+          "rule": "Учебный пример",
+          "snippet": "email: demo20@example.com",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n2_1",
+      "type": "phone",
+      "label": "+1 202 555 0101",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 735.684551862067,
+      "y": 347.49788020625994,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 27",
+          "rule": "Учебный пример",
+          "snippet": "phone: +1 202 555 0101",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n2_2",
+      "type": "organization",
+      "label": "ООО «Пример 2»",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 751.0858545879976,
+      "y": 188.2892896550113,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 28",
+          "rule": "Учебный пример",
+          "snippet": "organization: ООО «Пример 2»",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n2_3",
+      "type": "address",
+      "label": "Примерск, Тестовая улица, 3",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 738.8469110570876,
+      "y": 323.29194868729115,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 29",
+          "rule": "Учебный пример",
+          "snippet": "address: Примерск, Тестовая улица, 3",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n2_4",
+      "type": "employment",
+      "label": "Аналитик проекта 2",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 799.3158517726216,
+      "y": 485.1171714282284,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 30",
+          "rule": "Учебный пример",
+          "snippet": "employment: Аналитик проекта 2",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n2_5",
+      "type": "date",
+      "label": "01.01.1992",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 371.0679816795425,
+      "y": 449.69795439177307,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 31",
+          "rule": "Учебный пример",
+          "snippet": "date: 01.01.1992",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "p3",
+      "type": "person",
+      "label": "Мария Образцова",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 699.676222917228,
+      "y": 379.7763959006288,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 32",
+          "rule": "Учебный пример",
+          "snippet": "ФИО: Мария Образцова",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n3_0",
+      "type": "email",
+      "label": "demo30@example.com",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 638.5749380171258,
+      "y": 287.2579641343202,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 33",
+          "rule": "Учебный пример",
+          "snippet": "email: demo30@example.com",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n3_1",
+      "type": "phone",
+      "label": "+1 202 555 0101",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 601.238461587025,
+      "y": 474.7049483755509,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 34",
+          "rule": "Учебный пример",
+          "snippet": "phone: +1 202 555 0101",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n3_2",
+      "type": "organization",
+      "label": "ООО «Пример 3»",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 428.90980206534215,
+      "y": 334.3216354537467,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 35",
+          "rule": "Учебный пример",
+          "snippet": "organization: ООО «Пример 3»",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n3_3",
+      "type": "address",
+      "label": "Примерск, Тестовая улица, 3",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 74.60563101341486,
+      "y": 136.93568462732003,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 36",
+          "rule": "Учебный пример",
+          "snippet": "address: Примерск, Тестовая улица, 3",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n3_4",
+      "type": "employment",
+      "label": "Аналитик проекта 3",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 221.3825657538018,
+      "y": 200.94289663148365,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 37",
+          "rule": "Учебный пример",
+          "snippet": "employment: Аналитик проекта 3",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    },
+    {
+      "id": "n3_5",
+      "type": "date",
+      "label": "01.01.1993",
+      "detail": "Вымышленный пример для проверки вида",
+      "x": 314.7744153271161,
+      "y": 391.7903186133612,
+      "evidence": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "path": "строка 38",
+          "rule": "Учебный пример",
+          "snippet": "date: 01.01.1993",
+          "assertion": "mentioned",
+          "confidence": "демонстрация"
+        }
+      ],
+      "review": "unreviewed",
+      "fileId": "demo-material"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "from": "p0",
+      "to": "n0_0",
+      "label": "контакт из записи",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e1",
+      "from": "p0",
+      "to": "n0_1",
+      "label": "работает в",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e2",
+      "from": "p0",
+      "to": "n0_2",
+      "label": "проживает по адресу",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e3",
+      "from": "p0",
+      "to": "n0_3",
+      "label": "контакт из записи",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e4",
+      "from": "p0",
+      "to": "n0_4",
+      "label": "работает в",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e5",
+      "from": "p0",
+      "to": "n0_5",
+      "label": "проживает по адресу",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e6",
+      "from": "p0",
+      "to": "n0_6",
+      "label": "контакт из записи",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e7",
+      "from": "p0",
+      "to": "n0_7",
+      "label": "работает в",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e8",
+      "from": "p0",
+      "to": "n0_8",
+      "label": "проживает по адресу",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e9",
+      "from": "p0",
+      "to": "n0_9",
+      "label": "контакт из записи",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e10",
+      "from": "p0",
+      "to": "n0_10",
+      "label": "работает в",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e11",
+      "from": "p0",
+      "to": "n0_11",
+      "label": "проживает по адресу",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e12",
+      "from": "p0",
+      "to": "n0_12",
+      "label": "контакт из записи",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e13",
+      "from": "p0",
+      "to": "n0_13",
+      "label": "работает в",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e14",
+      "from": "p0",
+      "to": "n0_14",
+      "label": "проживает по адресу",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e15",
+      "from": "p1",
+      "to": "n1_0",
+      "label": "контакт из записи",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e16",
+      "from": "p1",
+      "to": "n1_1",
+      "label": "работает в",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e17",
+      "from": "p1",
+      "to": "n1_2",
+      "label": "проживает по адресу",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e18",
+      "from": "p1",
+      "to": "n1_3",
+      "label": "контакт из записи",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e19",
+      "from": "p1",
+      "to": "n1_4",
+      "label": "работает в",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e20",
+      "from": "p1",
+      "to": "n1_5",
+      "label": "проживает по адресу",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e21",
+      "from": "p0",
+      "to": "p1",
+      "label": "коллега",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e22",
+      "from": "p2",
+      "to": "n2_0",
+      "label": "контакт из записи",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e23",
+      "from": "p2",
+      "to": "n2_1",
+      "label": "работает в",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e24",
+      "from": "p2",
+      "to": "n2_2",
+      "label": "проживает по адресу",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e25",
+      "from": "p2",
+      "to": "n2_3",
+      "label": "контакт из записи",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e26",
+      "from": "p2",
+      "to": "n2_4",
+      "label": "работает в",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e27",
+      "from": "p2",
+      "to": "n2_5",
+      "label": "проживает по адресу",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e28",
+      "from": "p0",
+      "to": "p2",
+      "label": "коллега",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e29",
+      "from": "p3",
+      "to": "n3_0",
+      "label": "контакт из записи",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e30",
+      "from": "p3",
+      "to": "n3_1",
+      "label": "работает в",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e31",
+      "from": "p3",
+      "to": "n3_2",
+      "label": "проживает по адресу",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e32",
+      "from": "p3",
+      "to": "n3_3",
+      "label": "контакт из записи",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e33",
+      "from": "p3",
+      "to": "n3_4",
+      "label": "работает в",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e34",
+      "from": "p3",
+      "to": "n3_5",
+      "label": "проживает по адресу",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "e35",
+      "from": "p0",
+      "to": "p3",
+      "label": "коллега",
+      "review": "unreviewed",
+      "explanations": [
+        {
+          "fileId": "demo-material",
+          "fileName": "demo-notes.txt",
+          "rule": "Учебная связь",
+          "reason": "Связь собрана вручную для демонстрации интерфейса; не описывает реальных людей.",
+          "evidence": []
+        }
+      ]
+    }
+  ],
+  "files": [
+    {
+      "id": "demo-material",
+      "name": "demo-notes.txt",
+      "type": "text/plain",
+      "size": 1376,
+      "text": "УЧЕБНЫЙ ПРОЕКТ. Все сведения вымышленные.\nФИО: Алексей Тестов\nemail: demo00@example.com\nphone: +1 202 555 0101\norganization: ООО «Пример 0»\naddress: Примерск, Тестовая улица, 3\nemployment: Аналитик проекта 0\ndate: 01.01.1990\nemail: demo06@example.com\nphone: +1 202 555 0107\norganization: ООО «Пример 0»\naddress: Примерск, Тестовая улица, 9\nemployment: Аналитик проекта 0\ndate: 01.01.1990\nemail: demo012@example.com\nphone: +1 202 555 0113\norganization: ООО «Пример 0»\nФИО: Анна Примерова\nemail: demo10@example.com\nphone: +1 202 555 0101\norganization: ООО «Пример 1»\naddress: Примерск, Тестовая улица, 3\nemployment: Аналитик проекта 1\ndate: 01.01.1991\nФИО: Иван Демонстрационный\nemail: demo20@example.com\nphone: +1 202 555 0101\norganization: ООО «Пример 2»\naddress: Примерск, Тестовая улица, 3\nemployment: Аналитик проекта 2\ndate: 01.01.1992\nФИО: Мария Образцова\nemail: demo30@example.com\nphone: +1 202 555 0101\norganization: ООО «Пример 3»\naddress: Примерск, Тестовая улица, 3\nemployment: Аналитик проекта 3\ndate: 01.01.1993",
+      "analysis": "completed",
+      "added": "2026-11-16T12:00:00.000Z"
+    }
+  ],
+  "graphView": "maltego",
+  "created": "2026-11-16T12:00:00.000Z",
+  "updated": "2026-11-16T12:00:00.000Z",
+  "description": "Вымышленные объекты, контакты и организации. Пример для знакомства с графом."
+}

@@ -1,0 +1,38 @@
+УЧЕБНЫЙ ПРОЕКТ. Все сведения вымышленные.
+ФИО: Алексей Тестов
+email: demo00@example.com
+phone: +1 202 555 0101
+organization: ООО «Пример 0»
+address: Примерск, Тестовая улица, 3
+employment: Аналитик проекта 0
+date: 01.01.1990
+email: demo06@example.com
+phone: +1 202 555 0107
+organization: ООО «Пример 0»
+address: Примерск, Тестовая улица, 9
+employment: Аналитик проекта 0
+date: 01.01.1990
+email: demo012@example.com
+phone: +1 202 555 0113
+organization: ООО «Пример 0»
+ФИО: Анна Примерова
+email: demo10@example.com
+phone: +1 202 555 0101
+organization: ООО «Пример 1»
+address: Примерск, Тестовая улица, 3
+employment: Аналитик проекта 1
+date: 01.01.1991
+ФИО: Иван Демонстрационный
+email: demo20@example.com
+phone: +1 202 555 0101
+organization: ООО «Пример 2»
+address: Примерск, Тестовая улица, 3
+employment: Аналитик проекта 2
+date: 01.01.1992
+ФИО: Мария Образцова
+email: demo30@example.com
+phone: +1 202 555 0101
+organization: ООО «Пример 3»
+address: Примерск, Тестовая улица, 3
+employment: Аналитик проекта 3
+date: 01.01.1993
