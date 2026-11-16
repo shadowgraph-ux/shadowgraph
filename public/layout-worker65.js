@@ -59,4 +59,13 @@ GraphLayout65.network=function(nodes,edges){
  return{positions,groups:model.groups.map(g=>({id:g.id,title:g.title,ids:g.ids}))}
 };
 
-self.onmessage=({data})=>{try{let result;if(data.mode==='network')result=GraphLayout65.network(data.nodes,data.edges);else if(data.mode==='sources'){const r=DossierLayout.arrange(data.nodes,data.edges,{aspect:data.aspect||1.5,mode:'dossier'});result={positions:Object.fromEntries(r.positions),panels:r.panels}}else result=GraphLayout66.cards(data.nodes,data.edges,data.aspect||1.5);self.postMessage({id:data.id,...result})}catch(e){self.postMessage({id:data.id,error:String(e.message)})}};
+function MaltegoLayout697(nodes,edges){
+ const model=GraphLayout65.groups(nodes,edges),rank={person:0,date:1,phone:2,email:3,username:4,account:4,organization:5,employment:6,education:7,income:8,address:9,profilefact:10},panels=[],positions={};
+ for(const group of model.groups){const ids=group.ids.filter(id=>id!==group.root).sort((a,b)=>(rank[model.map.get(a).type]??20)-(rank[model.map.get(b).type]??20)||String(model.map.get(a).label).localeCompare(String(model.map.get(b).label),'ru')),local={},count=ids.length,rings=Math.max(1,Math.ceil(count/12));let used=0,outer=0;if(group.root)local[group.root]={x:0,y:0,z:0};
+  for(let ring=0;ring<rings;ring++){const remaining=count-used,size=Math.ceil(remaining/(rings-ring)),radius=group.root||rings>1?Math.max(280,size*215/(2*Math.PI))+ring*285:Math.max(230,size*215/(2*Math.PI));outer=Math.max(outer,radius);for(let i=0;i<size;i++){const angle=-Math.PI/2+i*Math.PI*2/size+(ring%2?Math.PI/Math.max(1,size):0);local[ids[used++]]={x:Math.cos(angle)*radius,y:Math.sin(angle)*radius,z:0}}}
+  const radius=count?outer:50;panels.push({group,local,w:radius*2+420,h:radius*2+260})
+ }
+ const area=panels.reduce((s,p)=>s+(p.w+120)*(p.h+120),0),target=Math.max(900,...panels.map(p=>p.w),Math.sqrt(area*1.6));let x=0,y=0,rowH=0;for(const panel of panels){if(x&&x+panel.w>target){x=0;y+=rowH+170;rowH=0}for(const id of panel.group.ids){const p=panel.local[id];if(p)positions[id]={x:x+panel.w/2+p.x,y:y+panel.h/2+p.y,z:0}}x+=panel.w+170;rowH=Math.max(rowH,panel.h)}return{positions,groups:model.groups.map(g=>({id:g.id,title:g.title,ids:g.ids}))}
+}
+
+self.onmessage=({data})=>{try{let result;if(data.mode==='maltego')result=MaltegoLayout697(data.nodes,data.edges);else if(data.mode==='network')result=GraphLayout65.network(data.nodes,data.edges);else if(data.mode==='sources'){const r=DossierLayout.arrange(data.nodes,data.edges,{aspect:data.aspect||1.5,mode:'dossier'});result={positions:Object.fromEntries(r.positions),panels:r.panels}}else result=GraphLayout66.cards(data.nodes,data.edges,data.aspect||1.5);self.postMessage({id:data.id,...result})}catch(e){self.postMessage({id:data.id,error:String(e.message)})}};
