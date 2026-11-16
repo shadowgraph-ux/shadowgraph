@@ -1,4 +1,4 @@
-# SHADOWGRAPH 7.0
+# SHADOWGRAPH 7.0.1
 
 <p align="center">
   <img src="docs/images/cover.png" alt="SHADOWGRAPH — данные превращаются в связи" width="100%">
@@ -182,6 +182,15 @@ python -m http.server 8080
 ├── CHANGELOG.md               # История основных изменений
 └── README.md
 ```
+
+## Поддержка
+
+Вопросы и сообщения об ошибках:
+
+- Telegram: [@auedurov](https://t.me/auedurov).
+- Почта: [shadowgraphsupport@duck.com](mailto:shadowgraphsupport@duck.com).
+
+Контакты также доступны на главной странице приложения и в меню профиля → «Поддержка».
 
 ## Ещё о проекте
 
