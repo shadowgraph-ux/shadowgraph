@@ -50,4 +50,13 @@ function arrange(nodes,edges,{aspect=1.4,mode='dossier'}={}){
 return{arrange,isSource};
 })();
 
+GraphLayout65.network=function(nodes,edges){
+ const model=GraphLayout65.groups(nodes,edges),positions={},normal=model.groups.filter(g=>g.id!=='sources65'),panels=[],step=155;
+ for(const g of normal){const ids=g.ids.filter(id=>id!==g.root).sort((a,b)=>String(model.map.get(a).type).localeCompare(String(model.map.get(b).type))||a.localeCompare(b)),r=Math.max(180,step*.67*Math.sqrt(ids.length+1));panels.push({g,ids,r,w:r*2+240,h:r*2+240})}
+ const area=panels.reduce((s,p)=>s+p.w*p.h,0),target=Math.max(800,...panels.map(p=>p.w),Math.sqrt(area*1.65));let x=0,y=0,rowH=0;
+ for(const p of panels){if(x&&x+p.w>target){x=0;y+=rowH+130;rowH=0}const cx=x+p.w/2,cy=y+p.h/2,cz=Math.sin(panels.indexOf(p)*1.9)*180;if(p.g.root)positions[p.g.root]={x:cx,y:cy,z:cz};p.ids.forEach((id,i)=>{const angle=i*2.39996323,rr=p.g.root?Math.sqrt(i+2)*step*.63:Math.sqrt(i)*step*.63;positions[id]={x:cx+Math.cos(angle)*rr,y:cy+Math.sin(angle)*rr,z:cz+Math.sin(angle*1.17)*Math.min(300,90+rr*.48)}});x+=p.w+130;rowH=Math.max(rowH,p.h)}
+ const materials=model.groups.find(g=>g.id==='sources65');if(materials)materials.ids.forEach((id,i)=>{positions[id]={x:(i%8)*step,y:y+rowH+250+Math.floor(i/8)*step,z:-260}});
+ return{positions,groups:model.groups.map(g=>({id:g.id,title:g.title,ids:g.ids}))}
+};
+
 self.onmessage=({data})=>{try{let result;if(data.mode==='network')result=GraphLayout65.network(data.nodes,data.edges);else if(data.mode==='sources'){const r=DossierLayout.arrange(data.nodes,data.edges,{aspect:data.aspect||1.5,mode:'dossier'});result={positions:Object.fromEntries(r.positions),panels:r.panels}}else result=GraphLayout66.cards(data.nodes,data.edges,data.aspect||1.5);self.postMessage({id:data.id,...result})}catch(e){self.postMessage({id:data.id,error:String(e.message)})}};
