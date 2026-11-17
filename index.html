@@ -1070,7 +1070,7 @@ const localCreatedBase=keyCreatedScreen;
 keyCreatedScreen=function(data){localCreatedBase(data);$('.key-created .access-kicker').textContent='КЛЮЧ ЛОКАЛЬНОГО ПРОФИЛЯ';$('.key-created p').textContent='Сохраните ключ: он нужен для расшифровки проектов. На сервер он не отправляется. Без него восстановить зашифрованные данные нельзя.';$('#enterWithNewKey').onclick=async()=>{const button=$('#enterWithNewKey');button.disabled=true;try{await enterWorkspace(data.account,data.vaultKey)}catch(error){if($('#enterKeyError'))$('#enterKeyError').textContent=error.message;if($('#enterWithNewKey'))$('#enterWithNewKey').disabled=false}}};
 startExperience=async function(start){workspaceStarter=start;$('.app').classList.add('entry-locked');$('.app').inert=true;if(!sessionStorage.getItem('sg-intro-seen')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)await showIntro();loginScreen()};
 accountButton.onclick=()=>{modal(`<h2>${esc(signedAccount?.name||'Локальный профиль')}</h2><p>Этот профиль и его проекты находятся в текущем браузере. Проекты защищены шифрованием AES-GCM по вашему личному ключу. Ник уникален только среди профилей этого браузера.</p><div class="modalactions"><button class="btn" id="closeAccount">Закрыть</button><button class="btn" id="logoutAccount">Выйти из профиля</button></div>`);$('#closeAccount').onclick=closeModal;$('#logoutAccount').onclick=signOutAccount};
-$('.footer span').innerHTML='<span class="dot"></span>SHADOWGRAPH 7.0.3 · ЛОКАЛЬНЫЕ ЗАШИФРОВАННЫЕ ПРОФИЛИ';
+$('.footer span').innerHTML='<span class="dot"></span>SHADOWGRAPH 7.0.6 · ЛОКАЛЬНЫЕ ЗАШИФРОВАННЫЕ ПРОФИЛИ';
 
 // Conservative identity matching; source evidence is retained on every match.
 applyAnalysis=function(file,origin,result){
@@ -1274,11 +1274,11 @@ const analysisBefore57=applyAnalysis;applyAnalysis=function(file,origin,result){
 
 const normalizeBefore57=Analyzer.analyze;Analyzer.analyze=function(text,options={}){const original=String(text||''),changed=new Map;let normalized=original;if(!/\.(?:json|jsonl|ndjson|csv|tsv)$/i.test(options.name||''))normalized=original.split(/\r?\n/).map((line,i)=>{const m=line.match(/^(\s*(?:[-*•]\s*)?)([^:=—–]{1,45})\s+[—–-]\s+(.+)$/);if(m&&Analyzer.fieldType(m[2].trim())){changed.set(i+1,line);return m[1]+m[2].trim()+': '+m[3]}return line}).join('\n');const result=normalizeBefore57(normalized,options);for(const entity of result.entities)for(const ev of entity.evidence||[]){const m=ev.path?.match(/(?:^|, )строка (\d+)/);if(m&&changed.has(+m[1]))ev.originalLine=changed.get(+m[1])}return result};const evidenceOriginal57=evidenceHtml52;evidenceHtml52=function(ev){return evidenceOriginal57(ev)+(ev.originalLine?'<p class="footnote">Исходная строка: '+esc(ev.originalLine)+'</p>':'')};
 
-generateReport=async function(includeEvidence){const project=structuredClone(current),created=new Date();reportCancelled=false;modal('<h2>Создаю отчёт SHADOWGRAPH</h2><p id="reportProgress">Подготовка графа и оформления…</p><button class="btn" id="stopReport">Отмена</button>');$('#stopReport').onclick=()=>{reportCancelled=true;$('#stopReport').disabled=true};const progress=async value=>{if(reportCancelled)throw Error('Создание отчёта отменено');if($('#reportProgress'))$('#reportProgress').textContent=value;await new Promise(r=>setTimeout(r,0))};try{const [JsPDF,normal,bold,graph]=await Promise.all([loadReportLibrary(),fontData('./public/vendor/report/NotoSans-Regular.ttf'),fontData('./public/vendor/report/NotoSans-Bold.ttf'),graphReportImage()]),doc=new JsPDF({unit:'mm',format:'a4',compress:true,putOnlyUsedFonts:true});doc.addFileToVFS('NotoSans-Regular.ttf',normal);doc.addFont('NotoSans-Regular.ttf','NotoSans','normal');doc.addFileToVFS('NotoSans-Bold.ttf',bold);doc.addFont('NotoSans-Bold.ttf','NotoSans','bold');doc.setFont('NotoSans','normal');doc.setProperties({title:'SHADOWGRAPH - '+project.name,creator:'SHADOWGRAPH 7.0.3',author:'SHADOWGRAPH',subject:'Граф, источники и проверка сведений'});
+generateReport=async function(includeEvidence){const project=structuredClone(current),created=new Date();reportCancelled=false;modal('<h2>Создаю отчёт SHADOWGRAPH</h2><p id="reportProgress">Подготовка графа и оформления…</p><button class="btn" id="stopReport">Отмена</button>');$('#stopReport').onclick=()=>{reportCancelled=true;$('#stopReport').disabled=true};const progress=async value=>{if(reportCancelled)throw Error('Создание отчёта отменено');if($('#reportProgress'))$('#reportProgress').textContent=value;await new Promise(r=>setTimeout(r,0))};try{const [JsPDF,normal,bold,graph]=await Promise.all([loadReportLibrary(),fontData('./public/vendor/report/NotoSans-Regular.ttf'),fontData('./public/vendor/report/NotoSans-Bold.ttf'),graphReportImage()]),doc=new JsPDF({unit:'mm',format:'a4',compress:true,putOnlyUsedFonts:true});doc.addFileToVFS('NotoSans-Regular.ttf',normal);doc.addFont('NotoSans-Regular.ttf','NotoSans','normal');doc.addFileToVFS('NotoSans-Bold.ttf',bold);doc.addFont('NotoSans-Bold.ttf','NotoSans','bold');doc.setFont('NotoSans','normal');doc.setProperties({title:'SHADOWGRAPH - '+project.name,creator:'SHADOWGRAPH 7.0.6',author:'SHADOWGRAPH',subject:'Граф, источники и проверка сведений'});
  const ink='#172033',muted='#657087',violet='#8259ca',margin=18,width=174;let y=25,section='Обзор';const pageSections=new Map([[1,'Обложка']]);function next(label=section,orientation='portrait'){doc.addPage('a4',orientation);section=label;pageSections.set(doc.getNumberOfPages(),label);y=28}function ensure(h=12){if(y+h>274)next()}function text(value,size=9,tone=ink,bold=false){doc.setFont('NotoSans',bold?'bold':'normal');doc.setFontSize(size);doc.setTextColor(tone);const lines=doc.splitTextToSize(String(value||''),width);for(const line of lines){ensure(size*.48+1);doc.text(line,margin,y);y+=size*.48}y+=2.2}function heading(number,title){ensure(28);doc.setDrawColor('#dce0e9');doc.line(margin,y,192,y);y+=9;text(number+' / '+title,16,ink,true);y+=3}function small(value){text(value,8,muted)}const sourceName=id=>project.files.find(f=>f.id===id)?.name||'Источник не указан',review=v=>reviewNames[v||'unreviewed']||reviewNames.unreviewed,numbers=new Map(project.nodes.map((n,i)=>[n.id,i+1]));
  // Dark title page with a restrained graph motif.
  doc.setFillColor('#080b12');doc.rect(0,0,210,297,'F');doc.setFillColor(violet);doc.rect(18,22,14,2,'F');doc.setTextColor('#f0edf9');doc.setFont('NotoSans','bold');doc.setFontSize(24);doc.text('SHADOWGRAPH',18,46);doc.setFont('NotoSans','normal');doc.setFontSize(9);doc.setTextColor('#a69fba');doc.text('INVESTIGATION REPORT / 5.7',18,57);doc.setDrawColor('#40314e');for(const [a,b,c,d]of [[130,32,180,70],[180,70,152,103],[152,103,130,32]])doc.line(a,b,c,d);doc.setFillColor('#b69bea');for(const [a,b,r]of [[130,32,2],[180,70,3],[152,103,2]])doc.circle(a,b,r,'F');y=116;text('ОТЧЁТ ПО РАССЛЕДОВАНИЮ',9,'#a99abf');text(project.name,23,'#ffffff',true);y=Math.max(y+10,164);small('Сформирован: '+created.toLocaleString('ru-RU'));const stats=[['ОБЪЕКТЫ',project.nodes.length],['СВЯЗИ',project.edges.length],['ИСТОЧНИКИ',project.files.length]];for(const [i,[label,count]]of stats.entries()){const x=18+i*60;doc.setFillColor('#141824');doc.roundedRect(x,191,54,33,3,3,'F');doc.setTextColor('#eee9f9');doc.setFont('NotoSans','bold');doc.setFontSize(21);doc.text(String(count),x+6,207);doc.setFont('NotoSans','normal');doc.setFontSize(7);doc.setTextColor('#9f98ae');doc.text(label,x+6,216)}y=248;text('Материалы, связи и основания для проверки.',10,'#c8c1d7');text('Автоматические находки отражают содержание источников. Они не подтверждают истинность сведений или принадлежность контактов.',8,'#9a94a8');
- await progress('Собираю обзор…');next('Обзор исследования');heading('01','Обзор исследования');text(project.name,13,ink,true);small('Версия отчёта: SHADOWGRAPH 7.0.3 · '+created.toLocaleDateString('ru-RU'));text('Состав отчёта',11,ink,true);for(const value of ['Обзор, статусы проверки и состав материалов','Граф в выбранном режиме отображения','Реестр источников с номерами S1, S2…','Карточки объектов N1, N2… и фрагменты доказательств','Связи с источниками и причинами обнаружения'])text(value,9);y+=5;text('Статусы объектов',12,ink,true);const reviewColors={confirmed:'#2c8b70',doubtful:'#bb872f',error:'#b85865',unreviewed:'#8c80a5'};for(const [key,label]of Object.entries(reviewNames)){ensure(15);const count=project.nodes.filter(n=>(n.review||'unreviewed')===key).length;doc.setFillColor('#f0f1f6');doc.roundedRect(18,y-3,174,11,2,2,'F');doc.setFillColor(reviewColors[key]);doc.rect(18,y-3,Math.max(1,Math.min(174,174*count/Math.max(1,project.nodes.length))),1.1,'F');doc.setFontSize(9);doc.setTextColor(ink);doc.text(label,23,y+4);doc.text(String(count),186,y+4,{align:'right'});y+=16}y+=4;text('Как интерпретировать данные',12,ink,true);text('Статусы назначает пользователь. Упоминание в одном профиле не доказывает владение контактом, а совпадение ФИО или адреса не устанавливает личность. Отрицания и исторические сведения необходимо проверять с учётом периода.',9);small('Изображение графа отражает текущие фильтры и режим; реестры ниже содержат весь проект. Перед передачей отчёта проверьте персональные сведения и содержание источников.');
+ await progress('Собираю обзор…');next('Обзор исследования');heading('01','Обзор исследования');text(project.name,13,ink,true);small('Версия отчёта: SHADOWGRAPH 7.0.6 · '+created.toLocaleDateString('ru-RU'));text('Состав отчёта',11,ink,true);for(const value of ['Обзор, статусы проверки и состав материалов','Граф в выбранном режиме отображения','Реестр источников с номерами S1, S2…','Карточки объектов N1, N2… и фрагменты доказательств','Связи с источниками и причинами обнаружения'])text(value,9);y+=5;text('Статусы объектов',12,ink,true);const reviewColors={confirmed:'#2c8b70',doubtful:'#bb872f',error:'#b85865',unreviewed:'#8c80a5'};for(const [key,label]of Object.entries(reviewNames)){ensure(15);const count=project.nodes.filter(n=>(n.review||'unreviewed')===key).length;doc.setFillColor('#f0f1f6');doc.roundedRect(18,y-3,174,11,2,2,'F');doc.setFillColor(reviewColors[key]);doc.rect(18,y-3,Math.max(1,Math.min(174,174*count/Math.max(1,project.nodes.length))),1.1,'F');doc.setFontSize(9);doc.setTextColor(ink);doc.text(label,23,y+4);doc.text(String(count),186,y+4,{align:'right'});y+=16}y+=4;text('Как интерпретировать данные',12,ink,true);text('Статусы назначает пользователь. Упоминание в одном профиле не доказывает владение контактом, а совпадение ФИО или адреса не устанавливает личность. Отрицания и исторические сведения необходимо проверять с учётом периода.',9);small('Изображение графа отражает текущие фильтры и режим; реестры ниже содержат весь проект. Перед передачей отчёта проверьте персональные сведения и содержание источников.');
  next('Карта связей','landscape');doc.setFont('NotoSans','bold');doc.setFontSize(19);doc.setTextColor(ink);doc.text('02 / Карта связей',18,24);doc.setFont('NotoSans','normal');doc.setFontSize(8);doc.setTextColor(muted);doc.text('Выбранное представление: '+(project.graphView==='network'?'круглая сеть':'карточки')+'. Для большой схемы используйте также интерактивный проект.',18,32);doc.setFillColor('#0b0e16');doc.roundedRect(18,42,261,145,3,3,'F');const scale=Math.min(253/graph.width,137/graph.height),iw=graph.width*scale,ih=graph.height*scale;doc.addImage(graph.data,'PNG',22+(253-iw)/2,46+(137-ih)/2,iw,ih,undefined,'FAST');
  next('Источники');heading('03','Реестр источников');if(!project.files.length)small('Прикреплённых файлов нет.');for(const [i,file]of project.files.entries()){await progress('Источники: '+(i+1)+' / '+project.files.length);ensure(30);doc.setFillColor(violet);doc.rect(15,y-3,1,10,'F');text('S'+(i+1)+'  '+file.name,11,ink,true);small(formatBytes(file.size||0)+' · '+(file.type||'Тип не указан'));small('Анализ: '+({completed:'выполнен',disabled:'выключен',unsupported:'без извлечения текста'}[file.analysis]||'не указан')+(file.ocr?' · OCR: '+file.ocr.pages.length+' стр.':''));if(file.added)small('Добавлен: '+new Date(file.added).toLocaleString('ru-RU'));y+=3}
  next('Объекты и находки');heading('04','Объекты и находки');for(const [i,node]of project.nodes.entries()){if(i%12===0)await progress('Объекты: '+(i+1)+' / '+project.nodes.length);ensure(34);doc.setDrawColor('#e0e3eb');doc.line(18,y-4,192,y-4);const accent=/^#[a-f\d]{6}$/i.test(node.color||'')?node.color:violet;doc.setFillColor(accent);doc.rect(15,y-3,1,7,'F');text('N'+(i+1)+'  '+node.label,11,ink,true);const mail=node.type==='email'?ServiceIdentity.mail(node.label):null,social=ServiceIdentity.social(node);small((types[node.type]?.[0]||node.type)+' · '+review(node.review)+(social?' · '+social.label:'')+(mail?' · '+(mail.provider||mail.domain):''));if(node.detail)text(node.detail,9);const sources=[...new Set([node.fileId,...(node.evidence||[]).map(e=>e.fileId)].filter(Boolean))];if(sources.length)small('Материалы: '+sources.map(id=>'S'+(project.files.findIndex(f=>f.id===id)+1)+' '+sourceName(id)).join('; '));if(includeEvidence)for(const ev of (node.evidence||[]).slice(0,3)){ensure(23);small((ev.path||'Фрагмент')+' · '+(ev.rule||'Правило не записано'));text('«'+String(ev.snippet||'').slice(0,360)+'»',8,'#48556b');if(ev.assertion)small(assertionNames52[ev.assertion]||'Требует проверки');if(ev.addressRoles)small('Назначение адреса: '+ev.addressRoles.join(', '));if(ev.ocrMatch?.available&&Number.isFinite(ev.ocrMatch.confidence))small('Минимальная уверенность слов OCR: '+Math.round(ev.ocrMatch.confidence)+'%')}y+=5}
@@ -1645,40 +1645,91 @@ const GraphLayout66=(()=>{
 })();
 
 /* View metadata and deterministic layouts. All positions are presentation data. */
+/* View metadata and deterministic layouts. All positions are presentation data. */
+const Lines705=(()=>{
+ const cells=new Map();let extent=[];
+ function content(n){const label=String(n.label||'Без названия'),detail=String(n.detail||''),code=/<[a-z!/][\s\S]*>/i.test(label+' '+detail)||n.type==='code';return{code,text:(code&&detail?detail:n.type==='note'&&detail&&!/^(Добавлено вручную|Синтетические|Извлечено|Анализ)/i.test(detail)&&!label.includes(detail)?label+'\n'+detail:label).slice(0,1800)}}
+ function layout(nodes,edges,o){cells.clear();extent=[];const byId=new Map(nodes.map(n=>[n.id,n])),adj=new Map(nodes.map(n=>[n.id,[]])),rev=new Map(nodes.map(n=>[n.id,[]]));for(const e of edges)if(byId.has(e.from)&&byId.has(e.to)&&e.from!==e.to){adj.get(e.from).push(e.to);rev.get(e.to).push(e.from)}
+  const seen=new Set(),order=[];for(const n of nodes){if(seen.has(n.id))continue;seen.add(n.id);const stack=[[n.id,0]];while(stack.length){const top=stack[stack.length-1],list=adj.get(top[0]);if(top[1]<list.length){const to=list[top[1]++];if(!seen.has(to)){seen.add(to);stack.push([to,0])}}else{order.push(top[0]);stack.pop()}}}
+  const comp=new Map(),groups=[];for(const id of order.reverse()){if(comp.has(id))continue;const index=groups.length,group=[],q=[id];comp.set(id,index);for(let i=0;i<q.length;i++){const at=q[i];group.push(at);for(const v of rev.get(at))if(!comp.has(v)){comp.set(v,index);q.push(v)}}groups.push(group)}
+  const links=groups.map(()=>new Set()),incoming=groups.map(()=>0),depth=groups.map(()=>0);for(const e of edges){const a=comp.get(e.from),b=comp.get(e.to);if(a!==undefined&&b!==undefined&&a!==b&&!links[a].has(b)){links[a].add(b);incoming[b]++}}const q=incoming.flatMap((v,i)=>v===0?[i]:[]);for(let i=0;i<q.length;i++)for(const b of links[q[i]]){depth[b]=Math.max(depth[b],depth[q[i]]+1);if(--incoming[b]===0)q.push(b)}
+  const columns=new Map(),p=Object.create(null);nodes.forEach(n=>{const d=depth[comp.get(n.id)];if(!columns.has(d))columns.set(d,[]);columns.get(d).push(n)});const gap=o.spacing,size=o.nodeSize;
+  for(const [d,row]of [...columns].sort((a,b)=>a[0]-b[0])){row.sort((a,b)=>{const avg=n=>{const ps=rev.get(n.id).map(id=>p[id]?.y).filter(Number.isFinite);return ps.length?ps.reduce((a,b)=>a+b,0)/ps.length:0};return avg(a)-avg(b)||a.label.localeCompare(b.label,'ru')});let y=0;for(const n of row){const c=content(n),multi=c.text.split('\n').length,w=(c.code?330:270)*size,h=Math.max(c.code?132:multi>1?130:48,Math.min(c.code?220:multi>1?260:180,Math.max(multi*38,Math.ceil(c.text.length/(c.code?42:36))*20)+30))*size;cells.set(n.id,{w,h,...c});p[n.id]={x:d*390*gap*size,y:y+h/2,z:0};y+=h+65*gap*size}}
+  const bottoms=new Map();for(const n of nodes){const d=depth[comp.get(n.id)],c=cells.get(n.id);bottoms.set(d,Math.max(bottoms.get(d)||0,p[n.id].y+c.h/2))}const maxBottom=Math.max(0,...bottoms.values());for(const n of nodes)p[n.id].y+=(maxBottom-bottoms.get(depth[comp.get(n.id)]))/2;
+  if(nodes.length){const boxes=nodes.map(n=>{const c=cells.get(n.id),pt=p[n.id];return{x:pt.x-c.w/2,y:pt.y-c.h/2,w:c.w,h:c.h}});extent=[{key:'straight-bounds',x:Math.min(...boxes.map(b=>b.x))-30,y:Math.min(...boxes.map(b=>b.y))-30,w:Math.max(...boxes.map(b=>b.x+b.w))-Math.min(...boxes.map(b=>b.x))+60,h:Math.max(...boxes.map(b=>b.y+b.h))-Math.min(...boxes.map(b=>b.y))+60}]}
+  return{positions:p}
+ }
+ function paint(ctx,project,width,height,nodes,positions,selected,hover,query,o){const out=[],hits=[],map=new Map(),scale=project({x:1,y:0,z:0}).x-project({x:0,y:0,z:0}).x;ctx.save();if(!nodes.length){ctx.fillStyle='#aaa';ctx.font='14px Inter,system-ui';ctx.textAlign='center';ctx.fillText('Добавьте объекты, чтобы построить схему',width/2,height/2);ctx.restore();return{projected:out,lineHits:hits,count:0}}
+  for(const n of nodes){const p=positions.get(n.id),c=cells.get(n.id);if(!p||!c)continue;const at=project(p),box={x:at.x-c.w*scale/2,y:at.y-c.h*scale/2,w:c.w*scale,h:c.h*scale};const row={...at,n,r:12,box,c};out.push(row);map.set(n.id,row)}let count=0;const related=new Set([selected]);for(const e of current.edges)if(e.from===selected||e.to===selected){related.add(e.from);related.add(e.to)}
+  for(const e of current.edges){const a=map.get(e.from),b=map.get(e.to);if(!a||!b)continue;if(filterState.review!=='all'&&(e.review||'unreviewed')!==filterState.review)continue;const strong=e.from===selected||e.to===selected||e.id===selectedEdge,forward=b.x>a.x+10,A={x:a.box.x+a.box.w+8,y:a.y},B={x:forward?b.box.x-9:b.box.x+b.box.w+9,y:b.y},bend=forward?Math.max(40,(B.x-A.x)*.52):Math.max(60,80*scale),C={x:A.x+bend,y:A.y},D={x:forward?B.x-bend:B.x+bend,y:B.y};if(e.from===e.to){B.y=a.y+Math.max(22,a.box.h*.45);C.x=A.x+60;D.x=B.x+60}ctx.globalAlpha=selected&&!strong?.15:strong?.95:.72;ctx.strokeStyle=color(e.color||current.style?.edge||'#8f929a');ctx.lineWidth=strong?1.8:1.15;ctx.lineCap='round';ctx.setLineDash(e.dashed?[5,4]:[]);ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.bezierCurveTo(C.x,C.y,D.x,D.y,B.x,B.y);ctx.stroke();ctx.setLineDash([]);if(o.arrows){const angle=Math.atan2(B.y-D.y,B.x-D.x),r=6;ctx.fillStyle=ctx.strokeStyle;ctx.beginPath();ctx.moveTo(B.x,B.y);ctx.lineTo(B.x-r*Math.cos(angle-.42),B.y-r*Math.sin(angle-.42));ctx.lineTo(B.x-r*Math.cos(angle+.42),B.y-r*Math.sin(angle+.42));ctx.closePath();ctx.fill()}const samples=Array.from({length:25},(_,i)=>{const t=i/24,u=1-t;return{x:u*u*u*A.x+3*u*u*t*C.x+3*u*t*t*D.x+t*t*t*B.x,y:u*u*u*A.y+3*u*u*t*C.y+3*u*t*t*D.y+t*t*t*B.y}});hits.push({e,samples});if(strong&&e.label){const at=samples[12];ctx.globalAlpha=.95;ctx.font='10px Inter,system-ui';const text=String(e.label).slice(0,45),w=ctx.measureText(text).width+12;ctx.fillStyle=canvasBackground();ctx.fillRect(at.x-w/2,at.y-10,w,18);ctx.fillStyle='#d8cce5';ctx.fillText(text,at.x-w/2+6,at.y+3)}count++}
+  for(const p of out){const {n,box,c}=p,active=n.id===selected||n.id===hover;ctx.globalAlpha=(selected&&!related.has(n.id))||(query&&!n.label.toLowerCase().includes(query))?.3:1;if(c.code||active){ctx.fillStyle=active?'#242334':'#171b29';ctx.strokeStyle=active?'#ae98d0':'#38466c';ctx.lineWidth=active?1.4:1;ctx.beginPath();ctx.roundRect(box.x-4,box.y-3,box.w+8,box.h+6,6);ctx.fill();ctx.stroke()}ctx.save();ctx.beginPath();ctx.rect(box.x,box.y,box.w,box.h);ctx.clip();ctx.font=(active?'600 ':'')+Math.max(10,Math.min(14,12*scale))+'px '+(c.code?'ui-monospace,Consolas,monospace':'Inter,system-ui');ctx.fillStyle=c.code?'#b8c9ee':'#d1d1d6';if(o.labels||active){const rows=[];for(const paragraph of c.text.split('\n')){let line='';for(const word of paragraph.split(/\s+/)){if(ctx.measureText(line+' '+word).width>box.w-12&&line){rows.push(line);line=word}else line+=(line?' ':'')+word}if(line)rows.push(line)}const max=Math.max(1,Math.floor((box.h-10)/16));rows.slice(0,max).forEach((line,i)=>{while(line.length&&ctx.measureText(line+(i===max-1&&rows.length>max?'…':'')).width>box.w-12)line=line.slice(0,-1);if(i===max-1&&rows.length>max)line+='…';ctx.fillText(line,box.x+6,box.y+Math.max(17,(box.h-Math.min(max,rows.length)*16)/2+12)+i*16)})}ctx.restore()}ctx.restore();return{projected:out,lineHits:hits,count}
+ }
+ return{layout,paint,bounds:()=>extent}
+})();
+
 const Views703 = (() => {
- const modes=[['cards','Карточки','Подробные объекты и маршруты связей'],['network','Круги · 2D','Плоская сеть с перемещением объектов'],['network3d','3D-сеть','Глубина, инерция и свободное вращение'],['maltego','Мальтего','Иконки, направления и подписи связей'],['hierarchy','Иерархия','Уровни сверху вниз или слева направо'],['timeline','Хронология','События и объекты на временной шкале'],['groups','Группы','Сворачиваемые области связанных объектов']];
- const special=()=>['hierarchy','timeline','groups'].includes(current?.graphView);
- function options(mode=current?.graphView){const o={labels:true,arrows:mode==='maltego'||mode==='hierarchy',nodeSize:1,spacing:1,orientation:'vertical',groupBy:'type',start:'',end:'',unknown:true,autoRotate:false,speed:.35,...current?.viewOptions703?.[mode]};const clamp=(n,a,b,d)=>Number.isFinite(n)?Math.max(a,Math.min(b,n)):d;o.nodeSize=clamp(o.nodeSize,.7,1.6,1);o.spacing=clamp(o.spacing,.8,2,1);o.speed=clamp(o.speed,.1,1,.35);for(const k of ['labels','arrows','unknown','autoRotate'])o[k]=o[k]===true;o.orientation=o.orientation==='horizontal'?'horizontal':'vertical';if(!['type','person','organization'].includes(o.groupBy))o.groupBy='type';for(const k of ['start','end'])if(typeof o[k]!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(o[k])||!Number.isFinite(Date.parse(o[k])))o[k]='';return o}
+ const modes=[['cards','Карточки','Подробные объекты и маршруты связей'],['network','Круги · 2D','Плоская сеть с перемещением объектов'],['network3d','3D-сеть','Глубина, инерция и свободное вращение'],['maltego','Мальтего','Иконки, направления и подписи связей'],['hierarchy','Иерархия','Уровни сверху вниз или слева направо'],['timeline','Хронология','События и объекты на временной шкале'],['groups','Группы','Сворачиваемые области связанных объектов'],['straight','Прямые','Текстовые блоки и плавные стрелки слева направо']];
+ const special=()=>['hierarchy','timeline','groups','straight'].includes(current?.graphView);
+ function options(mode=current?.graphView){const o={labels:true,arrows:mode==='maltego'||mode==='hierarchy'||mode==='straight',nodeSize:1,spacing:1,orientation:'vertical',groupBy:'type',start:'',end:'',unknown:true,autoRotate:false,speed:.35,undatedOpen704:false,...current?.viewOptions703?.[mode]};const clamp=(n,a,b,d)=>Number.isFinite(n)?Math.max(a,Math.min(b,n)):d;o.nodeSize=clamp(o.nodeSize,.7,1.6,1);o.spacing=clamp(o.spacing,.8,2,1);o.speed=clamp(o.speed,.1,1,.35);for(const k of ['labels','arrows','unknown','autoRotate'])o[k]=o[k]===true;o.orientation=o.orientation==='horizontal'?'horizontal':'vertical';if(!['type','person','organization'].includes(o.groupBy))o.groupBy='type';for(const k of ['start','end'])if(typeof o[k]!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(o[k])||!Number.isFinite(Date.parse(o[k])))o[k]='';return o}
  function put(value){current.viewOptions703||={};current.viewOptions703[current.graphView]={...options(),...value}}
  function validCamera(c){return c&&[c.zoom,c.panX,c.panY,c.yaw,c.pitch,c.target?.x,c.target?.y,c.target?.z].every(Number.isFinite)&&c.zoom>=.025&&c.zoom<=8}
  function date(n){const text=[n.date,n.eventDate,n.properties?.date,n.type==='date'||n.type==='event'?n.label:'',n.type==='employment'||n.type==='income'?n.label:''].filter(v=>typeof v==='string').join(' ');let m=text.match(/\b((?:19|20)\d{2})-(\d{2})-(\d{2})\b/),y,mo,d;if(m){[,y,mo,d]=m}else{m=text.match(/\b(\d{1,2})[./](\d{1,2})[./]((?:19|20)\d{2})\b/);if(m){[,d,mo,y]=m}else if((m=text.match(/\b((?:19|20)\d{2})\b/))){y=m[1];mo=1;d=1}else return null}const t=Date.UTC(+y,+mo-1,+d),dt=new Date(t);return dt.getUTCFullYear()===+y&&dt.getUTCMonth()===+mo-1&&dt.getUTCDate()===+d?t:null}
  function grouping(nodes,edges,o=options()){
   const map=new Map(nodes.map(n=>[n.id,n])),assign=new Map(),labels=new Map(),adj=new Map(nodes.map(n=>[n.id,[]]));for(const e of edges){if(map.has(e.from)&&map.has(e.to)){adj.get(e.from).push(e.to);adj.get(e.to).push(e.from)}}
-  if(o.groupBy==='type'){for(const n of nodes){assign.set(n.id,n.type);labels.set(n.type,types[n.type]?.[0]||n.type)}}else{const seeds=nodes.filter(n=>n.type===(o.groupBy==='person'?'person':'organization')).sort((a,b)=>a.id.localeCompare(b.id)),q=[];for(const n of seeds){assign.set(n.id,n.id);labels.set(n.id,n.label);q.push(n.id)}for(let i=0;i<q.length;i++)for(const id of adj.get(q[i])||[])if(!assign.has(id)){assign.set(id,assign.get(q[i]));q.push(id)}for(const n of nodes)if(!assign.has(n.id)){assign.set(n.id,'other');labels.set('other','Прочие объекты')}}
+  if(o.groupBy==='type'){for(const n of nodes){assign.set(n.id,n.type);labels.set(n.type,types[n.type]?.[0]||({coordinates:'КООРДИНАТЫ',location:'МЕСТО',place:'МЕСТО'})[n.type]||n.type)}}else{const seeds=nodes.filter(n=>n.type===(o.groupBy==='person'?'person':'organization')).sort((a,b)=>a.id.localeCompare(b.id)),q=[];for(const n of seeds){assign.set(n.id,n.id);labels.set(n.id,n.label);q.push(n.id)}for(let i=0;i<q.length;i++)for(const id of adj.get(q[i])||[])if(!assign.has(id)){assign.set(id,assign.get(q[i]));q.push(id)}for(const n of nodes)if(!assign.has(n.id)){assign.set(n.id,'other');labels.set('other','Прочие объекты')}}
   const out=new Map();for(const n of nodes){const k=assign.get(n.id);if(!out.has(k))out.set(k,{key:k,label:labels.get(k),nodes:[]});out.get(k).nodes.push(n)}return [...out.values()].sort((a,b)=>a.label.localeCompare(b.label,'ru'))
  }
- let regions=[],ticks=[],undatedY=0,hiddenGroups=new Set();
+ let regions=[],ticks=[],undatedY=0,hiddenGroups=new Set(),datedCount704=0,undatedCount704=0;
  function layout(nodes,edges){const o=options(),p={},gap=o.spacing;
-  regions=[];ticks=[];hiddenGroups.clear();const byId=new Map(nodes.map(n=>[n.id,n]));
+  regions=[];ticks=[];hiddenGroups.clear();routeCache704.clear();const byId=new Map(nodes.map(n=>[n.id,n]));
+  if(current.graphView==='straight'){const result=Lines705.layout(nodes,edges,o);regions=Lines705.bounds();return result}
   if(current.graphView==='hierarchy'){
    const adj=new Map(nodes.map(n=>[n.id,[]])),incoming=new Map(nodes.map(n=>[n.id,0]));for(const e of edges)if(byId.has(e.from)&&byId.has(e.to)&&e.from!==e.to){adj.get(e.from).push(e.to);incoming.set(e.to,incoming.get(e.to)+1)}
    const rank=(a,b)=>(adj.get(b.id).length-adj.get(a.id).length)||a.label.localeCompare(b.label,'ru'),roots=nodes.filter(n=>!incoming.get(n.id)).sort(rank),seen=new Set(),levels=[];let component=0;
    for(const root of [...roots,...[...nodes].sort(rank)]){if(seen.has(root.id))continue;const q=[[root.id,0]],local=[];seen.add(root.id);for(let i=0;i<q.length;i++){const [id,depth]=q[i];(local[depth]||=[]).push(id);for(const next of adj.get(id).sort())if(!seen.has(next)){seen.add(next);q.push([next,depth+1])}}const width=Math.max(1,...local.map(a=>a.length));local.forEach((row,d)=>row.forEach((id,i)=>{const x=(component+i+(width-row.length)/2)*250*gap,y=d*170*gap;p[id]=o.orientation==='horizontal'?{x:y,y:x,z:0}:{x,y,z:0}}));component+=width+1;levels.push(local)}
   }else if(current.graphView==='timeline'){
-   const dated=nodes.map(n=>({n,t:date(n)})).filter(a=>a.t!==null).sort((a,b)=>a.t-b.t||a.n.id.localeCompare(b.n.id)),unique=[...new Set(dated.map(a=>a.t))],counts=new Map();
-   dated.forEach(({n,t})=>{const col=unique.indexOf(t),row=counts.get(t)||0;counts.set(t,row+1);p[n.id]={x:col*260*gap,y:row*135*gap,z:0}});ticks=unique.map((t,i)=>({t,x:i*260*gap,label:dated.some(a=>a.t===t&&/\d{4}-\d{2}-\d{2}|\d{1,2}[./]\d{1,2}[./]\d{4}/.test([a.n.label,a.n.date,a.n.eventDate,a.n.properties?.date].join(' ')))?new Date(t).toLocaleDateString('ru-RU',{timeZone:'UTC'}):new Date(t).getUTCFullYear()+' · год'}));undatedY=(Math.max(1,...counts.values())*135+120)*gap;
-   nodes.filter(n=>date(n)===null).forEach((n,i)=>p[n.id]={x:(i%Math.max(1,unique.length||5))*260*gap,y:undatedY+Math.floor(i/Math.max(1,unique.length||5))*130*gap,z:0});
+   const dated=nodes.map(n=>({n,t:date(n)})).filter(a=>a.t!==null).sort((a,b)=>a.t-b.t||a.n.id.localeCompare(b.n.id)),unique=[...new Set(dated.map(a=>a.t))],counts=new Map();datedCount704=dated.length;undatedCount704=nodes.length-dated.length;
+   dated.forEach(({n,t})=>{const col=unique.indexOf(t),row=counts.get(t)||0;counts.set(t,row+1);p[n.id]={x:col*390*gap,y:row*116*gap,z:0}});
+   ticks=unique.map((t,i)=>({t,x:i*390*gap,label:dated.some(a=>a.t===t&&/\d{4}-\d{2}-\d{2}|\d{1,2}[./]\d{1,2}[./]\d{4}/.test([a.n.label,a.n.date,a.n.eventDate,a.n.properties?.date].join(' ')))?new Date(t).toLocaleDateString('ru-RU',{timeZone:'UTC'}):new Date(t).getUTCFullYear()+' · год'}));
+   undatedY=dated.length?(Math.max(1,...counts.values())*116+110)*gap:0;const cols=dated.length?Math.max(1,Math.min(3,unique.length)):Math.max(1,Math.min(3,Math.ceil(Math.sqrt(undatedCount704))));nodes.filter(n=>date(n)===null).forEach((n,i)=>p[n.id]={x:(i%cols)*390*gap,y:undatedY+Math.floor(i/cols)*116*gap,z:0});
+   if(dated.length||o.undatedOpen704){const all=Object.values(p);if(all.length)regions=[{x:Math.min(...all.map(p=>p.x))-164,y:-86,w:Math.max(...all.map(p=>p.x))-Math.min(...all.map(p=>p.x))+328,h:Math.max(...all.map(p=>p.y))+144,key:'timeline-bounds'}]}
   }else if(current.graphView==='groups'){
-   let x=0,y=0,rowH=0;const collapsed=new Set(current.collapsedGroups703||[]),groups=grouping(nodes,edges,o),columns=Math.max(1,Math.ceil(Math.sqrt(groups.length)));
-   groups.forEach((g,i)=>{if(i&&i%columns===0){x=0;y+=rowH+90*gap;rowH=0}const closed=collapsed.has(g.key),cols=closed?1:Math.max(1,Math.ceil(Math.sqrt(g.nodes.length))),rows=closed?1:Math.ceil(g.nodes.length/cols),width=Math.max(280,(cols*220+60)*gap),height=closed?110:(rows*130+100)*gap;regions.push({...g,x:x-55*gap,y:y-75*gap,w:width,h:height,closed});g.nodes.forEach((n,j)=>{if(closed)hiddenGroups.add(n.id);p[n.id]={x:x+(j%cols)*220*gap+45*gap,y:y+Math.floor(j/cols)*130*gap+35*gap,z:0}});x+=width+90*gap;rowH=Math.max(rowH,height)})
+   const collapsed=new Set(current.collapsedGroups703||[]),groups=grouping(nodes,edges,o);groups.sort((a,b)=>Number(b.nodes.some(n=>n.type==='person'))-Number(a.nodes.some(n=>n.type==='person'))||b.nodes.length-a.nodes.length||a.label.localeCompare(b.label,'ru'));
+   const cols=Math.max(1,Math.min(3,Math.ceil(Math.sqrt(groups.length)))),heights=Array(cols).fill(0);groups.forEach(g=>{const col=heights.indexOf(Math.min(...heights)),x=col*410*gap,y=heights[col],closed=collapsed.has(g.key),width=320*gap,height=(closed?62:62+g.nodes.length*46)*gap;regions.push({...g,x,y,w:width,h:height,closed});g.nodes.forEach((n,j)=>{if(closed)hiddenGroups.add(n.id);p[n.id]={x:x+width/2,y:y+(79+j*46)*gap,z:0}});heights[col]+=height+88*gap});
   }return {positions:p}
+
  }
- function visible(n){const o=options();if(current.graphView==='groups')return !hiddenGroups.has(n.id);if(current.graphView==='timeline'){const t=date(n);if(t===null)return o.unknown;return (!o.start||t>=Date.parse(o.start+'T00:00:00Z'))&&(!o.end||t<=Date.parse(o.end+'T23:59:59Z'))}return true}
+ function visible(n){const o=options();if(current.graphView==='groups')return !hiddenGroups.has(n.id);if(current.graphView==='timeline'){const t=date(n);if(t===null)return o.unknown&&(datedCount704>0||o.undatedOpen704===true);return (!o.start||t>=Date.parse(o.start+'T00:00:00Z'))&&(!o.end||t<=Date.parse(o.end+'T23:59:59Z'))}return true}
  function background(ctx,project,width,height){ctx.save();ctx.font='600 12px Inter,system-ui';if(current.graphView==='groups')for(const g of regions){const a=project({x:g.x,y:g.y,z:0}),b=project({x:g.x+g.w,y:g.y+g.h,z:0});if(b.x<0||a.x>width||b.y<0||a.y>height)continue;ctx.fillStyle='#101014';ctx.strokeStyle='#36303f';ctx.lineWidth=1;ctx.beginPath();ctx.roundRect(a.x,a.y,b.x-a.x,b.y-a.y,12);ctx.fill();ctx.stroke();ctx.fillStyle='#cbc3dc';ctx.fillText(clean(g.label,36)+' · '+g.nodes.length+(g.closed?' · свёрнута':''),a.x+14,a.y+23)}
   if(current.graphView==='timeline'){for(const tick of ticks){const p=project({x:tick.x,y:-70,z:0});if(p.x<0||p.x>width)continue;ctx.strokeStyle='#2d2835';ctx.beginPath();ctx.moveTo(p.x,Math.max(65,p.y+20));ctx.lineTo(p.x,height-55);ctx.stroke();ctx.fillStyle='#bcb1d0';ctx.fillText(tick.label,p.x-38,Math.max(75,p.y))}const p=project({x:0,y:undatedY-60,z:0});ctx.fillStyle='#8f869c';if(options().unknown)ctx.fillText('БЕЗ УКАЗАННОЙ ДАТЫ',p.x-35,p.y)}ctx.restore()
  }
- function hud(){let bar=$('#viewDetails703');if(!bar){bar=document.createElement('div');bar.id='viewDetails703';$('#workspace').append(bar)}const cr=$('#canvas').getBoundingClientRect(),wr=$('#workspace').getBoundingClientRect();bar.style.left=(cr.left-wr.left+18)+'px';bar.style.maxWidth=Math.max(100,Math.min(600,cr.width-36))+'px';bar.hidden=!special()||document.body.classList.contains('home67');const key=JSON.stringify([current?.id,current?.graphView,current?.collapsedGroups703,options(),current?.nodes.map(n=>[n.id,n.type,n.label])]);if(bar.dataset.key===key)return;bar.dataset.key=key;bar.replaceChildren();if(current?.graphView==='groups'){const hint=document.createElement('small');hint.textContent='Свернуть / развернуть группы';bar.append(hint);for(const g of regions){const b=document.createElement('button');b.className='tool';b.dataset.group703=g.key;b.textContent=(g.closed?'+ ':'− ')+clean(g.label,25)+' · '+g.nodes.length;b.setAttribute('aria-expanded',String(!g.closed));b.onclick=()=>{const set=new Set(current.collapsedGroups703||[]);set.has(g.key)?set.delete(g.key):set.add(g.key);current.collapsedGroups703=[...set];Scene65.rearrange();persist()};bar.append(b)}}else if(current?.graphView==='timeline'){const text=document.createElement('small');text.textContent='Даты из данных · '+(options().start||'начало')+' — '+(options().end||'последняя дата')+' · период меняется в настройках вида';bar.append(text)}else{const t=document.createElement('small');t.textContent='Уровни по направлению записанных связей. Циклы и перекрёстные связи сохраняются.';bar.append(t)}}
- return {modes,special,options,put,date,layout,visible,background,hud,validCamera,regions:()=>regions}
+ /* Compact object rows and obstacle-aware group connections. */
+ const routeCache704=new Map();
+ function route704(a,b,boxes){const pad=18,start={x:a.x+(b.x>=a.x?a.w+pad:-pad),y:a.y+a.h/2},end={x:b.x+(b.x>=a.x?-pad:b.w+pad),y:b.y+b.h/2},key=[a.key,b.key].join('|');if(routeCache704.has(key))return routeCache704.get(key);
+  const xs=[...new Set([start.x,end.x,...boxes.flatMap(r=>[r.x-pad,r.x+r.w+pad])])].sort((a,b)=>a-b),ys=[...new Set([start.y,end.y,...boxes.flatMap(r=>[r.y-pad,r.y+r.h+pad])])].sort((a,b)=>a-b),N=xs.length,blocked=(x,y)=>boxes.some(r=>x>r.x-8&&x<r.x+r.w+8&&y>r.y-8&&y<r.y+r.h+8),cross=(x,y,X,Y)=>boxes.some(r=>Math.min(x,X)<r.x+r.w+8&&Math.max(x,X)>r.x-8&&Math.min(y,Y)<r.y+r.h+8&&Math.max(y,Y)>r.y-8),index=(x,y)=>y*N+x,si=index(xs.indexOf(start.x),ys.indexOf(start.y)),ei=index(xs.indexOf(end.x),ys.indexOf(end.y)),cost=new Map([[si,0]]),prev=new Map(),open=[si],closed=new Set();let found=false;
+  while(open.length){let bi=0,best=Infinity;for(let i=0;i<open.length;i++){const id=open[i],x=id%N,y=Math.floor(id/N),f=cost.get(id)+Math.abs(xs[x]-end.x)+Math.abs(ys[y]-end.y);if(f<best){best=f;bi=i}}const id=open.splice(bi,1)[0];if(id===ei){found=true;break}if(closed.has(id))continue;closed.add(id);const x=id%N,y=Math.floor(id/N);for(const [X,Y]of [[x-1,y],[x+1,y],[x,y-1],[x,y+1]]){if(X<0||X>=N||Y<0||Y>=ys.length||blocked(xs[X],ys[Y])||cross(xs[x],ys[y],xs[X],ys[Y]))continue;const next=index(X,Y),d=cost.get(id)+Math.abs(xs[X]-xs[x])+Math.abs(ys[Y]-ys[y]);if(d<(cost.get(next)??Infinity)){cost.set(next,d);prev.set(next,id);open.push(next)}}}
+  let points=[];if(found){for(let id=ei;;id=prev.get(id)){points.push({x:xs[id%N],y:ys[Math.floor(id/N)],z:0});if(id===si)break}points.reverse()}else points=[start,{x:start.x,y:Math.min(...boxes.map(r=>r.y))-pad},{x:end.x,y:Math.min(...boxes.map(r=>r.y))-pad},end];points=[{x:Math.max(a.x,Math.min(a.x+a.w,start.x)),y:start.y,z:0},...points,{x:Math.max(b.x,Math.min(b.x+b.w,end.x)),y:end.y,z:0}];routeCache704.set(key,points);return points
+ }
+ function label704(ctx,text,x,y,width,line=15){const words=String(text).split(/\s+/),rows=[];let row='';for(const word of words){if(ctx.measureText(row+' '+word).width>width&&row){rows.push(row);row=word}else row+=(row?' ':'')+word}if(row)rows.push(row);const out=rows.slice(0,2);for(let i=0;i<out.length;i++){while(out[i].length&&ctx.measureText(out[i]+(i===1&&rows.length>2?'…':'')).width>width)out[i]=out[i].slice(0,-1);if(i===1&&rows.length>2)out[i]+='…';ctx.fillText(out[i],x,y+i*line)}return out.length}
+ function paint704(ctx,project,width,height,nodes,positions,chosen,hovered,searchText){const out=[],hits=[],o=options(),mode=current.graphView,scale=project({x:1,y:0,z:0}).x-project({x:0,y:0,z:0}).x,ids=new Set(nodes.map(n=>n.id)),groupOf=new Map();for(const g of regions)for(const n of g.nodes||[])groupOf.set(n.id,g);let lineCount=0;const badges704=[];
+  ctx.save();
+  if(mode==='timeline'&&datedCount704&&!nodes.length){ctx.textAlign='center';ctx.fillStyle='#ddd';ctx.font='600 19px Inter,system-ui';ctx.fillText(width<430?'Нет событий за период':'В этом периоде нет событий',width/2,height/2);ctx.fillStyle='#999';ctx.font='12px Inter,system-ui';ctx.fillText('Измените даты в настройках вида.',width/2,height/2+28);ctx.restore();return{projected:out,lineHits:hits,lineCount:0,empty:true}}
+  if(mode==='timeline'&&!datedCount704&&!o.undatedOpen704){ctx.textAlign='center';ctx.fillStyle='#1a1a1d';ctx.strokeStyle='#38383c';ctx.lineWidth=1;ctx.beginPath();ctx.roundRect(width/2-26,height/2-107,52,52,13);ctx.fill();ctx.stroke();ctx.strokeStyle='#b8adc9';ctx.beginPath();ctx.rect(width/2-11,height/2-94,22,21);ctx.moveTo(width/2-11,height/2-87);ctx.lineTo(width/2+11,height/2-87);ctx.stroke();ctx.fillStyle='#eee';ctx.font='600 '+(width<430?19:23)+'px Inter,system-ui';ctx.fillText(width<430?'Пока нет дат':'В проекте пока нет дат',width/2,height/2-22);ctx.fillStyle='#9c98a2';ctx.font='12px Inter,system-ui';ctx.fillText(undatedCount704+' объектов без указанной даты',width/2,height/2+7);ctx.fillText(width<430?'Добавьте объект «Дата».':'Добавьте объект «Дата» или событие с датой.',width/2,height/2+31);ctx.restore();return{projected:out,lineHits:hits,lineCount:0,empty:true}}
+  if(mode==='groups'){
+   const pairs=new Map();for(const e of current.edges){const a=groupOf.get(e.from),b=groupOf.get(e.to);if(!a||!b||a===b)continue;const key=[a.key,b.key].sort().join('|');if(!pairs.has(key))pairs.set(key,{a,b,edges:[]});pairs.get(key).edges.push(e)}
+   for(const {a,b,edges}of pairs.values()){const selectedEdges=edges.filter(e=>e.from===chosen||e.to===chosen),strong=selectedEdges.length>0,ps=route704(a,b,regions).map(project);ctx.strokeStyle=strong?'#b9a7d0':'#55535e';ctx.globalAlpha=chosen&&!strong?.16:.7;ctx.lineWidth=strong?1.8:1.1;ctx.lineJoin='round';ctx.lineCap='round';ctx.beginPath();ps.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke();if(o.arrows){const arrow=(tip,near)=>{const a=Math.atan2(tip.y-near.y,tip.x-near.x),r=6;ctx.fillStyle=ctx.strokeStyle;ctx.beginPath();ctx.moveTo(tip.x,tip.y);ctx.lineTo(tip.x-r*Math.cos(a-.45),tip.y-r*Math.sin(a-.45));ctx.lineTo(tip.x-r*Math.cos(a+.45),tip.y-r*Math.sin(a+.45));ctx.closePath();ctx.fill()};if(edges.some(e=>groupOf.get(e.from)===a&&groupOf.get(e.to)===b))arrow(ps[ps.length-1],ps[ps.length-2]);if(edges.some(e=>groupOf.get(e.from)===b&&groupOf.get(e.to)===a))arrow(ps[0],ps[1])}hits.push({e:(selectedEdges[0]||edges[0]),samples:ps});lineCount+=edges.length;const segments=ps.slice(1).map((p,i)=>({a:ps[i],b:p,len:Math.hypot(p.x-ps[i].x,p.y-ps[i].y)})).sort((a,b)=>b.len-a.len);let at=null;for(const seg of segments){for(const t of [.5,.3,.7]){const p={x:seg.a.x+(seg.b.x-seg.a.x)*t,y:seg.a.y+(seg.b.y-seg.a.y)*t};if(seg.len>50&&!badges704.some(b=>Math.abs(b.x-p.x)<30&&Math.abs(b.y-p.y)<25)){at=p;break}}if(at)break}if(!at)continue;badges704.push(at);ctx.globalAlpha=1;ctx.fillStyle='#18171c';ctx.strokeStyle='#45414d';ctx.beginPath();ctx.roundRect(at.x-12,at.y-10,24,20,6);ctx.fill();ctx.stroke();ctx.fillStyle='#c6bfce';ctx.font='10px Inter,system-ui';ctx.textAlign='center';ctx.fillText(String(edges.length),at.x,at.y+3);ctx.textAlign='left'}
+   for(const g of regions){const a=project({x:g.x,y:g.y,z:0}),b=project({x:g.x+g.w,y:g.y+g.h,z:0});ctx.globalAlpha=1;ctx.fillStyle='#101012';ctx.strokeStyle=g.nodes.some(n=>n.id===chosen)?'#8f80a5':'#303034';ctx.lineWidth=1;ctx.beginPath();ctx.roundRect(a.x,a.y,b.x-a.x,b.y-a.y,10);ctx.fill();ctx.stroke();ctx.fillStyle='#c7c4cd';ctx.font='600 '+Math.max(11,Math.min(14,13*scale))+'px Inter,system-ui';ctx.save();ctx.beginPath();ctx.rect(a.x+12,a.y+6,Math.max(1,b.x-a.x-55),35*scale);ctx.clip();ctx.fillText(clean(g.label,40),a.x+14,a.y+Math.max(20,27*scale));ctx.restore();ctx.fillStyle='#8f8998';ctx.font='11px Inter,system-ui';ctx.textAlign='right';ctx.fillText(String(g.nodes.length),b.x-14,a.y+Math.max(20,27*scale));ctx.textAlign='left'}
+  }else{
+   ctx.font='600 12px Inter,system-ui';for(const t of ticks){const p=project({x:t.x,y:-58,z:0});ctx.fillStyle='#c5bbd1';ctx.fillText(t.label,p.x-145*scale,p.y);ctx.strokeStyle='#37313e';ctx.beginPath();ctx.moveTo(p.x-145*scale,p.y+12);ctx.lineTo(p.x+145*scale,p.y+12);ctx.stroke()}if(o.unknown&&undatedCount704){const p=project({x:0,y:undatedY-58,z:0});ctx.fillStyle='#8c8793';ctx.fillText('БЕЗ ДАТЫ · '+undatedCount704,p.x-145*scale,p.y)}
+  }
+  for(const n of nodes){const world=positions.get(n.id);if(!world)continue;const p=project(world),g=groupOf.get(n.id),rowW=(mode==='groups'?g.w-24:306*o.spacing)*scale,rowH=(mode==='groups'?40*o.spacing:88*o.spacing)*scale,x=p.x-rowW/2,y=p.y-rowH/2,active=n.id===chosen||n.id===hovered,dim=searchText&&!n.label.toLowerCase().includes(searchText);ctx.globalAlpha=dim?.25:1;ctx.fillStyle=active?'#242128':'#171719';ctx.strokeStyle=active?'#a898bd':'#27272c';ctx.lineWidth=1;ctx.beginPath();ctx.roundRect(x,y,rowW,rowH,Math.min(7,rowH/4));ctx.fill();ctx.stroke();const dot=Math.max(3,Math.min(5,4.5*o.nodeSize));ctx.fillStyle=color(n.color||types[n.type]?.[1]||'#9d8cae');ctx.beginPath();ctx.arc(x+14,p.y,dot,0,Math.PI*2);ctx.fill();ctx.fillStyle=active?'#f2edf8':'#cfccd4';ctx.font=(active?'600 ':'')+Math.max(10,Math.min(14,12*scale))+'px Inter,system-ui';ctx.save();ctx.beginPath();ctx.rect(x+25,y+3,Math.max(1,rowW-35),Math.max(1,rowH-6));ctx.clip();if(o.labels||active)label704(ctx,n.label,x+26,y+rowH/2-(ctx.measureText(n.label).width>rowW-36?2:-4),rowW-36,14);ctx.restore();out.push({...p,n,r:10,box:{x,y,w:rowW,h:rowH}})}ctx.globalAlpha=1;ctx.restore();return{projected:out,lineHits:hits,lineCount}
+ }
+
+ function hud(){let bar=$('#viewDetails703');if(!bar){bar=document.createElement('div');bar.id='viewDetails703';$('#workspace').append(bar)}const cr=$('#canvas').getBoundingClientRect(),wr=$('#workspace').getBoundingClientRect();bar.style.left=(cr.left-wr.left+18)+'px';bar.style.maxWidth=Math.max(100,Math.min(660,cr.width-36))+'px';bar.hidden=!special()||document.body.classList.contains('home67');const key=JSON.stringify([current?.id,current?.graphView,current?.collapsedGroups703,options(),current?.nodes.map(n=>[n.id,n.type,n.label]),regions.map(g=>[g.key,g.nodes?.length])]);if(bar.dataset.key===key)return;bar.dataset.key=key;bar.replaceChildren();const hint=document.createElement('small');bar.append(hint);
+  if(current?.graphView==='groups'){hint.textContent='Число на линии — количество связей между группами. Выберите объект, чтобы выделить его связи.';for(const g of regions){const b=document.createElement('button');b.className='tool';b.dataset.group703=g.key;b.textContent=(g.closed?'+ ':'− ')+clean(g.label,24)+' · '+g.nodes.length;b.setAttribute('aria-expanded',String(!g.closed));b.onclick=()=>{const set=new Set(current.collapsedGroups703||[]);set.has(g.key)?set.delete(g.key):set.add(g.key);current.collapsedGroups703=[...set];Scene65.rearrange();persist()};bar.append(b)}}
+  else if(current?.graphView==='timeline'){hint.textContent=datedCount704?'События по датам · '+datedCount704+' с датой · '+undatedCount704+' без даты':'Даты в данных не найдены. Телефоны, адреса и имена не считаются событиями.';if(!datedCount704){const show=document.createElement('button');show.className='tool';show.id='timelineUndated704';show.textContent=options().undatedOpen704?'Скрыть объекты без даты':'Показать объекты без даты';show.onclick=()=>{put({undatedOpen704:!options().undatedOpen704});Scene65.rearrange();persist()};const cards=document.createElement('button');cards.className='tool';cards.id='timelineCards704';cards.textContent='Открыть карточки';cards.onclick=()=>setView65('cards');bar.append(show,cards)}}else hint.textContent=current.graphView==='straight'?'Текстовая схема слева направо. Выберите блок или стрелку, чтобы открыть сведения.':'Уровни по направлению записанных связей. Циклы и перекрёстные связи сохраняются.'
+ }
+ return {modes,special,options,put,date,layout,visible,background,hud,validCamera,regions:()=>regions,paint704,compact:()=>['groups','timeline','straight'].includes(current?.graphView),stats704:()=>({dated:datedCount704,undated:undatedCount704})}
 })();
 
 const Scene65 = (() => {
@@ -1706,7 +1757,7 @@ const Scene65 = (() => {
     w = 1,
     h = 1;
   const active = () =>
-      ["network", "network3d", "maltego", "hierarchy", "timeline", "groups"].includes(current?.graphView),
+      ["network", "network3d", "maltego", "hierarchy", "timeline", "groups", "straight"].includes(current?.graphView),
     is3d = () => current?.graphView === "network3d";
   const maltego697 = () => current?.graphView === "maltego",
     positionsKey697 = () =>
@@ -1786,7 +1837,7 @@ const Scene65 = (() => {
   function ensure(force = false) {
     if (!active()) return;
     const sig = JSON.stringify([
-      current.id, current.graphView, Views703.special()?Views703.options():null, current.collapsedGroups703,
+      current.id, current.graphView, Views703.special()?Views703.options():null, current.collapsedGroups703, filterState, current.style?.sourceLines, selected,
       current.nodes.map((n) => [n.id, n.type, n.label, n.date, n.eventDate]),
       current.edges.map((e) => [e.id, e.from, e.to]),
     ]);
@@ -1805,7 +1856,7 @@ const Scene65 = (() => {
         },
       };
     const saved = !force ? current[positionsKey697()] : null;
-    if(Views703.special()){const result=Views703.layout(current.nodes,current.edges);positions=new Map(Object.entries(result.positions));if(saved)for(const [id,p]of positions)if([saved[id]?.x,saved[id]?.y,saved[id]?.z].every(Number.isFinite))positions.set(id,{...saved[id]});current[positionsKey697()]=Object.fromEntries(positions);if(!Views703.validCamera(current[cameraKey697()])||force)fit(false);return}
+    if(Views703.special()){const migrate=Views703.compact()&&current.layoutRevision704?.[current.graphView]!==1;if(migrate){current.layoutRevision704||={};current.layoutRevision704[current.graphView]=1;delete current[cameraKey697()]}const result=Views703.layout(baseEligible704(),current.edges);positions=new Map(Object.entries(result.positions));if(!Views703.compact()&&saved)for(const [id,p]of positions)if([saved[id]?.x,saved[id]?.y,saved[id]?.z].every(Number.isFinite))positions.set(id,{...saved[id]});current[positionsKey697()]=Object.fromEntries(positions);if(!Views703.validCamera(current[cameraKey697()])||force||migrate)fit(false);return}
     positions = new Map(
       current.nodes.map((n, i) => {
         const a = i * 2.39996323,
@@ -1904,7 +1955,8 @@ const Scene65 = (() => {
       fit(false);
     }
   }
-  function eligible() {
+  function eligible(){return baseEligible704().filter(n=>Views703.visible(n))}
+  function baseEligible704() {
     const sources = new Set(
         current.nodes
           .filter((n) => n.fileId === filterState.file)
@@ -1928,7 +1980,7 @@ const Scene65 = (() => {
         (current.style?.sourceLines ||
           !GraphLayout65.source(n) ||
           n.id === selected ||
-          filterState.type !== "all") && Views703.visible(n),
+          filterState.type !== "all"),
     );
   }
   function rotate(p) {
@@ -2007,7 +2059,7 @@ const Scene65 = (() => {
     const list = eligible()
       .map((n) => scaled703(positions.get(n.id)))
       .filter(Boolean);
-    if(current.graphView==='groups')for(const g of Views703.regions()){list.push({x:g.x,y:g.y,z:0},{x:g.x+g.w,y:g.y+g.h,z:0})}
+    if(Views703.compact())for(const g of Views703.regions()){list.push({x:g.x,y:g.y,z:0},{x:g.x+g.w,y:g.y+g.h,z:0})}
     if (!list.length) return;
     camera.target = {
       x:
@@ -2240,6 +2292,8 @@ const Scene65 = (() => {
       for (let x = 12; x < width; x += 28)
         for (let y = 12; y < height; y += 28) ctx.fillRect(x, y, 1, 1);
     }
+    if(current.graphView==='straight'){const nodes=eligible(),r=Lines705.paint(ctx,p=>projection(p,width,height),width,height,nodes,positions,selected,hover,search.value.toLowerCase(),Views703.options());projected=r.projected;lineHits=r.lineHits;if(!exporting){$('#sceneMode65').textContent='Прямые · '+nodes.length+' объектов · '+r.count+' связей';$('#zoomLabel').textContent=Math.round(camera.zoom*100)+'%';$('#canvasHint').textContent='ВЫБЕРИТЕ ТЕКСТОВЫЙ БЛОК · ПЕРЕТАСКИВАНИЕ — СДВИГ · ДВА ПАЛЬЦА — МАСШТАБ';$('#emptyHint').classList.add('hidden');routingStatus('')}return}
+    if(Views703.compact()){const nodes=eligible(),r=Views703.paint704(ctx,p=>projection(p,width,height),width,height,nodes,positions,selected,hover,search.value.toLowerCase());projected=r.projected;lineHits=r.lineHits;if(!exporting){const stats=Views703.stats704();$('#sceneMode65').textContent=current.graphView==='timeline'?'Хронология · '+stats.dated+' с датой · '+stats.undated+' без даты':'Группы · '+nodes.length+' объектов';$('#zoomLabel').textContent=Math.round(camera.zoom*100)+'%';$('#canvasHint').textContent='ВЫБЕРИТЕ ОБЪЕКТ · ПУСТОЕ МЕСТО — СДВИГ · КОЛЕСО / ДВА ПАЛЬЦА — МАСШТАБ';$('#emptyHint').classList.add('hidden');$('#graphStatus').textContent='';routingStatus('')}return}
     const nodes = eligible(),
       map = new Map(nodes.map((n) => [n.id, n])),
       ids = new Set(map.keys()),
@@ -2752,7 +2806,7 @@ const Scene65 = (() => {
   function hit(x, y) {
     return [...projected]
       .sort((a, b) => a.z - b.z)
-      .find((p) => Math.hypot(p.x - x, p.y - y) <= p.r + 7);
+      .find((p) => p.box?x>=p.box.x&&x<=p.box.x+p.box.w&&y>=p.box.y&&y<=p.box.y+p.box.h:Math.hypot(p.x-x,p.y-y)<=p.r+7);
   }
   function nearEdge(x, y) {
     return [...lineHits].reverse().find((p) =>
@@ -2791,7 +2845,7 @@ const Scene65 = (() => {
       lastTime:performance.now(),
       startX: e.clientX,
       startY: e.clientY,
-      node: !is3d() && !e.shiftKey && !space ? p?.n.id : null,
+      node: !is3d() && !Views703.compact() && !e.shiftKey && !space ? p?.n.id : null,
       move: 0,
       pan: e.shiftKey || space || e.button !== 0 || (!is3d() && !p),
       p: p?.n.id,
@@ -3596,45 +3650,622 @@ const css65=document.createElement('style');css65.textContent=`#scene65{position
 
 const css66=document.createElement('style');css66.textContent='.topright>.tag.live,.canvasbar>.toolbar:has(#graphStatus),.canvasbar>.panel-hide65{display:none!important}.app .edge{stroke-linecap:round;stroke-linejoin:round}';document.head.append(css66);$('.topright>.tag.live')?.setAttribute('aria-hidden','true');$('#graphStatus').closest('.toolbar').setAttribute('aria-hidden','true');
 // All report assets and processing stay on the device.
-const Report66=(()=>{
- async function image(markup,bounds,max=3200){const xml=new DOMParser().parseFromString(markup,'image/svg+xml'),svg=xml.documentElement;if(bounds){svg.setAttribute('viewBox',[bounds.x,bounds.y,bounds.w,bounds.h].join(' '));svg.setAttribute('width',bounds.w);svg.setAttribute('height',bounds.h);for(const node of svg.querySelectorAll('.node')){const match=node.getAttribute('transform')?.match(/translate\(\s*([-\d.e+]+)[,\s]+([-\d.e+]+)/i);if(match){const x=Number(match[1]),y=Number(match[2]);if(!bounds.nodes.some(n=>n.id===node.getAttribute('data-id'))||x-150<bounds.x||x+150>bounds.x+bounds.w||y-76<bounds.y||y+76>bounds.y+bounds.h)node.remove()}}const visible=new Set([...svg.querySelectorAll('.node')].filter(n=>n.style.display!=='none'&&n.getAttribute('display')!=='none').map(n=>n.getAttribute('data-id'))),edgeLayer=svg.querySelector('#edgesLayer'),visibleRoutes=new Set([...svg.querySelectorAll('.edge')].filter(e=>e.style.display!=='none'&&e.getAttribute('display')!=='none').map(e=>e.getAttribute('data-route')).filter(Boolean)),edges=bounds.links.filter(e=>visible.has(e.from)&&visible.has(e.to)&&(!visibleRoutes.size||visibleRoutes.has(e.id))),routes=EdgeRouter.route(bounds.nodes.filter(n=>visible.has(n.id)),edges,{timeBudgetMs:350}),gaps=EdgeRouter.crossings(routes,{timeBudgetMs:80}),byId=new Map(edges.map(e=>[e.id,e]));if(edgeLayer){edgeLayer.replaceChildren();for(const r of routes){const e=byId.get(r.id),path=xml.createElementNS('http://www.w3.org/2000/svg','path');for(const [key,value]of Object.entries({d:EdgeRouter.rounded(r.points,gaps.get(r.id)||[]),fill:'none',stroke:color(e.color||bounds.edgeColor||'#737983'),'stroke-width':e.width||1.7,'stroke-linecap':'round','stroke-linejoin':'round',opacity:.88}))path.setAttribute(key,value);if(e.dashed)path.setAttribute('stroke-dasharray','6 5');edgeLayer.append(path)}}}const url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml'}));try{const img=new Image;await new Promise((resolve,reject)=>{img.onload=resolve;img.onerror=()=>reject(Error('Не удалось подготовить карту для PDF'));img.src=url});const scale=Math.min(2,max/Math.max(img.width,img.height)),canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(img.width*scale));canvas.height=Math.max(1,Math.round(img.height*scale));const ctx=canvas.getContext('2d');ctx.fillStyle=canvasBackground();ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(img,0,0,canvas.width,canvas.height);return{data:canvas.toDataURL('image/png'),width:canvas.width,height:canvas.height}}finally{URL.revokeObjectURL(url)}}
- function crops(p){if(['network','network3d','maltego'].includes(p.graphView))return[];const groups=GraphLayout65.groups(p.nodes,p.edges).groups.filter(g=>g.root&&g.ids.length>2),map=new Map(p.nodes.map(n=>[n.id,n])),result=[];for(const g of groups){const ns=g.ids.map(id=>map.get(id)),left=Math.min(...ns.map(n=>n.x))-180,top=Math.min(...ns.map(n=>n.y))-110,right=Math.max(...ns.map(n=>n.x))+180,bottom=Math.max(...ns.map(n=>n.y))+110,w=right-left,h=bottom-top,nx=Math.max(1,Math.ceil(w/1520)),ny=Math.max(1,Math.ceil(h/850));for(let iy=0;iy<ny;iy++)for(let ix=0;ix<nx;ix++){const cw=Math.min(1600,w+40),ch=Math.min(930,h+40),x=nx===1?left-20:left+ix*(w-cw)/(nx-1),y=ny===1?top-20:top+iy*(h-ch)/(ny-1);result.push({title:g.title,part:ix+1+iy*nx,parts:nx*ny,bounds:{x,y,w:cw,h:ch}})}}return result.map(tile=>{const b=tile.bounds;b.nodes=p.nodes.filter(n=>n.x-150>=b.x&&n.x+150<=b.x+b.w&&n.y-76>=b.y&&n.y+76<=b.y+b.h);const ids=new Set(b.nodes.map(n=>n.id));b.links=p.edges.filter(e=>ids.has(e.from)&&ids.has(e.to));b.edgeColor=p.style?.edge;return tile})}
- function dialog(){modal('<div class="eyebrow">SHADOWGRAPH / ОТЧЁТ</div><h2>PDF-досье проекта</h2><p>Обложка, обзор, карта, реестры источников, находок и связей с основаниями.</p><label class="checkline"><input id="reportEvidence" type="checkbox" checked> Фрагменты источников: до трёх на находку и до трёх оснований на связь</label><label class="checkline"><input id="reportDetails66" type="checkbox" checked> Крупные фрагменты карты: до 12 страниц для карточек</label><p class="footnote">Карта отражает текущий вид и фильтры. Реестры содержат весь проект. Отчёт создаётся на вашем устройстве.</p><div class="modalactions"><button class="btn" id="cancelReport">Отмена</button><button class="btn primary" id="generateReport">Скачать PDF</button></div>');$('#cancelReport').onclick=closeModal;$('#generateReport').onclick=()=>generate($('#reportEvidence').checked,$('#reportDetails66').checked)}
- async function generate(includeEvidence=true,includeDetails=true){const project=structuredClone(current),created=new Date(),markup=graphSvg(),allCrops=includeDetails?crops(project):[],tiles=allCrops.slice(0,12);reportCancelled=false;modal('<h2>Создаю PDF-досье</h2><p id="reportProgress">Подготовка карты и шрифтов…</p><button class="btn" id="stopReport">Отмена</button>');$('#stopReport').onclick=()=>{reportCancelled=true;$('#stopReport').disabled=true};const progress=async value=>{if(reportCancelled)throw Error('Создание отчёта отменено');if($('#reportProgress'))$('#reportProgress').textContent=value;await new Promise(r=>setTimeout(r,0))};
- try{const [JsPDF,normal,bold,graph]=await Promise.all([loadReportLibrary(),fontData('./public/vendor/report/NotoSans-Regular.ttf'),fontData('./public/vendor/report/NotoSans-Bold.ttf'),image(markup)]),doc=new JsPDF({unit:'mm',format:'a4',compress:true,putOnlyUsedFonts:true});doc.addFileToVFS('NotoSans-Regular.ttf',normal);doc.addFont('NotoSans-Regular.ttf','NotoSans','normal');doc.addFileToVFS('NotoSans-Bold.ttf',bold);doc.addFont('NotoSans-Bold.ttf','NotoSans','bold');doc.setFont('NotoSans','normal');doc.setProperties({title:'SHADOWGRAPH - '+project.name,subject:'Карта, источники и основания связей',creator:'SHADOWGRAPH 7.0.3',author:'SHADOWGRAPH'});
- const ink='#181b20',muted='#6a727d',line='#e2e5e9',blue='#435c94',paper='#f4f5f7',M=18,W=174,B=274,sections=new Map([[1,'Обложка']]),starts=new Map,nodePages=new Map,sourcePages=new Map,number=new Map(project.nodes.map((n,i)=>[n.id,i+1])),sourceNumber=new Map(project.files.map((f,i)=>[f.id,i+1])),nodeMap=new Map(project.nodes.map(n=>[n.id,n]));let y=30,section='Обзор';
- const clean=v=>String(v??'').replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g,'').replace(/[–—]/g,'-');
- const font=(size=9,bold=false,tone=ink)=>{doc.setFont('NotoSans',bold?'bold':'normal');doc.setFontSize(size);doc.setTextColor(tone)};
- const lines=(value,size=9,width=W,bold=false)=>{doc.setFont('NotoSans',bold?'bold':'normal');doc.setFontSize(size);return doc.splitTextToSize(clean(value),width)};
- function next(label=section,orientation='portrait'){doc.addPage('a4',orientation);section=label;sections.set(doc.getNumberOfPages(),label);y=30}
- function ensure(height=12){if(y+height>B)next()}
- function text(value,size=9,tone=ink,bold=false,width=W){const ls=lines(value,size,width,bold),step=size*.48;for(const l of ls){ensure(step+2);font(size,bold,tone);doc.text(l,M,y);y+=step}y+=3}
- function sectionPage(key,title,orientation='portrait'){next(title,orientation);starts.set(key,doc.getNumberOfPages());font(8,false,muted);doc.text(key.toUpperCase(),M,24);font(22,true);doc.text(title,M,36);doc.setDrawColor(line);doc.line(M,43,doc.internal.pageSize.getWidth()-M,43);y=54}
- const review=v=>reviewNames[v]||reviewNames.unreviewed||'Не проверено',statusColor={confirmed:'#28745e',doubtful:'#94651b',error:'#ad4049',unreviewed:'#737b87'},source=id=>sourceNumber.has(id)?'S'+sourceNumber.get(id):'Источник не указан',sourceName=id=>project.files.find(f=>f.id===id)?.name||'Источник не указан';
- const item=(value,size=8.5,tone=ink,bold=false,page=null)=>({value,size,tone,bold,page});
- function card(id,title,subtitle,body,accent=blue,onPage=null){const titleLines=lines(title,11,W-18,true),rows=[...titleLines.map(value=>item(value,11,ink,true)),...lines(subtitle,7.5,W-18).map(value=>item(value,7.5,muted)),...body.flatMap(row=>lines(row.value,row.size,W-18,row.bold).map(value=>({...row,value})))];let at=0,continued=false;while(at<rows.length){const total=rows.slice(at).reduce((sum,r)=>sum+r.size*.48+1.1,0)+19;if(total<B-32&&y+total>B)next();if(B-y<38)next();const begin=at;let height=17;while(at<rows.length&&height+rows[at].size*.48+1.1<=B-y-4){height+=rows[at].size*.48+1.1;at++}if(at===begin){next();continue}if(!continued&&onPage)onPage(doc.getNumberOfPages());height+=4;doc.setDrawColor(line);doc.setFillColor('#ffffff');doc.roundedRect(M,y,W,height,2.5,2.5,'FD');doc.setFillColor(accent);doc.roundedRect(M+1.7,y+5,1.1,Math.min(16,height-10),.5,.5,'F');font(7.2,true,accent);doc.text(id+(continued?' / продолжение':''),M+8,y+8);let yy=y+16;for(const row of rows.slice(begin,at)){font(row.size,row.bold,row.tone);doc.text(row.value,M+8,yy);if(row.page){const page=typeof row.page==='function'?row.page():row.page;if(page)doc.link(M+8,yy-3.3,W-18,row.size*.48+1.1,{pageNumber:page})}yy+=row.size*.48+1.1}y+=height+5;continued=true}}
- function graphPage(title,picture,subtitle){next(title,'landscape');font(8,false,muted);doc.text('КАРТА СВЯЗЕЙ',M,24);font(20,true);const titleLines=lines(title,20,261,true);doc.text(titleLines.slice(0,2),M,35);const top=titleLines.length>1?51:43;font(8,false,muted);doc.text(lines(subtitle,8,261).slice(0,2),M,top);const by=top+12,bh=190-by;doc.setFillColor('#080808');doc.roundedRect(M,by,261,bh,2.5,2.5,'F');const scale=Math.min(253/picture.width,(bh-8)/picture.height),iw=picture.width*scale,ih=picture.height*scale;doc.addImage(picture.data,'PNG',M+4+(253-iw)/2,by+4+(bh-8-ih)/2,iw,ih,undefined,'FAST')}
-// Compact editorial cover with a real preview of the current graph.
-doc.setFillColor('#0d0d10');doc.rect(0,0,210,297,'F');doc.setFillColor('#eeeaf4');doc.roundedRect(M,18,13,13,2,2,'F');font(11,true,'#111014');doc.text('SG',M+1.7,27);font(11,true,'#f1edf5');doc.text('SHADOWGRAPH',38,24);font(6.5,false,'#a59bae');doc.text('МАТЕРИАЛЫ / ОБЪЕКТЫ / СВЯЗИ',38,30);font(7,false,'#a59bae');doc.text(created.toLocaleDateString('ru-RU'),192,24,{align:'right'});doc.setDrawColor('#3b3444');doc.line(M,40,192,40);
-font(8,false,'#c1b0d8');doc.text('ДОСЬЕ ИССЛЕДОВАНИЯ',M,54);
-const caseSize=lines(project.name,25,W,true).length>3?19:25;let caseLines=lines(project.name,caseSize,W,true);if(caseLines.length>4){caseLines=caseLines.slice(0,4);caseLines[3]=caseLines[3].replace(/.{3}$/,'')+'…'}font(caseSize,true,'#fff');doc.text(caseLines,M,70,{lineHeightFactor:1.25});
-const description=project.description||'Карта исследования и реестры с основаниями связей.';font(8.5,false,'#a99fb4');doc.text(lines(description,8.5,W).slice(0,2),M,112,{lineHeightFactor:1.5});
-const gx=M,gy=130,gw=W,gh=96;doc.setFillColor('#070708');doc.setDrawColor('#3a3341');doc.roundedRect(gx,gy,gw,gh,3,3,'FD');const gs=Math.min((gw-8)/graph.width,(gh-8)/graph.height),giw=graph.width*gs,gih=graph.height*gs;doc.addImage(graph.data,'PNG',gx+(gw-giw)/2,gy+(gh-gih)/2,giw,gih,undefined,'FAST');
-const metrics=[['ОБЪЕКТЫ',project.nodes.length],['СВЯЗИ',project.edges.length],['ИСТОЧНИКИ',project.files.length]];for(let i=0;i<metrics.length;i++){const x=M+i*60;doc.setDrawColor('#3a3341');doc.line(x,237,x+54,237);font(22,true,'#eeeaf4');doc.text(String(metrics[i][1]),x,250);font(6.8,false,'#a59bae');doc.text(metrics[i][0],x,258)}font(7.5,false,'#a99fb4');doc.text('Статусы проверки приведены по данным проекта.',M,274);
+const Report66 = (() => {
+  async function image(markup, bounds, max = 3200) {
+    const xml = new DOMParser().parseFromString(markup, "image/svg+xml"),
+      svg = xml.documentElement;
+    if (bounds) {
+      svg.setAttribute(
+        "viewBox",
+        [bounds.x, bounds.y, bounds.w, bounds.h].join(" "),
+      );
+      svg.setAttribute("width", bounds.w);
+      svg.setAttribute("height", bounds.h);
+      for (const node of svg.querySelectorAll(".node")) {
+        const match = node
+          .getAttribute("transform")
+          ?.match(/translate\(\s*([-\d.e+]+)[,\s]+([-\d.e+]+)/i);
+        if (match) {
+          const x = Number(match[1]),
+            y = Number(match[2]);
+          if (
+            !bounds.nodes.some((n) => n.id === node.getAttribute("data-id")) ||
+            x - 150 < bounds.x ||
+            x + 150 > bounds.x + bounds.w ||
+            y - 76 < bounds.y ||
+            y + 76 > bounds.y + bounds.h
+          )
+            node.remove();
+        }
+      }
+      const visible = new Set(
+          [...svg.querySelectorAll(".node")]
+            .filter(
+              (n) =>
+                n.style.display !== "none" &&
+                n.getAttribute("display") !== "none",
+            )
+            .map((n) => n.getAttribute("data-id")),
+        ),
+        edgeLayer = svg.querySelector("#edgesLayer"),
+        visibleRoutes = new Set(
+          [...svg.querySelectorAll(".edge")]
+            .filter(
+              (e) =>
+                e.style.display !== "none" &&
+                e.getAttribute("display") !== "none",
+            )
+            .map((e) => e.getAttribute("data-route"))
+            .filter(Boolean),
+        ),
+        edges = bounds.links.filter(
+          (e) =>
+            visible.has(e.from) &&
+            visible.has(e.to) &&
+            (!visibleRoutes.size || visibleRoutes.has(e.id)),
+        ),
+        routes = EdgeRouter.route(
+          bounds.nodes.filter((n) => visible.has(n.id)),
+          edges,
+          { timeBudgetMs: 350 },
+        ),
+        gaps = EdgeRouter.crossings(routes, { timeBudgetMs: 80 }),
+        byId = new Map(edges.map((e) => [e.id, e]));
+      if (edgeLayer) {
+        edgeLayer.replaceChildren();
+        for (const r of routes) {
+          const e = byId.get(r.id),
+            path = xml.createElementNS("http://www.w3.org/2000/svg", "path");
+          for (const [key, value] of Object.entries({
+            d: EdgeRouter.rounded(r.points, gaps.get(r.id) || []),
+            fill: "none",
+            stroke: color(e.color || bounds.edgeColor || "#737983"),
+            "stroke-width": e.width || 1.7,
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+            opacity: 0.88,
+          }))
+            path.setAttribute(key, value);
+          if (e.dashed) path.setAttribute("stroke-dasharray", "6 5");
+          edgeLayer.append(path);
+        }
+      }
+    }
+    const url = URL.createObjectURL(
+      new Blob([new XMLSerializer().serializeToString(svg)], {
+        type: "image/svg+xml",
+      }),
+    );
+    try {
+      const img = new Image();
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = () =>
+          reject(Error("Не удалось подготовить карту для PDF"));
+        img.src = url;
+      });
+      const scale = Math.min(2, max / Math.max(img.width, img.height)),
+        canvas = document.createElement("canvas");
+      canvas.width = Math.max(1, Math.round(img.width * scale));
+      canvas.height = Math.max(1, Math.round(img.height * scale));
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = canvasBackground();
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      let result=canvas;if(!bounds&&canvas.width>80&&canvas.height>80){const pixels=ctx.getImageData(0,0,canvas.width,canvas.height).data,bg=[pixels[0],pixels[1],pixels[2]];let minX=canvas.width,minY=canvas.height,maxX=0,maxY=0;for(let y=0;y<canvas.height;y+=3)for(let x=0;x<canvas.width;x+=3){const i=(y*canvas.width+x)*4;if(Math.max(Math.abs(pixels[i]-bg[0]),Math.abs(pixels[i+1]-bg[1]),Math.abs(pixels[i+2]-bg[2]))>58){minX=Math.min(minX,x);minY=Math.min(minY,y);maxX=Math.max(maxX,x);maxY=Math.max(maxY,y)}}if(maxX>minX&&maxY>minY){const pad=34,left=Math.max(0,minX-pad),top=Math.max(0,minY-pad),width=Math.min(canvas.width-left,maxX-minX+pad*2),height=Math.min(canvas.height-top,maxY-minY+pad*2);result=document.createElement('canvas');result.width=width;result.height=height;result.getContext('2d').drawImage(canvas,left,top,width,height,0,0,width,height)}}return{data:result.toDataURL('image/png'),width:result.width,height:result.height};
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+  }
+  function crops(p) {
+    if(p.graphView&&p.graphView!=="cards")return [];
+    const groups = GraphLayout65.groups(p.nodes, p.edges).groups.filter(
+        (g) => g.root && g.ids.length > 2,
+      ),
+      map = new Map(p.nodes.map((n) => [n.id, n])),
+      result = [];
+    for (const g of groups) {
+      const ns = g.ids.map((id) => map.get(id)),
+        left = Math.min(...ns.map((n) => n.x)) - 180,
+        top = Math.min(...ns.map((n) => n.y)) - 110,
+        right = Math.max(...ns.map((n) => n.x)) + 180,
+        bottom = Math.max(...ns.map((n) => n.y)) + 110,
+        w = right - left,
+        h = bottom - top,
+        nx = Math.max(1, Math.ceil(w / 1520)),
+        ny = Math.max(1, Math.ceil(h / 850));
+      for (let iy = 0; iy < ny; iy++)
+        for (let ix = 0; ix < nx; ix++) {
+          const cw = Math.min(1600, w + 40),
+            ch = Math.min(930, h + 40),
+            x = nx === 1 ? left - 20 : left + (ix * (w - cw)) / (nx - 1),
+            y = ny === 1 ? top - 20 : top + (iy * (h - ch)) / (ny - 1);
+          result.push({
+            title: g.title,
+            part: ix + 1 + iy * nx,
+            parts: nx * ny,
+            bounds: { x, y, w: cw, h: ch },
+          });
+        }
+    }
+    return result.map((tile) => {
+      const b = tile.bounds;
+      b.nodes = p.nodes.filter(
+        (n) =>
+          n.x - 150 >= b.x &&
+          n.x + 150 <= b.x + b.w &&
+          n.y - 76 >= b.y &&
+          n.y + 76 <= b.y + b.h,
+      );
+      const ids = new Set(b.nodes.map((n) => n.id));
+      b.links = p.edges.filter((e) => ids.has(e.from) && ids.has(e.to));
+      b.edgeColor = p.style?.edge;
+      return tile;
+    });
+  }
+  function dialog(){modal('<div class="eyebrow">SHADOWGRAPH / ДОСЬЕ</div><h2>Отчёт по исследованию</h2><p>Паспорт проекта, карта, увеличенные фрагменты и реестры со ссылками на материалы.</p><div class="report-options706"><label class="checkline"><input type="checkbox" id="reportEvidence" checked> Добавить фрагменты источников</label><label class="checkline"><input type="checkbox" id="reportDetails66" checked> Добавить увеличенные фрагменты карты</label><label class="report-note706">Комментарий к отчёту <span>необязательно</span><textarea class="input" id="reportSummary706" rows="3" maxlength="10000" placeholder="Цель исследования, контекст или ваши выводы"></textarea></label></div><p class="footnote">Статусы берутся из проекта. Отчёт создаётся на устройстве; материалы не отправляются на сервер.</p><div class="modalactions"><button class="btn" id="cancelReport">Отмена</button><button class="btn primary" id="generateReport">Создать PDF</button></div>');$('#modalRoot .modal').classList.add('report-dialog706');$('#cancelReport').onclick=closeModal;$('#generateReport').onclick=()=>generate($('#reportEvidence').checked,$('#reportDetails66').checked)}
+  async function generate(includeEvidence = true, includeDetails = true) {
+    const project = structuredClone(current),
+      created = new Date(),
+      markup = graphSvg(),
+      allCrops = includeDetails ? crops(project) : [],
+      tiles = allCrops.slice(0, 12);
+    const summary706=String($("#reportSummary706")?.value||"").slice(0,10000);
+    reportCancelled = false;
+    modal(
+      '<h2>Создаю PDF-досье</h2><p id="reportProgress">Подготовка карты и шрифтов…</p><button class="btn" id="stopReport">Отмена</button>',
+    );
+    $("#stopReport").onclick = () => {
+      reportCancelled = true;
+      $("#stopReport").disabled = true;
+    };
+    const progress = async (value) => {
+      if (reportCancelled) throw Error("Создание отчёта отменено");
+      if ($("#reportProgress")) $("#reportProgress").textContent = value;
+      await new Promise((r) => setTimeout(r, 0));
+    };
+    try {
+      const [JsPDF, normal, bold, graph] = await Promise.all([
+          loadReportLibrary(),
+          fontData("./public/vendor/report/NotoSans-Regular.ttf"),
+          fontData("./public/vendor/report/NotoSans-Bold.ttf"),
+          image(markup),
+        ]),
+        doc = new JsPDF({
+          unit: "mm",
+          format: "a4",
+          compress: true,
+          putOnlyUsedFonts: true,
+        });
+      doc.addFileToVFS("NotoSans-Regular.ttf", normal);
+      doc.addFont("NotoSans-Regular.ttf", "NotoSans", "normal");
+      doc.addFileToVFS("NotoSans-Bold.ttf", bold);
+      doc.addFont("NotoSans-Bold.ttf", "NotoSans", "bold");
+      doc.setFont("NotoSans", "normal");
+      doc.setProperties({
+        title: "SHADOWGRAPH - " + project.name,
+        subject: "Карта, источники и основания связей",
+        creator: "SHADOWGRAPH 7.0.6",
+        author: "SHADOWGRAPH",
+      });
+      const ink = "#181b20",
+        muted = "#6a727d",
+        line = "#e2e5e9",
+        blue = "#65517f",
+        paper = "#f5f4f7",
+        M = 18,
+        W = 174,
+        B = 274,
+        sections = new Map([[1, "Обложка"]]),
+        starts = new Map(),
+        nodePages = new Map(),
+        sourcePages = new Map(),
+        number = new Map(project.nodes.map((n, i) => [n.id, i + 1])),
+        sourceNumber = new Map(project.files.map((f, i) => [f.id, i + 1])),
+        nodeMap = new Map(project.nodes.map((n) => [n.id, n]));
+      let y = 30,
+        section = "Обзор";
+      const clean = (v) =>
+        String(v ?? "")
+          .replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g, "")
+          ;
+      const font = (size = 9, bold = false, tone = ink) => {
+        doc.setFont("NotoSans", bold ? "bold" : "normal");
+        doc.setFontSize(size);
+        doc.setTextColor(tone);
+      };
+      const lines = (value, size = 9, width = W, bold = false) => {
+        doc.setFont("NotoSans", bold ? "bold" : "normal");
+        doc.setFontSize(size);
+        return doc.splitTextToSize(clean(value), width);
+      };
+      function next(label = section, orientation = "portrait") {
+        doc.addPage("a4", orientation);
+        section = label;
+        sections.set(doc.getNumberOfPages(), label);
+        y = 30;
+      }
+      function ensure(height = 12) {
+        if (y + height > B) next();
+      }
+      function text(value, size = 9, tone = ink, bold = false, width = W) {
+        const ls = lines(value, size, width, bold),
+          step = size * 0.48;
+        for (const l of ls) {
+          ensure(step + 2);
+          font(size, bold, tone);
+          doc.text(l, M, y);
+          y += step;
+        }
+        y += 3;
+      }
+      function sectionPage(key, title, orientation = "portrait") {
+        next(title, orientation);
+        starts.set(key, doc.getNumberOfPages());
+        font(8, false, muted);
+        doc.text(key.toUpperCase(), M, 24);
+        font(22, true);
+        doc.text(title, M, 36);
+        doc.setDrawColor(line);
+        doc.line(M, 43, doc.internal.pageSize.getWidth() - M, 43);
+        y = 54;
+      }
+      const review = (v) =>
+          reviewNames[v] || reviewNames.unreviewed || "Не проверено",
+        statusColor = {
+          confirmed: "#28745e",
+          doubtful: "#94651b",
+          error: "#ad4049",
+          unreviewed: "#737b87",
+        },
+        source = (id) =>
+          sourceNumber.has(id)
+            ? "S" + sourceNumber.get(id)
+            : "Источник не указан",
+        sourceName = (id) =>
+          project.files.find((f) => f.id === id)?.name || "Источник не указан";
+      const item = (
+        value,
+        size = 8.5,
+        tone = ink,
+        bold = false,
+        page = null,
+      ) => ({ value, size, tone, bold, page });
+      const pendingLinks706=[];
+      function card(id,title,subtitle,body,accent=blue,onPage=null){
+        const rows=[...lines(title,11,W-20,true).map(value=>item(value,11,ink,true)),...body.flatMap(row=>lines(row.value,Math.max(8,row.size),W-22,row.bold).map(value=>({...row,value,size:Math.max(8,row.size),evidence:String(row.value).trim().startsWith('«')})))];
+        let at=0,continued=false;
+        while(at<rows.length){const header=continued?24:14,total=rows.slice(at).reduce((sum,r)=>sum+r.size*.48+1.3,0)+header+3;if(total<B-32&&y+total>B)next();if(B-y<header+22)next();let height=header,begin=at;while(at<rows.length&&height+rows[at].size*.48+1.3<B-y-5){height+=rows[at].size*.48+1.3;at++}if(at===begin){next();continue}height+=3;
+          if(!continued&&onPage)onPage(doc.getNumberOfPages());doc.setFillColor('#ffffff');doc.setDrawColor('#dfdce5');doc.roundedRect(M,y,W,height,2,2,'FD');doc.setFillColor(accent);doc.roundedRect(M+4,y+4,1.2,Math.min(10,height-8),.4,.4,'F');doc.setFillColor('#f1eff5');doc.roundedRect(M+8,y+3,continued?44:19,7,1.3,1.3,'F');font(7,true,accent);doc.text(id+(continued?' · продолжение':''),M+10,y+7.8);
+          const sub=lines(subtitle,7,W-72).slice(0,1);font(7,false,muted);doc.text(sub,190,y+7.8,{align:'right'});let yy=y+header;if(continued){font(8,true,muted);doc.text(lines(title,8,W-20,true).slice(0,1),M+9,y+16);doc.setDrawColor('#ebe8f0');doc.line(M+9,y+19,190,y+19)}
+          for(const row of rows.slice(begin,at)){const step=row.size*.48+1.3;if(row.evidence){doc.setFillColor('#f4f2f7');doc.rect(M+8,yy-3.5,W-17,step+.6,'F');doc.setFillColor('#b7a9c9');doc.rect(M+8,yy-3.5,.7,step+.6,'F')}font(row.size,row.bold,row.tone);doc.text(row.value,M+10,yy);if(row.page)pendingLinks706.push({page:doc.getNumberOfPages(),target:row.page,x:M+9,y:yy-3.4,w:W-20,h:step});yy+=step}y+=height+3;continued=true
+        }
+      }
+      function graphPage(title,picture,subtitle){const ratio=picture.width/picture.height,landscape=ratio>1.1;next(title,landscape?'landscape':'portrait');const pw=doc.internal.pageSize.getWidth(),ph=doc.internal.pageSize.getHeight(),area=pw-M*2;font(7,true,blue);doc.text('02 / КАРТА ИССЛЕДОВАНИЯ',M,25);font(20,true,ink);const heading=lines(title,20,area,true).slice(0,2);doc.text(heading,M,37);const top=heading.length>1?55:46;font(8,false,muted);doc.text(lines(subtitle,8,area).slice(0,2),M,top);const maxH=ph-top-43,s=Math.min((area-8)/picture.width,(maxH-8)/picture.height),iw=picture.width*s,ih=picture.height*s,fw=iw+8,fh=ih+8,fx=M+(area-fw)/2,fy=top+12;doc.setFillColor('#09090b');doc.roundedRect(fx,fy,fw,fh,2,2,'F');doc.addImage(picture.data,'PNG',fx+4,fy+4,iw,ih,undefined,'FAST');font(7,false,muted);doc.text(lines('Схема отражает выбранный вид и фильтры. Полные названия, статусы и основания приведены в реестрах.',7,area).slice(0,2),M,Math.min(ph-23,fy+fh+9));}
+      async function detailPictures706(picture){if(!includeDetails||(project.graphView||'cards')==='cards'||!project.nodes.length||project.nodes.length<9)return[];const ratio=picture.width/picture.height,cols=ratio>3?3:ratio>1.45?2:project.nodes.length>45?2:1,rows=ratio<.5?3:ratio<.75?2:project.nodes.length>45?2:1;if(cols===1&&rows===1)return[];const img=new Image();await new Promise((resolve,reject)=>{img.onload=resolve;img.onerror=()=>reject(Error('Не удалось подготовить фрагменты карты'));img.src=picture.data});const result=[],tw=cols===1?picture.width:Math.ceil(picture.width*(cols===3?.42:.59)),th=rows===1?picture.height:Math.ceil(picture.height*(rows===3?.42:.59));for(let iy=0;iy<rows;iy++)for(let ix=0;ix<cols;ix++){const sx=cols===1?0:Math.round(ix*(picture.width-tw)/(cols-1)),sy=rows===1?0:Math.round(iy*(picture.height-th)/(rows-1)),c=document.createElement('canvas');c.width=tw;c.height=th;c.getContext('2d').drawImage(img,sx,sy,tw,th,0,0,tw,th);result.push({data:c.toDataURL('image/png'),width:tw,height:th,title:'Карта · '+(cols>=2&&rows===1?(ix===0?'левая часть':ix===cols-1?'правая часть':'центральная часть'):cols===1&&rows===2?(iy===0?'верхняя часть':'нижняя часть'):(iy===0?'верхняя ':'нижняя ')+(ix===0?'левая часть':'правая часть')),part:result.length+1})}return result}
 
- await progress('Формирую обзор…');sectionPage('01','Обзор проекта');const tocPage=doc.getNumberOfPages();text(project.name,13,ink,true);text('Сформирован '+created.toLocaleString('ru-RU')+' · SHADOWGRAPH 7.0.3',8,muted);text('Содержание',11,ink,true);const tocY=y;y+=45;
- text('Статусы проверки',12,ink,true);const known=Object.keys(reviewNames);for(const key of known){ensure(16);const nc=project.nodes.filter(n=>(known.includes(n.review)?n.review:'unreviewed')===key).length,ec=project.edges.filter(e=>(known.includes(e.review)?e.review:'unreviewed')===key).length;doc.setFillColor(paper);doc.roundedRect(M,y-3,W,9.5,1.5,1.5,'F');doc.setFillColor(statusColor[key]||muted);doc.rect(M,y-3,1.3,9.5,'F');font(9);doc.text(review(key),M+5,y+4);font(8,false,muted);doc.text(nc+' объектов / '+ec+' связей',188,y+4,{align:'right'});y+=12}
- text('Типы находок',12,ink,true);const counts=new Map;for(const n of project.nodes){const label=types[n.type]?.[0]||n.type;counts.set(label,(counts.get(label)||0)+1)}const topTypes=[...counts].sort((a,b)=>b[1]-a[1]);for(let i=0;i<Math.min(8,topTypes.length);i+=2){ensure(9);for(let col=0;col<2;col++){const pair=topTypes[i+col];if(!pair)continue;const x=M+col*90;const labelLines=lines(pair[0],7.8,69);font(7.8);doc.text(labelLines.slice(0,2),x,y);font(8.5,true);doc.text(String(pair[1]),x+82,y,{align:'right'});doc.setDrawColor(line);doc.line(x,y+4.5,x+84,y+4.5)}y+=9}if(topTypes.length>8)text('Остальные типы: '+topTypes.slice(8).reduce((sum,r)=>sum+r[1],0)+' объектов.',8,muted);text('Как читать досье',11,ink,true);text('N - объект; R - связь; S - источник. Упоминание в тексте не подтверждает владение контактом. Совпадение имени или адреса само по себе не устанавливает личность. Статусы назначает пользователь.',8,muted);text('Нажмите на пункт содержания, номер объекта в связи или название материала у находки, чтобы перейти к записи. Заголовок «К содержанию» возвращает к обзору.',8,muted);text('Карта показывает текущий режим и фильтры; реестры ниже включают весь проект. Для каждой находки включено до трёх фрагментов, для связи - до трёх оснований при включённой опции.',8,muted);
- starts.set('02',doc.getNumberOfPages()+1);graphPage('Карта расследования',graph,'Общий вид · '+({'network':'Круги','network3d':'3D-сеть','maltego':'Мальтего'}[project.graphView]||'Карточки')+' · '+project.nodes.length+' объектов / '+project.edges.length+' связей');for(const [i,tile]of tiles.entries()){await progress('Детали карты: '+(i+1)+' / '+tiles.length);const picture=await image(markup,tile.bounds,2800);graphPage(tile.title,picture,'Фрагмент '+tile.part+' / '+tile.parts+' · Полные наименования, статусы и источники - в реестре находок.')}if(allCrops.length>tiles.length){font(7,false,muted);doc.text('Показано '+tiles.length+' из '+allCrops.length+' фрагментов карты. Полный реестр объектов включён далее.',M,196)}
- sectionPage('03','Источники');if(!project.files.length)text('Прикреплённых материалов нет.',9,muted);for(const [i,f]of project.files.entries()){await progress('Источники: '+(i+1)+' / '+project.files.length);const body=[item('Размер: '+formatBytes(f.size||0)+' · Тип: '+(f.type||'не указан')),item('Анализ: '+({completed:'выполнен',disabled:'выключен',unsupported:'без извлечения текста'}[f.analysis]||'не указан'))];if(f.added)body.push(item('Добавлен: '+new Date(f.added).toLocaleString('ru-RU')));if(f.ocr)body.push(item('OCR: '+(f.ocr.pages?.length||0)+' страниц'));if(f.sha256)body.push(item('SHA-256: '+f.sha256,7.5,muted));card('S'+(i+1),f.name,'ИСХОДНЫЙ МАТЕРИАЛ',body,blue,page=>sourcePages.set(f.id,page))}
- sectionPage('04','Находки');if(!project.nodes.length)text('В проекте пока нет объектов.',9,muted);for(const [i,n]of project.nodes.entries()){if(i%10===0)await progress('Находки: '+(i+1)+' / '+project.nodes.length);ensure(40);const body=[],sources=[...new Set([n.fileId,...(n.evidence||[]).map(e=>e.fileId)].filter(Boolean))];if(n.detail)body.push(item(n.detail));for(const id of sources)body.push(item('Материал: '+source(id)+' / '+sourceName(id),8,blue,false,()=>sourcePages.get(id)));if(includeEvidence)for(const ev of(n.evidence||[]).slice(0,3)){body.push(item(source(ev.fileId)+' · '+(ev.path||'фрагмент')+' · '+(ev.rule||'Правило не записано'),7.5,blue,true));if(ev.snippet)body.push(item('«'+String(ev.snippet).slice(0,600)+(String(ev.snippet).length>600?'…':'')+'»',8));if(ev.assertion)body.push(item(assertionNames52[ev.assertion]||ev.assertion,7.5,muted));if(ev.ocrMatch?.available&&Number.isFinite(ev.ocrMatch.confidence))body.push(item('Уверенность слов OCR: '+Math.round(ev.ocrMatch.confidence)+'%',7.5,muted))}card('N'+(i+1),n.label,(types[n.type]?.[0]||n.type)+' / '+review(n.review),body,statusColor[n.review]||blue,page=>nodePages.set(n.id,page))}
- sectionPage('05','Связи и основания');if(!project.edges.length)text('В проекте пока нет связей.',9,muted);for(const [i,e]of project.edges.entries()){if(i%20===0)await progress('Связи: '+(i+1)+' / '+project.edges.length);const a=nodeMap.get(e.from),b=nodeMap.get(e.to),body=[item('N'+(number.get(e.from)||'?')+' / '+(a?.label||'Удалённый объект'),8,blue,true,()=>nodePages.get(e.from)),item('N'+(number.get(e.to)||'?')+' / '+(b?.label||'Удалённый объект'),8,blue,true,()=>nodePages.get(e.to))];for(const ex of(e.explanations||[]).slice(0,includeEvidence?3:1)){body.push(item(source(ex.fileId)+' · '+(ex.fileName||sourceName(ex.fileId))+' · '+(ex.rule||'Правило не записано'),7.5,blue,true));if(ex.reason)body.push(item(ex.reason,8));if(includeEvidence)for(const ev of(ex.evidence||[]).slice(0,1))if(ev.snippet)body.push(item('«'+String(ev.snippet).slice(0,360)+'»',7.5,muted))}if(!e.explanations?.length)body.push(item('Основание для ручной или старой связи не записано.',8,muted));card('R'+(i+1),e.label||'Связь',review(e.review)+' / N'+(number.get(e.from)||'?')+' -> N'+(number.get(e.to)||'?'),body,statusColor[e.review]||blue)}
- // Add the contents after pagination, with internal links and accurate page numbers.
- const pages=doc.getNumberOfPages();if(doc.outline?.add)for(const [key,page]of starts)doc.outline.add(null,key+' · '+(sections.get(page)||'Карта'),{pageNumber:page});doc.setPage(tocPage);let ty=tocY;for(const [key,label]of [['01','Обзор проекта'],['02','Карта и фрагменты'],['03','Источники'],['04','Находки'],['05','Связи и основания']]){font(9,false,ink);doc.text(key+'  '+label,M,ty);font(9,true,blue);doc.text(String(starts.get(key)),191,ty,{align:'right'});doc.link(M,ty-4,W,7,{pageNumber:starts.get(key)});doc.setDrawColor(line);doc.line(M,ty+2,192,ty+2);ty+=8}
- for(let p=1;p<=pages;p++){doc.setPage(p);const pw=doc.internal.pageSize.getWidth(),ph=doc.internal.pageSize.getHeight();if(p>1){font(7,true,ink);doc.text('SHADOWGRAPH',M,12);font(7,false,muted);doc.text(sections.get(p)||'Досье',pw-M,12,{align:'right'});font(6.5,false,blue);doc.text('К содержанию',pw/2,12,{align:'center'});doc.link(pw/2-17,8,34,7,{pageNumber:tocPage});doc.setDrawColor(line);doc.line(M,16,pw-M,16)}font(7,false,p===1?'#9299a3':muted);doc.text('Материалы исследования · '+created.toLocaleDateString('ru-RU'),M,ph-10);doc.text(String(p).padStart(2,'0')+' / '+String(pages).padStart(2,'0'),pw-M,ph-10,{align:'right'})}
- await progress('Отчёт готов');download(doc.output('blob'),(project.name.replace(/[^a-zа-яё0-9_-]/gi,'_').slice(0,50)||'SHADOWGRAPH')+'-report.pdf');closeModal();toast('PDF-досье готово: '+pages+' стр.');
- }catch(e){closeModal();toast(e.message||'Не удалось создать PDF-досье')}}return{dialog,generate};
+      // Restrained cover with a dark masthead and a proportional map frame.
+      doc.setFillColor('#f8f7fa');doc.rect(0,0,210,297,'F');doc.setFillColor('#17151c');doc.rect(0,0,210,108,'F');doc.setFillColor('#f4effb');doc.roundedRect(M,17,12,12,2,2,'F');font(9.5,true,'#19161e');doc.text('SG',M+1.6,25);font(10,true,'#f6f1fc');doc.text('SHADOWGRAPH',36,22.5);font(6.6,false,'#a49aaf');doc.text('ИССЛЕДОВАТЕЛЬСКОЕ ДОСЬЕ',36,28);font(7,false,'#c4b9d0');doc.text(created.toLocaleDateString('ru-RU'),192,23,{align:'right'});doc.setDrawColor('#3a3245');doc.line(M,37,192,37);
+      font(7.5,true,'#c6afd9');doc.text('ОТЧЁТ ПО ПРОЕКТУ',M,47);let coverSize=24;while(lines(project.name,coverSize,W,true).length>4&&coverSize>17)coverSize--;const ct=lines(project.name,coverSize,W,true);font(coverSize,true,'#ffffff');doc.text(ct.slice(0,4),M,60,{lineHeightFactor:1.12});
+      font(8.5,false,muted);doc.text(lines(project.description||'Карта объектов, материалы и основания связей.',8.5,W).slice(0,2),M,121,{lineHeightFactor:1.5});
+      const coverH=90,coverW=W,cs=Math.min((coverW-8)/graph.width,(coverH-8)/graph.height),cw=graph.width*cs,ch=graph.height*cs,cx=M+(W-cw-8)/2,cy=137+(coverH-ch-8)/2;doc.setFillColor('#0a0a0d');doc.roundedRect(cx,cy,cw+8,ch+8,2,2,'F');doc.addImage(graph.data,'PNG',cx+4,cy+4,cw,ch,undefined,'FAST');
+      [['ОБЪЕКТЫ',project.nodes.length],['СВЯЗИ',project.edges.length],['МАТЕРИАЛЫ',project.files.length]].forEach(([label,value],i)=>{const x=M+i*60;doc.setDrawColor('#d8d2e0');doc.line(x,237,x+54,237);font(23,true,ink);doc.text(String(value),x,250);font(6.8,false,muted);doc.text(label,x,258)});font(7,false,muted);doc.text('SG / '+String(project.id||'').slice(0,8).toUpperCase()+' · '+(Views703.modes.find(m=>m[0]===project.graphView)?.[1]||'Карточки'),M,275);
+      await progress('Формирую обзор…');
+      sectionPage('01','Паспорт исследования');const tocPage=doc.getNumberOfPages(),tocY=65;sections.set(tocPage,'Паспорт исследования');font(8,false,muted);doc.text('НАВИГАЦИЯ ПО ОТЧЁТУ',M,51);y=104;
+      const known=Object.keys(reviewNames),normalized706=v=>known.includes(v)?v:'unreviewed';
+      const connected706=new Set(project.edges.flatMap(e=>[e.from,e.to])),withEvidence706=project.nodes.filter(n=>n.fileId||n.evidence?.some(e=>e.fileId)).length,withReason706=project.edges.filter(e=>e.explanations?.length).length;
+      [['С материалом',withEvidence706+' / '+project.nodes.length],['С основанием',withReason706+' / '+project.edges.length],['Без связей',String(project.nodes.filter(n=>!connected706.has(n.id)).length)]].forEach(([label,value],i)=>{const x=M+i*60;doc.setFillColor(paper);doc.roundedRect(x,y,54,24,2,2,'F');font(14,true,ink);doc.text(value,x+5,y+10);font(7.5,false,muted);doc.text(label,x+5,y+18)});y=143;text('Статусы проверки',11,ink,true);
+      known.forEach(key=>{const nc=project.nodes.filter(n=>normalized706(n.review)===key).length,ec=project.edges.filter(e=>normalized706(e.review)===key).length;font(8,false,ink);doc.text(review(key),M,y);font(7.5,false,muted);doc.text(nc+' объектов · '+ec+' связей',192,y,{align:'right'});doc.setFillColor('#eeebf2');doc.roundedRect(M,y+3,W,2.5,.6,.6,'F');if(project.nodes.length&&nc){doc.setFillColor(statusColor[key]);doc.roundedRect(M,y+3,W*nc/project.nodes.length,2.5,.6,.6,'F')}y+=13});y+=3;text('Основные типы объектов',11,ink,true);
+      const counts706=new Map();project.nodes.forEach(n=>{const type=types[n.type]?.[0]||n.type;counts706.set(type,(counts706.get(type)||0)+1)});[...counts706].sort((a,b)=>b[1]-a[1]).slice(0,6).forEach(([label,value],i)=>{const col=i%2,row=Math.floor(i/2),x=M+col*90,yy=y+row*9;font(7.5,false,muted);doc.text(lines(label,7.5,64).slice(0,1),x,yy);font(8,true,ink);doc.text(String(value),x+82,yy,{align:'right'});doc.setDrawColor(line);doc.line(x,yy+3,x+84,yy+3)});y+=33;text('Карта показывает выбранный вид и фильтры; реестры включают весь проект. Статусы назначает пользователь. Упоминание и направление стрелки сами по себе не подтверждают факт.',7.5,muted);
+      if(summary706){next('Комментарий к отчёту');font(8,true,blue);doc.text('КОНТЕКСТ ИССЛЕДОВАНИЯ',M,25);font(20,true,ink);doc.text('Комментарий к отчёту',M,37);y=51;text(summary706,9.5,ink)}
+
+      starts.set("02", doc.getNumberOfPages() + 1);
+      graphPage(
+        "Карта расследования",
+        graph,
+        "Общий вид · " +
+          ({
+            network: "Круги",
+            network3d: "3D-сеть",
+            maltego: "Мальтего",
+            groups: "Группы",
+            timeline: "Хронология",
+            hierarchy: "Иерархия",
+            straight: "Прямые",
+          }[project.graphView] || "Карточки") +
+          " · " +
+          project.nodes.length +
+          " объектов / " +
+          project.edges.length +
+          " связей",
+      );
+      const rasterDetails706=await detailPictures706(graph);for(const tile of rasterDetails706){await progress('Увеличенный фрагмент: '+tile.part+' / '+rasterDetails706.length);graphPage(tile.title,tile,'Увеличенный вид · '+tile.part+' / '+rasterDetails706.length+' · соседние фрагменты перекрываются')}
+      for (const [i, tile] of tiles.entries()) {
+        await progress("Детали карты: " + (i + 1) + " / " + tiles.length);
+        const picture = await image(markup, tile.bounds, 2800);
+        graphPage(
+          tile.title,
+          picture,
+          "Фрагмент " +
+            tile.part +
+            " / " +
+            tile.parts +
+            " · Полные наименования, статусы и источники - в реестре находок.",
+        );
+      }
+      if (allCrops.length > tiles.length) {
+        font(7, false, muted);
+        doc.text(
+          "Показано " +
+            tiles.length +
+            " из " +
+            allCrops.length +
+            " фрагментов карты. Полный реестр объектов включён далее.",
+          M,
+          196,
+        );
+      }
+      sectionPage("03", "Источники");
+      if (!project.files.length)
+        text("Прикреплённых материалов нет.", 9, muted);
+      for (const [i, f] of project.files.entries()) {
+        await progress("Источники: " + (i + 1) + " / " + project.files.length);
+        const body = [
+          item(
+            "Размер: " +
+              formatBytes(f.size || 0) +
+              " · Тип: " +
+              (f.type || "не указан"),
+          ),
+          item(
+            "Анализ: " +
+              ({
+                completed: "выполнен",
+                disabled: "выключен",
+                unsupported: "без извлечения текста",
+              }[f.analysis] || "не указан"),
+          ),
+        ];
+        if (f.added)
+          body.push(
+            item("Добавлен: " + new Date(f.added).toLocaleString("ru-RU")),
+          );
+        if (f.ocr)
+          body.push(item("OCR: " + (f.ocr.pages?.length || 0) + " страниц"));
+        if (f.sha256) body.push(item("SHA-256: " + f.sha256, 7.5, muted));
+        card("S" + (i + 1), f.name, "ИСХОДНЫЙ МАТЕРИАЛ", body, blue, (page) =>
+          sourcePages.set(f.id, page),
+        );
+      }
+      if(!project.files.length){starts.set('04',doc.getNumberOfPages());section='Находки';sections.set(doc.getNumberOfPages(),'Источники и находки');y+=12;text('Находки',19,ink,true);doc.setDrawColor(line);doc.line(M,y,192,y);y+=11}else sectionPage('04','Находки');
+      if (!project.nodes.length) text("В проекте пока нет объектов.", 9, muted);
+      for (const [i, n] of project.nodes.entries()) {
+        if (i % 10 === 0)
+          await progress("Находки: " + (i + 1) + " / " + project.nodes.length);
+        const body = [],
+          sources = [
+            ...new Set(
+              [n.fileId, ...(n.evidence || []).map((e) => e.fileId)].filter(
+                Boolean,
+              ),
+            ),
+          ];
+        if (n.detail) body.push(item(n.detail));
+        for (const id of sources)
+          body.push(
+            item(
+              "Материал: " + source(id) + " / " + sourceName(id),
+              8,
+              blue,
+              false,
+              () => sourcePages.get(id),
+            ),
+          );
+        if (includeEvidence)
+          for (const ev of (n.evidence || []).slice(0, 3)) {
+            body.push(
+              item(
+                source(ev.fileId) +
+                  " · " +
+                  (ev.path || "фрагмент") +
+                  " · " +
+                  (ev.rule || "Правило не записано"),
+                7.5,
+                blue,
+                true,
+                () => sourcePages.get(ev.fileId),
+              ),
+            );
+            if (ev.snippet)
+              body.push(
+                item(
+                  "«" +
+                    String(ev.snippet).slice(0, 600) +
+                    (String(ev.snippet).length > 600 ? "…" : "") +
+                    "»",
+                  8,
+                ),
+              );
+            if (ev.assertion)
+              body.push(
+                item(
+                  assertionNames52[ev.assertion] || ev.assertion,
+                  7.5,
+                  muted,
+                ),
+              );
+            if (
+              ev.ocrMatch?.available &&
+              Number.isFinite(ev.ocrMatch.confidence)
+            )
+              body.push(
+                item(
+                  "Уверенность слов OCR: " +
+                    Math.round(ev.ocrMatch.confidence) +
+                    "%",
+                  7.5,
+                  muted,
+                ),
+              );
+          }
+        card(
+          "N" + (i + 1),
+          n.label,
+          (types[n.type]?.[0] || n.type) + " / " + review(n.review),
+          body,
+          statusColor[normalized706(n.review)],
+          (page) => nodePages.set(n.id, page),
+        );
+      }
+      sectionPage("05", "Связи и основания");
+      if (!project.edges.length) text("В проекте пока нет связей.", 9, muted);
+      for (const [i, e] of project.edges.entries()) {
+        if (i % 20 === 0)
+          await progress("Связи: " + (i + 1) + " / " + project.edges.length);
+        const a = nodeMap.get(e.from),
+          b = nodeMap.get(e.to),
+          body = [
+            item(
+              "N" +
+                (number.get(e.from) || "?") +
+                " / " +
+                (a?.label || "Удалённый объект"),
+              8,
+              blue,
+              true,
+              () => nodePages.get(e.from),
+            ),
+            item(
+              "N" +
+                (number.get(e.to) || "?") +
+                " / " +
+                (b?.label || "Удалённый объект"),
+              8,
+              blue,
+              true,
+              () => nodePages.get(e.to),
+            ),
+          ];
+        for (const ex of (e.explanations || []).slice(
+          0,
+          includeEvidence ? 3 : 1,
+        )) {
+          body.push(
+            item(
+              source(ex.fileId) +
+                " · " +
+                (ex.fileName || sourceName(ex.fileId)) +
+                " · " +
+                (ex.rule || "Правило не записано"),
+              7.5,
+              blue,
+              true,
+              () => sourcePages.get(ex.fileId),
+            ),
+          );
+          if (ex.reason) body.push(item(ex.reason, 8));
+          if (includeEvidence)
+            for (const ev of (ex.evidence || []).slice(0, 1))
+              if (ev.snippet)
+                body.push(
+                  item(
+                    "«" + String(ev.snippet).slice(0, 360) + "»",
+                    7.5,
+                    muted,
+                  ),
+                );
+        }
+        if (!e.explanations?.length)
+          body.push(
+            item(
+              "Основание для ручной или старой связи не записано.",
+              8,
+              muted,
+            ),
+          );
+        card(
+          "R" + (i + 1),
+          e.label || "Связь",
+          review(e.review) +
+            " / N" +
+            (number.get(e.from) || "?") +
+            " -> N" +
+            (number.get(e.to) || "?"),
+          body,
+          statusColor[normalized706(e.review)],
+        );
+      }
+      // Add the contents after pagination, with internal links and accurate page numbers.
+      const pages = doc.getNumberOfPages();for(const link of pendingLinks706){const target=typeof link.target==='function'?link.target():link.target;if(Number.isInteger(target)&&target>=1&&target<=pages){doc.setPage(link.page);doc.link(link.x,link.y,link.w,link.h,{pageNumber:target})}}
+      const chapterNames706={'01':'Паспорт исследования','02':'Карта и фрагменты','03':'Источники','04':'Находки','05':'Связи и основания'};
+      if (doc.outline?.add)
+        for (const [key, page] of starts)
+          doc.outline.add(null, key + " · " + (chapterNames706[key] || "Карта"), {
+            pageNumber: page,
+          });
+      doc.setPage(tocPage);
+      let ty = tocY;
+      for (const [key, label] of [
+        ["01", "Паспорт исследования"],
+        ["02", "Карта и фрагменты"],
+        ["03", "Источники"],
+        ["04", "Находки"],
+        ["05", "Связи и основания"],
+      ]) {
+        font(9, false, ink);
+        doc.text(key + "  " + label, M, ty);
+        font(9, true, blue);
+        doc.text(String(starts.get(key)), 191, ty, { align: "right" });
+        doc.link(M, ty - 4, W, 7, { pageNumber: starts.get(key) });
+        doc.setDrawColor(line);
+        doc.line(M, ty + 2, 192, ty + 2);
+        ty += 8;
+      }
+      for (let p = 1; p <= pages; p++) {
+        doc.setPage(p);
+        const pw = doc.internal.pageSize.getWidth(),
+          ph = doc.internal.pageSize.getHeight();
+        if (p > 1) {
+          font(7, true, ink);
+          doc.text("SHADOWGRAPH", M, 12);
+          font(7, false, muted);
+          doc.text(sections.get(p) || "Досье", pw - M, 12, { align: "right" });
+          font(6.5, false, blue);
+          doc.text("К содержанию", pw / 2, 12, { align: "center" });
+          doc.link(pw / 2 - 17, 8, 34, 7, { pageNumber: tocPage });
+          doc.setDrawColor(line);
+          doc.line(M, 16, pw - M, 16);
+        }
+        doc.setDrawColor(p===1?'#d5cedd':line);doc.line(M,ph-16,pw-M,ph-16);font(6.8,false,muted);
+        doc.text(
+          "Материалы исследования · " + created.toLocaleDateString("ru-RU"),
+          M,
+          ph - 10,
+        );
+        doc.text(
+          String(p).padStart(2, "0") + " / " + String(pages).padStart(2, "0"),
+          pw - M,
+          ph - 10,
+          { align: "right" },
+        );
+      }
+      await progress("Отчёт готов");
+      download(
+        doc.output("blob"),
+        (project.name.replace(/[^a-zа-яё0-9_-]/gi, "_").slice(0, 50) ||
+          "SHADOWGRAPH") + "-report.pdf",
+      );
+      closeModal();
+      toast("PDF-досье готово: " + pages + " стр.");
+    } catch (e) {
+      closeModal();
+      toast(e.message || "Не удалось создать PDF-досье");
+    }
+  }
+  return { dialog, generate };
 })();
+
+
 reportDialog=Report66.dialog;generateReport=Report66.generate;
 {const reportButton66=advancedTools.find(b=>b.id==='reportTool');if(reportButton66)reportButton66.onclick=()=>{closeModal();Report66.dialog()}}
 
@@ -3694,7 +4325,7 @@ const Owner67=(()=>{
 
 const Policy67=(()=>{
  const content={rules:['Правила использования','Используйте материалы, с которыми у вас есть право работать. Не применяйте SHADOWGRAPH для преследования, угроз или распространения чужих личных сведений.','Автоматическая находка - предложение для проверки. Сверяйте источник, дату, отрицания и контекст; совпадение имени или контакта не подтверждает личность.','Перед передачей отчётов и проектов проверяйте, какие сведения включены. Экспорт JSON и PDF сохраняется обычными незашифрованными файлами.','Сохраняйте резервные копии. Удаление данных браузера или потеря ключа может сделать проекты недоступными.'],privacy:['Конфиденциальность','Локальные профили и проекты находятся на вашем устройстве. Материалы анализируются в браузере; приложение не отправляет их на сервер анализа.','Онлайн-карта подключается только по вашей кнопке. OpenFreeMap получает запросы тайлов выбранной области и обычные сетевые данные соединения. Файлы проекта и ключ профиля не отправляются. Сохранённый снимок и координаты входят в экспорт проекта.', 'Проекты, описание профиля, аватар и настройки защищены AES-GCM по ключу профиля. Ник и дата регистрации находятся в локальном индексе профилей.','Необязательные счётчики активности и присутствия находятся в этом браузере. В них нет содержимого проектов, имён, IP-адресов или контактов. Их можно отключить в настройках и сбросить в панели владельца.','Хостинг GitHub Pages отдельно сохраняет IP-адреса посетителей для безопасности. Это поведение хостинга, которое приложение не может отключить.','Публичного каталога профилей и страницы владельца нет. Токен владельца открывает локальное меню статистики; он не является ключом расшифровки других профилей.'],storage:['Данные и доступ','Ник уникален среди локальных профилей этого браузера. На другом устройстве список профилей и статистика независимы. Общих аккаунтов и серверных ролей в этой версии нет.','Ваш личный ключ заменяет пароль и нужен для расшифровки. Восстановления через почту или выдуманную seed-фразу нет. Сохраните выданный ключ отдельно.','Проекты можно перенести через экспорт и импорт. Сохраняйте выгрузки в безопасном месте: JSON, PDF и изображения могут содержать все сведения проекта.','Локальная панель владельца не является защищённой серверной админкой. Человек, управляющий браузером и кодом, может изменить её интерфейс и счётчики. Шифрование проектов остаётся привязано к отдельным ключам.','Абсолютная анонимность владельца не гарантируется. Адрес GitHub Pages, репозиторий, история коммитов и сведения домена могут раскрывать аккаунт или другие данные независимо от приложения.']};
- function html(tab='rules'){const c=content[tab]||content.rules;return'<div class="sg-policy67"><h2>'+esc(c[0])+'</h2>'+c.slice(1).map(p=>'<p>'+esc(p)+'</p>').join('')+'<p class="sg-muted67">Локальная версия SHADOWGRAPH 7.0.3.</p>'+(tab==='privacy'?'<a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection" target="_blank" rel="noopener noreferrer">Документация GitHub Pages о данных хостинга ↗</a>':'')+'</div>'}
+ function html(tab='rules'){const c=content[tab]||content.rules;return'<div class="sg-policy67"><h2>'+esc(c[0])+'</h2>'+c.slice(1).map(p=>'<p>'+esc(p)+'</p>').join('')+'<p class="sg-muted67">Локальная версия SHADOWGRAPH 7.0.6.</p>'+(tab==='privacy'?'<a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection" target="_blank" rel="noopener noreferrer">Документация GitHub Pages о данных хостинга ↗</a>':'')+'</div>'}
  function open(tab='rules'){Settings67.open('policy',tab)}return{html,open};
 })();
 const Settings67=(()=>{
@@ -3707,7 +4338,7 @@ const Settings67=(()=>{
  if(currentTab==='appearance')return'<h2>'+tr('Оформление','Appearance')+'</h2><p class="sg-muted67">'+tr('Однотонные поверхности, без градиентов. Экран входа остаётся белым.','Solid surfaces without gradients. The login page stays white.')+'</p><div class="sg-theme-options67"><button class="sg-theme67 '+(p.theme==='black'?'active':'')+'" data-theme67="black"><i style="background:#050505"></i>'+tr('Чёрный','Black')+'</button><button class="sg-theme67 '+(p.theme==='graphite'?'active':'')+'" data-theme67="graphite"><i style="background:#191a1d"></i>'+tr('Графит','Graphite')+'</button></div><div class="sg-setting67"><span><b>'+tr('Акцент меню','Menu accent')+'</b><small>'+tr('Цвета данных графа настраиваются отдельно','Graph colors are configured separately')+'</small></span><div class="sg-accents67">'+['#a995e8','#7eacd1','#82b8a0','#d4b17d','#e1e1e5'].map(c=>'<button aria-label="'+c+'" data-accent67="'+c+'" style="background:'+c+'" class="'+(c===p.accent?'active':'')+'"></button>').join('')+'</div></div>'+toggle('petEnabled67',tr('Питомец Смотритель','Watcher mascot'),p.pet,tr('Встречает на пустой доске и главной странице','Greets you on the home page and empty boards'))+toggle('reduceMotion67',tr('Уменьшить движение','Reduce motion'),p.reduceMotion,tr('Отключает покачивание питомца и анимацию масштаба','Disables mascot motion and zoom animation'))+'<div class="sg-setting67"><span><b>'+tr('Язык меню','Menu language')+'</b><small>'+tr('Главная и настройки; названия и материалы проектов не переводятся','Home and settings; project names and materials are not translated')+'</small></span><select class="input" id="menuLanguage67"><option value="ru" '+(p.language==='ru'?'selected':'')+'>Русский</option><option value="en" '+(p.language==='en'?'selected':'')+'>English</option></select></div>';
  if(currentTab==='notifications')return'<h2>'+tr('Уведомления','Notifications')+'</h2>'+toggle('notifications67',tr('Показывать уведомления о действиях','Show action notifications'),p.notifications,tr('Ошибки сохранения и доступа показываются всегда','Save and access errors are always shown'))+toggle('activity67',tr('Локальная статистика активности','Local activity statistics'),p.activity,tr('Только в этом браузере: открытия, создание, импорт и активные вкладки. Без названий и содержимого проектов.','Only in this browser: opens, creation, imports and active tabs. No project names or content.'))+'<p class="sg-muted67">'+tr('Приложение не запрашивает push-уведомления и не отправляет статистику в сеть.','The app does not request push notifications or send statistics over the network.')+'</p>';
  if(currentTab==='security')return'<h2>'+tr('Безопасность профиля','Profile security')+'</h2><div class="sg-surface67"><b>AES-GCM / 256</b><p>'+tr('Доступ к данным открывается вашим личным ключом. Токен владельца не заменяет этот ключ.','Your personal key unlocks your data. The owner token does not replace it.')+'</p></div><label class="sg-field67">'+tr('Автоблокировка при бездействии','Lock after inactivity')+'<select class="input" id="idleMinutes67">'+[[0,tr('Выключена','Disabled')],[5,'5 '+tr('минут','minutes')],[15,'15 '+tr('минут','minutes')],[30,'30 '+tr('минут','minutes')],[60,'60 '+tr('минут','minutes')]].map(([n,label])=>'<option value="'+n+'" '+(p.idleMinutes===n?'selected':'')+'>'+label+'</option>').join('')+'</select></label><p>'+tr('После блокировки потребуется ваш сохранённый ключ. Восстановления по почте или seed-фразы в локальной версии нет.','After locking, you will need your saved key. The local version has no email recovery or seed phrase.')+'</p><div class="sg-actions67"><button class="btn" id="lockProfile67">'+tr('Заблокировать сейчас','Lock now')+'</button><button class="btn" id="securityExport67">'+tr('Экспортировать проекты','Export projects')+'</button></div><hr><h3>'+tr('Текущее устройство','Current device')+'</h3><p>'+tr('Локальный браузер · активных вкладок','Local browser · active tabs')+': '+Activity67.summary().tabs+'</p><p class="sg-muted67">'+tr('Это не список устройств со всего сайта. Другие браузеры здесь не видны.','This is not a site-wide device list. Other browsers are not visible here.')+'</p>';
- if(currentTab==='storage')return'<h2>'+tr('Версия и хранилище','Version & storage')+'</h2><div class="sg-surface67"><span class="sg-kicker67">SHADOWGRAPH 7.0.3</span><h3>'+tr('Локальное пространство','Local workspace')+'</h3><p>'+tr('Без подписки и серверного аккаунта. Проекты сохраняются на устройстве.','No subscription or server account. Projects are saved on this device.')+'</p></div><p id="storageEstimate67">'+tr('Проверяю доступное место…','Checking available space…')+'</p><p class="sg-muted67">'+tr('Объём относится ко всему хранилищу сайта в этом браузере. Очистка данных браузера может удалить проекты.','Usage refers to this site’s storage in this browser. Clearing browser data can delete projects.')+'</p><div class="sg-actions67"><button class="btn" id="exportProfile67">'+tr('Экспорт проектов','Export projects')+'</button><button class="btn" id="importProfile67">'+tr('Импорт проектов','Import projects')+'</button><button class="btn" id="persistentStorage67">'+tr('Защитить от автоматической очистки','Request persistent storage')+'</button></div><p id="storageStatus67" class="sg-muted67"></p>';
+ if(currentTab==='storage')return'<h2>'+tr('Версия и хранилище','Version & storage')+'</h2><div class="sg-surface67"><span class="sg-kicker67">SHADOWGRAPH 7.0.6</span><h3>'+tr('Локальное пространство','Local workspace')+'</h3><p>'+tr('Без подписки и серверного аккаунта. Проекты сохраняются на устройстве.','No subscription or server account. Projects are saved on this device.')+'</p></div><p id="storageEstimate67">'+tr('Проверяю доступное место…','Checking available space…')+'</p><p class="sg-muted67">'+tr('Объём относится ко всему хранилищу сайта в этом браузере. Очистка данных браузера может удалить проекты.','Usage refers to this site’s storage in this browser. Clearing browser data can delete projects.')+'</p><div class="sg-actions67"><button class="btn" id="exportProfile67">'+tr('Экспорт проектов','Export projects')+'</button><button class="btn" id="importProfile67">'+tr('Импорт проектов','Import projects')+'</button><button class="btn" id="persistentStorage67">'+tr('Защитить от автоматической очистки','Request persistent storage')+'</button></div><p id="storageStatus67" class="sg-muted67"></p>';
  return'<div class="sg-policy-tabs67">'+[['rules','Правила'],['privacy','Конфиденциальность'],['storage','Данные и доступ']].map(([id,label])=>'<button class="btn '+(policyTab===id?'active':'')+'" data-policy67="'+id+'">'+label+'</button>').join('')+'</div>'+Policy67.html(policyTab)}
  function open(tab=currentTab,policy=policyTab){if(!signedAccount)return;currentTab=tabs.some(t=>t[0]===tab)?tab:'profile';policyTab=policy;avatarDraft=Profile67.prefs.avatar;modal('<h2 class="sg-settings-title67">'+tr('Настройки SHADOWGRAPH','SHADOWGRAPH settings')+'</h2><button class="sg-modal-close67" id="settingsClose67" aria-label="Закрыть">×</button><div class="sg-settings67"><aside><div class="sg-settings-person67">'+avatar()+'<b>'+esc(signedAccount.name)+'</b><small>'+tr('Локальный профиль','Local profile')+'</small></div><nav>'+tabs.map(([id,icon,ru,en])=>'<button data-settings67="'+id+'" class="'+(id===currentTab?'active':'')+'"><span>'+icon+'</span>'+tr(ru,en)+'</button>').join('')+'</nav></aside><main id="settingsBody67">'+body()+'</main></div><div class="sg-settings-footer67"><button class="btn" id="settingsDone67">'+tr('Готово','Done')+'</button></div>');$('#modalRoot .modal').classList.add('sg-settings-wrap67');$('#settingsClose67').onclick=$('#settingsDone67').onclick=closeModal;$$('[data-settings67]').forEach(b=>b.onclick=()=>open(b.dataset.settings67));bind()}
  function bind(){const save=async update=>{try{await Profile67.save(update)}catch(e){toast('Не удалось сохранить настройки: '+e.message)}};if(currentTab==='profile'){$('#profileAvatar67').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{if(f.size>3*1024*1024||!/^image\/(png|jpeg|webp)$/.test(f.type))throw Error('PNG, JPG или WebP до 3 МБ');const bitmap=await createImageBitmap(f);try{const canvas=document.createElement('canvas');canvas.width=canvas.height=256;const c=canvas.getContext('2d'),side=Math.min(bitmap.width,bitmap.height);c.drawImage(bitmap,(bitmap.width-side)/2,(bitmap.height-side)/2,side,side,0,0,256,256);avatarDraft=canvas.toDataURL('image/png');const preview=$('.sg-profile-avatar710');if(preview)preview.innerHTML='<img class="sg-avatar67 large" src="'+avatarDraft+'" alt="Выбранный аватар">';$('#avatarStatus67').textContent=tr('Аватар выбран. Нажмите «Сохранить».','Avatar selected. Click Save.')}finally{bitmap.close()}}catch(error){$('#profileError67').textContent=error.message}};$('#removeAvatar67').onclick=()=>{avatarDraft='';const preview=$('.sg-profile-avatar710');if(preview)preview.innerHTML='<span class="sg-avatar67 large">'+esc((signedAccount?.name||'SG').slice(0,2).toUpperCase())+'</span>';$('#avatarStatus67').textContent=tr('Аватар будет удалён после сохранения.','Avatar will be removed after saving.')};$('#profileForm67').onsubmit=async e=>{e.preventDefault();const button=$('#profileSave67');button.disabled=true;try{await Profile67.rename($('#profileName67').value);await Profile67.save({bio:$('#profileBio67').value,avatar:avatarDraft});open('profile');toast(tr('Профиль сохранён','Profile saved'))}catch(error){if($('#profileError67'))$('#profileError67').textContent=error.message;if($('#profileSave67'))$('#profileSave67').disabled=false}}}
@@ -3753,7 +4384,7 @@ function projectCard(p){
  function boards(){const list=collection(),shown=list.slice(0,page==='home'?8:limit);return'<div class="sg-section-title67"><h2>'+tr(page==='home'?'Недавние проекты':page==='favorites'?'Избранное':page==='archive'?'Архив':'Мои проекты',page==='home'?'Recent projects':page==='favorites'?'Favorites':page==='archive'?'Archive':'My projects')+'</h2><select class="input" id="projectSort67"><option value="updated" '+(sort==='updated'?'selected':'')+'>'+tr('Сначала новые','Recently updated')+'</option><option value="name" '+(sort==='name'?'selected':'')+'>'+tr('По названию','By name')+'</option></select></div><div class="sg-project-grid67" id="projectGrid67">'+shown.map(projectCard).join('')+(page!=='archive'?'<button class="sg-create-tile67" id="createTile67"><span>＋</span><b>'+tr('Новый проект','New project')+'</b><small>'+tr('Начать с чистой доски','Start with an empty board')+'</small></button>':'')+'</div>'+(!list.length?'<p class="sg-empty-message67">'+tr(query?'По этому запросу проектов нет.':page==='archive'?'Архив пуст.':page==='favorites'?'Добавьте проект в избранное через меню «···».':'Ваше пространство готово. Создайте первую доску или импортируйте проект.',query?'No projects match this search.':page==='archive'?'The archive is empty.':page==='favorites'?'Add a project to favorites using its menu.':'Your workspace is ready. Create a board or import a project.')+'</p>':'')+(list.length>shown.length?'<button class="btn" id="moreProjects67">'+tr('Показать ещё','Show more')+' ('+(list.length-shown.length)+')</button>':'')}
  function homeHtml(){const active=cases.filter(p=>!p.archived67),nodes=active.reduce((n,p)=>n+p.nodes.length,0),edges=active.reduce((n,p)=>n+p.edges.length,0),files=active.reduce((n,p)=>n+p.files.length,0);return'<div class="sg-title67"><div><span class="sg-kicker67">YOUR MATERIALS. YOUR CONNECTIONS.</span><h1>'+tr('Рабочее пространство','Your workspace')+'</h1><p>'+tr('Собирайте материалы. Проверяйте находки. Видьте связи.','Collect materials. Verify findings. See connections.')+'</p></div><button class="btn primary" id="createProject67">＋ '+tr('Создать проект','Create project')+'</button></div><section class="sg-welcome67"><div><span class="sg-kicker67">SHADOWGRAPH / PRIVATE WORKSPACE</span><h2>'+tr('С возвращением, ','Welcome back, ')+esc(signedAccount.name)+'.</h2><p>'+tr('Здесь ваши исследования и их источники. Всё остаётся в вашем локальном профиле.','Your investigations and their sources live here. Everything stays in your local profile.')+'</p><button class="sg-link67" id="welcomeCreate67">'+tr('Начать новое исследование','Start an investigation')+' ↗</button></div><img class="sg-mascot67" src="'+mascot+'" alt="'+tr('Смотритель - питомец SHADOWGRAPH','Watcher - SHADOWGRAPH companion')+'"></section><div class="sg-stats67">'+[[tr('Проектов','Projects'),active.length],[tr('Узлов','Nodes'),nodes],[tr('Связей','Links'),edges],[tr('Материалов','Materials'),files]].map(([label,n])=>'<div><b>'+n+'</b><span>'+label+'</span></div>').join('')+'</div>'+boards()+supportLinks701()}
  function templatesHtml(){return'<div class="sg-title67"><div><span class="sg-kicker67">START WITH A VIEW</span><h1>'+tr('Шаблоны пространства','Workspace templates')+'</h1><p>'+tr('Оформление и представление графа. Никаких выдуманных людей или находок.','View and appearance presets. No fictional people or findings.')+'</p></div></div><div class="sg-template-grid67">'+templates.map(t=>'<button class="sg-template67" data-template67="'+t.id+'"><span>'+t.icon+'</span><h2>'+tr(t.ru,t.en)+'</h2><p>'+esc(t.hint)+'</p><small>'+tr('Создать проект','Create project')+' ↗</small></button>').join('')+'</div>'}
- function renderHome(){if(!signedAccount)return;const nav=[['home','▦','Главная','Home'],['boards','▤','Мои проекты','My projects'],['favorites','☆','Избранное','Favorites'],['templates','◈','Шаблоны','Templates'],['guide','?','Инструкция','Guide'],['archive','⌑','Архив','Archive']];root.innerHTML='<aside class="sg-home-side67"><button class="sg-home-brand67" id="brandHome67"><img src="./public/brand/shadowgraph-avatar.png?v=5.9" alt="SG"><span><b>SHADOWGRAPH</b><small>INVESTIGATION WORKSPACE</small></span></button><nav>'+nav.map(([id,icon,ru,en])=>'<button data-home-page67="'+id+'" class="'+(page===id?'active':'')+'"><span>'+icon+'</span>'+tr(ru,en)+'</button>').join('')+'<div class="sg-nav-divider67"></div><button id="homeImport67"><span>⇧</span>'+tr('Импорт проектов','Import projects')+'</button><button id="homeSettings67"><span>⚙</span>'+tr('Настройки','Settings')+'</button><button id="homeRules67"><span>§</span>'+tr('Правила и политики','Rules & privacy')+'</button></nav><div class="sg-home-side-bottom67"><button class="sg-user67 sg-menu-trigger67" id="sideUser67">'+Settings67.avatar()+'<span>'+esc(signedAccount.name)+'<small>'+tr('Локальный профиль','Local profile')+'</small></span><i>⌄</i></button></div></aside><div class="sg-home-main67"><header class="sg-home-top67"><button class="sg-mobile-nav67 btn" id="mobileNav67" aria-label="Меню">☰</button><label class="sg-search67"><span>⌕</span><input id="projectSearch67" type="search" placeholder="'+tr('Поиск проектов…','Search projects…')+'" value="'+esc(query)+'" aria-label="'+tr('Поиск проектов','Search projects')+'"></label><div class="sg-home-top-right67">'+profileButton()+'</div></header><main class="sg-home-content67" id="homeContent67">'+(page==='home'?homeHtml():page==='templates'?templatesHtml():page==='guide'?Help67.html():page==='owner'?Owner67.html():'<div class="sg-title67"><div><span class="sg-kicker67">SHADOWGRAPH / BOARDS</span><h1>'+tr(page==='archive'?'Архив':page==='favorites'?'Избранное':'Мои проекты',page==='archive'?'Archive':page==='favorites'?'Favorites':'My projects')+'</h1><p>'+tr('Ваши доски, источники и связи в одном месте.','Your boards, sources and connections in one place.')+'</p></div><button class="btn primary" id="createProject67">＋ '+tr('Создать проект','Create project')+'</button></div>'+boards())+'</main><footer class="sg-home-footer67"><span>SHADOWGRAPH 7.0.3</span><button id="footerPolicy67">'+tr('Конфиденциальность','Privacy')+' ↗</button></footer></div>';bind()}
+ function renderHome(){if(!signedAccount)return;const nav=[['home','▦','Главная','Home'],['boards','▤','Мои проекты','My projects'],['favorites','☆','Избранное','Favorites'],['templates','◈','Шаблоны','Templates'],['guide','?','Инструкция','Guide'],['archive','⌑','Архив','Archive']];root.innerHTML='<aside class="sg-home-side67"><button class="sg-home-brand67" id="brandHome67"><img src="./public/brand/shadowgraph-avatar.png?v=5.9" alt="SG"><span><b>SHADOWGRAPH</b><small>INVESTIGATION WORKSPACE</small></span></button><nav>'+nav.map(([id,icon,ru,en])=>'<button data-home-page67="'+id+'" class="'+(page===id?'active':'')+'"><span>'+icon+'</span>'+tr(ru,en)+'</button>').join('')+'<div class="sg-nav-divider67"></div><button id="homeImport67"><span>⇧</span>'+tr('Импорт проектов','Import projects')+'</button><button id="homeSettings67"><span>⚙</span>'+tr('Настройки','Settings')+'</button><button id="homeRules67"><span>§</span>'+tr('Правила и политики','Rules & privacy')+'</button></nav><div class="sg-home-side-bottom67"><button class="sg-user67 sg-menu-trigger67" id="sideUser67">'+Settings67.avatar()+'<span>'+esc(signedAccount.name)+'<small>'+tr('Локальный профиль','Local profile')+'</small></span><i>⌄</i></button></div></aside><div class="sg-home-main67"><header class="sg-home-top67"><button class="sg-mobile-nav67 btn" id="mobileNav67" aria-label="Меню">☰</button><label class="sg-search67"><span>⌕</span><input id="projectSearch67" type="search" placeholder="'+tr('Поиск проектов…','Search projects…')+'" value="'+esc(query)+'" aria-label="'+tr('Поиск проектов','Search projects')+'"></label><div class="sg-home-top-right67">'+profileButton()+'</div></header><main class="sg-home-content67" id="homeContent67">'+(page==='home'?homeHtml():page==='templates'?templatesHtml():page==='guide'?Help67.html():page==='owner'?Owner67.html():'<div class="sg-title67"><div><span class="sg-kicker67">SHADOWGRAPH / BOARDS</span><h1>'+tr(page==='archive'?'Архив':page==='favorites'?'Избранное':'Мои проекты',page==='archive'?'Archive':page==='favorites'?'Favorites':'My projects')+'</h1><p>'+tr('Ваши доски, источники и связи в одном месте.','Your boards, sources and connections in one place.')+'</p></div><button class="btn primary" id="createProject67">＋ '+tr('Создать проект','Create project')+'</button></div>'+boards())+'</main><footer class="sg-home-footer67"><span>SHADOWGRAPH 7.0.6</span><button id="footerPolicy67">'+tr('Конфиденциальность','Privacy')+' ↗</button></footer></div>';bind()}
  function bind(){root.querySelectorAll('[data-home-page67]').forEach(b=>b.onclick=()=>{query='';limit=innerWidth<=800?8:24;show(b.dataset.homePage67)});$('#brandHome67').onclick=()=>show();$('#homeSettings67').onclick=()=>Settings67.open('profile');$('#homeRules67').onclick=()=>Policy67.open();$('#footerPolicy67').onclick=()=>Policy67.open('privacy');$('#homeImport67').onclick=importProjects;$('#homeUser67').onclick=e=>userMenu(e.currentTarget);$('#sideUser67').onclick=e=>userMenu(e.currentTarget);const menu=$('#mobileNav67');menu.innerHTML='<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M8 3v14"/></svg>';const syncMenu=()=>{const expanded=innerWidth<=800?root.classList.contains('nav-open67'):!root.classList.contains('nav-collapsed710');menu.setAttribute('aria-expanded',String(expanded));menu.setAttribute('aria-label',expanded?'Скрыть меню':'Показать меню');menu.title=menu.getAttribute('aria-label')};menu.setAttribute('aria-controls','homeNav710');root.querySelector('.sg-home-side67').id='homeNav710';menu.onclick=()=>{root.classList.toggle(innerWidth<=800?'nav-open67':'nav-collapsed710');syncMenu()};syncMenu();$('#projectSearch67').oninput=e=>{query=e.target.value;if(page==='templates'||page==='owner')page='boards';const content=$('#homeContent67'),selection=e.target.selectionStart;content.innerHTML=page==='home'?homeHtml():boards();bindContent();try{$('#projectSearch67').setSelectionRange(selection,selection)}catch{}};bindContent()}
  function bindContent(){for(const id of ['createProject67','welcomeCreate67','createTile67'])if($('#'+id))$('#'+id).onclick=()=>createDialog();$$('[data-open67]').forEach(b=>b.onclick=()=>openBoard(b.dataset.open67));$$('[data-project-menu67]').forEach(b=>b.onclick=e=>projectMenu(e.currentTarget,b.dataset.projectMenu67));$$('[data-template67]').forEach(b=>b.onclick=()=>createDialog(b.dataset.template67));if($('#projectSort67'))$('#projectSort67').onchange=e=>{sort=e.target.value;renderHome()};if($('#moreProjects67'))$('#moreProjects67').onclick=()=>{page='boards';limit+=innerWidth<=800?8:24;renderHome()};if(page==='owner')Owner67.bind();if(page==='guide')Help67.bind()}
  function show(next='home'){if(!signedAccount)return;if(busy&&next==='owner')return toast('Дождитесь завершения обработки');page=next;root.classList.remove('nav-open67');Smooth67.stop();Scene65.stop();stopRouting();document.body.classList.add('home67');root.hidden=false;renderHome();Activity67.heartbeat()}
@@ -3970,10 +4601,10 @@ const supportStyle701=document.createElement('style');supportStyle701.textConten
 
 function graphMenu703(){
  let chosen=current.graphView||'cards';
- const mini=(id)=>{const points=id==='hierarchy'?[[80,14],[38,48],[120,48],[17,82],[60,82],[120,82]]:id==='timeline'?[[17,48],[48,48],[80,48],[112,48],[145,48],[80,80]]:id==='groups'?[[25,30],[52,47],[30,68],[110,27],[140,45],[117,70]]:[[80,48],[31,21],[139,21],[23,83],[135,81],[80,10]];return '<svg viewBox="0 0 165 100" aria-hidden="true">'+(id==='groups'?'<rect x="7" y="9" width="63" height="82" rx="9" fill="#1b1721" stroke="#49404f"/><rect x="94" y="9" width="64" height="82" rx="9" fill="#1b1721" stroke="#49404f"/>':'')+'<g stroke="#56505f" stroke-width="1">'+[[0,1],[0,2],[0,3],[0,4],[2,5]].map(([a,b])=>'<path d="M'+points[a].join(' ')+' L'+points[b].join(' ')+'"/>').join('')+'</g>'+points.map(([x,y],i)=>id==='cards'?'<rect x="'+(x-12)+'" y="'+(y-7)+'" width="24" height="14" rx="3" fill="#24212b" stroke="#9e8bbf"/>':'<circle cx="'+x+'" cy="'+y+'" r="'+(i===0?7:4)+'" fill="'+(i===0?'#b49bdc':'#555361')+'" stroke="#b7a7cd"/>').join('')+(id==='network3d'?'<ellipse cx="82" cy="50" rx="62" ry="32" fill="none" stroke="#544862" stroke-dasharray="3 5"/>':'')+'</svg>'};
+ const mini=(id)=>{if(id==='straight')return '<svg viewBox="0 0 165 100" aria-hidden="true"><g fill="none" stroke="#9b91ac" stroke-width="1.3"><path d="M35 50C61 50 56 22 90 22M35 50C61 50 56 78 90 78M107 22C125 22 124 10 145 10M107 22C125 22 124 38 145 38"/></g><g fill="#afa0c1"><rect x="7" y="46" width="28" height="7" rx="2"/><rect x="78" y="18" width="29" height="7" rx="2"/><rect x="78" y="74" width="35" height="7" rx="2"/><rect x="138" y="7" width="21" height="6" rx="2"/><rect x="138" y="35" width="21" height="6" rx="2"/></g></svg>';const points=id==='hierarchy'?[[80,14],[38,48],[120,48],[17,82],[60,82],[120,82]]:id==='timeline'?[[17,48],[48,48],[80,48],[112,48],[145,48],[80,80]]:id==='groups'?[[25,30],[52,47],[30,68],[110,27],[140,45],[117,70]]:[[80,48],[31,21],[139,21],[23,83],[135,81],[80,10]];return '<svg viewBox="0 0 165 100" aria-hidden="true">'+(id==='groups'?'<rect x="7" y="9" width="63" height="82" rx="9" fill="#1b1721" stroke="#49404f"/><rect x="94" y="9" width="64" height="82" rx="9" fill="#1b1721" stroke="#49404f"/>':'')+'<g stroke="#56505f" stroke-width="1">'+[[0,1],[0,2],[0,3],[0,4],[2,5]].map(([a,b])=>'<path d="M'+points[a].join(' ')+' L'+points[b].join(' ')+'"/>').join('')+'</g>'+points.map(([x,y],i)=>id==='cards'?'<rect x="'+(x-12)+'" y="'+(y-7)+'" width="24" height="14" rx="3" fill="#24212b" stroke="#9e8bbf"/>':'<circle cx="'+x+'" cy="'+y+'" r="'+(i===0?7:4)+'" fill="'+(i===0?'#b49bdc':'#555361')+'" stroke="#b7a7cd"/>').join('')+(id==='network3d'?'<ellipse cx="82" cy="50" rx="62" ry="32" fill="none" stroke="#544862" stroke-dasharray="3 5"/>':'')+'</svg>'};
  modal('<div class="view-head703"><div><span class="view-kicker703">РАБОЧЕЕ ПРОСТРАНСТВО</span><h2>Представление графа</h2><p>Выберите вид и настройте его под своё исследование.</p></div><button class="btn" id="closeView703" aria-label="Закрыть">×</button></div><div class="view-grid703">'+Views703.modes.map(([id,title,sub])=>'<button class="view-tile703" data-view703="'+id+'" aria-pressed="'+(id===chosen)+'">'+mini(id)+'<span class="view-tile-title703">'+title+'<i>'+(id===chosen?'✓ Текущий':'')+'</i></span><small>'+sub+'</small></button>').join('')+'</div><form id="viewSettings703"><div id="viewFields703"></div><p class="view-note703">Настройки и ракурс сохраняются отдельно для каждого проекта и вида. Направление линии показывает запись связи.</p><p id="viewError703" role="alert"></p><div class="view-actions703"><button class="btn" id="cancelView703" type="button">Отмена</button><button class="btn primary" type="submit">Применить вид</button></div></form>');
  $('#modalRoot .modal').classList.add('view-modal703');
- function fields(){const o=Views703.options(chosen);$('#viewFields703').innerHTML='<h3>Настройки · '+Views703.modes.find(m=>m[0]===chosen)[1]+'</h3><div class="view-settings703"><label class="checkline"><input id="viewLabels703" type="checkbox" '+(o.labels?'checked':'')+'> Подписи объектов</label><label class="checkline"><input id="viewArrows703" type="checkbox" '+(o.arrows?'checked':'')+'> Стрелки связей</label>'+(chosen!=='cards'?'<label>Размер узлов <output id="sizeOut703">'+o.nodeSize.toFixed(1)+'×</output><input id="viewSize703" type="range" min="0.7" max="1.6" step="0.1" value="'+o.nodeSize+'"></label><label>Расстояние <output id="spaceOut703">'+o.spacing.toFixed(1)+'×</output><input id="viewSpace703" type="range" min="0.8" max="2" step="0.1" value="'+o.spacing+'"></label>':'<small>Размер карточек сохраняется для точного соединения линий с границами.</small>')+(chosen==='hierarchy'?'<label>Направление<select id="viewOrientation703" class="input"><option value="vertical">Сверху вниз</option><option value="horizontal">Слева направо</option></select></label>':'')+(chosen==='groups'?'<label>Группировать по<select id="viewGroup703" class="input"><option value="type">Типам объектов</option><option value="person">Людям</option><option value="organization">Организациям</option></select></label>':'')+(chosen==='timeline'?'<label>С даты<input class="input" type="date" id="viewStart703" value="'+esc(o.start)+'"></label><label>По дату<input class="input" type="date" id="viewEnd703" value="'+esc(o.end)+'"></label><label class="checkline"><input id="viewUnknown703" type="checkbox" '+(o.unknown?'checked':'')+'> Показывать объекты без даты</label>':'')+(chosen==='network3d'?'<label class="checkline"><input id="viewAuto703" type="checkbox" '+(o.autoRotate?'checked':'')+'> Автовращение</label><label>Скорость вращения<input id="viewSpeed703" type="range" min="0.1" max="1" step="0.05" value="'+o.speed+'"></label><small>Мышь / один палец — вращать. Shift / правая кнопка — сдвиг. Два пальца — масштаб. Движение учитывает настройку уменьшенной анимации.</small>':'')+'</div>';if($('#viewOrientation703'))$('#viewOrientation703').value=o.orientation;if($('#viewGroup703'))$('#viewGroup703').value=o.groupBy;for(const [id,out]of [['viewSize703','sizeOut703'],['viewSpace703','spaceOut703']])if($('#'+id))$('#'+id).oninput=e=>$('#'+out).textContent=Number(e.target.value).toFixed(1)+'×'}
+ function fields(){const o=Views703.options(chosen);$('#viewFields703').innerHTML='<h3>Настройки · '+Views703.modes.find(m=>m[0]===chosen)[1]+'</h3><div class="view-settings703"><label class="checkline"><input id="viewLabels703" type="checkbox" '+(o.labels?'checked':'')+'> Подписи объектов</label><label class="checkline"><input id="viewArrows703" type="checkbox" '+(o.arrows?'checked':'')+'> Стрелки связей</label>'+(chosen!=='cards'?'<label>Размер узлов <output id="sizeOut703">'+o.nodeSize.toFixed(1)+'×</output><input id="viewSize703" type="range" min="0.7" max="1.6" step="0.1" value="'+o.nodeSize+'"></label><label>Расстояние <output id="spaceOut703">'+o.spacing.toFixed(1)+'×</output><input id="viewSpace703" type="range" min="0.8" max="2" step="0.1" value="'+o.spacing+'"></label>':'<small>Размер карточек сохраняется для точного соединения линий с границами.</small>')+(chosen==='hierarchy'?'<label>Направление<select id="viewOrientation703" class="input"><option value="vertical">Сверху вниз</option><option value="horizontal">Слева направо</option></select></label>':'')+(chosen==='groups'?'<label>Группировать по<select id="viewGroup703" class="input"><option value="type">Типам объектов</option><option value="person">Людям</option><option value="organization">Организациям</option></select></label>':'')+(chosen==='timeline'?'<label>С даты<input class="input" type="date" id="viewStart703" value="'+esc(o.start)+'"></label><label>По дату<input class="input" type="date" id="viewEnd703" value="'+esc(o.end)+'"></label><label class="checkline"><input id="viewUnknown703" type="checkbox" '+(o.unknown?'checked':'')+'> Показывать объекты без даты</label>':'')+(chosen==='network3d'?'<label class="checkline"><input id="viewAuto703" type="checkbox" '+(o.autoRotate?'checked':'')+'> Автовращение</label><label>Скорость вращения<input id="viewSpeed703" type="range" min="0.1" max="1" step="0.05" value="'+o.speed+'"></label><small>Мышь / один палец — вращать. Shift / правая кнопка — сдвиг. Два пальца — масштаб. Движение учитывает настройку уменьшенной анимации.</small>':'')+'</div>';if(chosen==='timeline')$('#viewArrows703').closest('label').style.display='none';if($('#viewOrientation703'))$('#viewOrientation703').value=o.orientation;if($('#viewGroup703'))$('#viewGroup703').value=o.groupBy;for(const [id,out]of [['viewSize703','sizeOut703'],['viewSpace703','spaceOut703']])if($('#'+id))$('#'+id).oninput=e=>$('#'+out).textContent=Number(e.target.value).toFixed(1)+'×'}
  fields();$$('[data-view703]').forEach(b=>b.onclick=()=>{chosen=b.dataset.view703;$$('[data-view703]').forEach(t=>{t.setAttribute('aria-pressed',String(t===b));t.querySelector('i').textContent=t.dataset.view703===current.graphView?'✓ Текущий':t===b?'Выбран':''});fields()});$('#closeView703').onclick=$('#cancelView703').onclick=closeModal;
  $('#viewSettings703').onsubmit=e=>{e.preventDefault();const start=$('#viewStart703')?.value||'',end=$('#viewEnd703')?.value||'';if(start&&end&&start>end){$('#viewError703').textContent='Начало периода должно быть раньше окончания.';return}const before=Views703.options(chosen),o={...before,labels:$('#viewLabels703').checked,arrows:$('#viewArrows703').checked,nodeSize:Number($('#viewSize703')?.value||1),spacing:Number($('#viewSpace703')?.value||1),orientation:$('#viewOrientation703')?.value||before.orientation,groupBy:$('#viewGroup703')?.value||before.groupBy,start,end,unknown:$('#viewUnknown703')?.checked??true,autoRotate:$('#viewAuto703')?.checked??false,speed:Number($('#viewSpeed703')?.value||before.speed)};current.viewOptions703||={};current.viewOptions703[chosen]=o;const reflow=before.spacing!==o.spacing||before.orientation!==o.orientation||before.groupBy!==o.groupBy;closeModal();if(current.graphView!==chosen)setView65(chosen);else{Scene65.motion703?.();renderGraph();persist()}if(reflow&&Scene65.active())Scene65.rearrange()};
 }
@@ -3988,6 +4619,25 @@ const applyBefore703=applyView;let cardSave703=0;
 applyView=function(...args){applyBefore703(...args);if(current&&!Scene65.active()&&!Portal67.isHome()&&!Portal67.loading){current.cardCamera703={...view};clearTimeout(cardSave703);const owner=current;cardSave703=setTimeout(()=>{if(current===owner&&signedAccount)persist()},500)}};
 const cardRenderBefore703=renderGraph;let cardProject703=null;renderGraph=function(...args){if(current&&cardProject703!==current.id){cardProject703=current.id;const c=current.cardCamera703;if(!Scene65.active()&&c&&[c.x,c.y,c.z].every(Number.isFinite))view={...c}}const r=cardRenderBefore703(...args);if(!current)return r;if(!Scene65.active()){const o=Views703.options('cards');$$('#nodesLayer .node').forEach(g=>{g.classList.toggle('no-label703',!o.labels);g.querySelectorAll('text').forEach(t=>t.setAttribute('visibility',o.labels?'visible':'hidden'))});if(o.arrows){for(const edge of $$('#edgesLayer path:not(.edgehit):not(.route-halo)')){try{const len=edge.getTotalLength();if(len<8)continue;const p=edge.getPointAtLength(len-5),q=edge.getPointAtLength(len-12),a=Math.atan2(p.y-q.y,p.x-q.x);SVG('path',{d:'M'+(p.x-7*Math.cos(a-.45))+' '+(p.y-7*Math.sin(a-.45))+' L'+p.x+' '+p.y+' L'+(p.x-7*Math.cos(a+.45))+' '+(p.y-7*Math.sin(a+.45)),class:'edge-arrow703',fill:'none',stroke:current.style?.edge||'#8b909b','stroke-width':1.2},$('#edgesLayer'))}catch{}}}}return r};
 
+const polish704=document.createElement('style');polish704.textContent='.view-settings703{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.view-settings703 label{min-width:0}.view-settings703 .input{min-width:0;max-width:100%;box-sizing:border-box}.view-actions703{position:static!important;background:transparent!important;border-top:1px solid #242426;padding:18px 0 0!important;margin-top:14px}.view-modal703{background:#090909!important}#viewDetails703{background:#101010;border-color:#2c2c2e}#viewDetails703 small{color:#99989e}#viewDetails703 .tool{min-height:34px}@media(max-width:700px){.view-actions703{position:sticky!important;bottom:-20px;background:#090909!important;padding:12px 0 6px!important}.view-settings703 input[type=range]{accent-color:#aaa}}';document.head.append(polish704);
+const Calendar705=(()=>{
+ let active=null;const months=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],iso=d=>d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0');
+ function today(){const parts=new Intl.DateTimeFormat('en',{timeZone:'Europe/Moscow',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()),get=t=>parts.find(p=>p.type===t).value;return get('year')+'-'+get('month')+'-'+get('day')}
+ function parse(value){if(!/^\d{4}-\d{2}-\d{2}$/.test(value||''))return null;const d=new Date(value+'T00:00:00Z');return Number.isFinite(+d)&&iso(d)===value?d:null}
+ function caption(input){const d=parse(input.value);return d?d.toLocaleDateString('ru-RU',{timeZone:'UTC'}):'Выбрать дату'}
+ function close(focus=false){if(!active)return;const {popup,button}=active;popup.remove();active=null;button.setAttribute('aria-expanded','false');if(focus&&button.isConnected)button.focus()}
+ function position(){if(!active)return;const {popup,button}=active;if(!button.isConnected)return close();const r=button.getBoundingClientRect(),vw=visualViewport?.width||innerWidth,vh=visualViewport?.height||innerHeight,vx=visualViewport?.offsetLeft||0,vy=visualViewport?.offsetTop||0;popup.style.width=Math.min(318,vw-16)+'px';popup.style.maxHeight=Math.max(220,vh-16)+'px';const h=popup.getBoundingClientRect().height;popup.style.left=Math.max(vx+8,Math.min(vx+vw-popup.offsetWidth-8,r.left))+'px';popup.style.top=Math.max(vy+8,Math.min(vy+vh-h-8,r.bottom+h+8<vy+vh?r.bottom+7:r.top-h-7))+'px'}
+ function choose(value){if(!active)return;const {input,button}=active;input.value=value;input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));button.querySelector('span').textContent=caption(input);close(true)}
+ function draw(focusValue=null){const a=active;if(!a)return;const year=a.month.getUTCFullYear(),month=a.month.getUTCMonth(),first=new Date(Date.UTC(year,month,1)),offset=(first.getUTCDay()+6)%7,start=new Date(Date.UTC(year,month,1-offset)),selected=a.input.value,t=today();a.popup.innerHTML='<div class="cal-head705"><span>Выберите дату</span><button type="button" id="calClose705" aria-label="Закрыть календарь">×</button></div><div class="cal-nav705"><button type="button" id="calPrev705" aria-label="Предыдущий месяц">‹</button><select id="calMonth705" aria-label="Месяц">'+months.map((m,i)=>'<option value="'+i+'" '+(i===month?'selected':'')+'>'+m+'</option>').join('')+'</select><input id="calYear705" aria-label="Год" type="number" min="1600" max="2400" value="'+year+'"><button type="button" id="calNext705" aria-label="Следующий месяц">›</button></div><div class="cal-week705" aria-hidden="true">'+['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].map(d=>'<span>'+d+'</span>').join('')+'</div><div class="cal-days705" role="grid" aria-label="'+months[month]+' '+year+'">'+Array.from({length:42},(_,i)=>{const d=new Date(+start+i*86400000),value=iso(d);return '<button type="button" role="gridcell" data-cal-day705="'+value+'" class="'+(d.getUTCMonth()!==month?'muted705 ':'')+(value===t?'today705':'')+'" aria-selected="'+(value===selected)+'" aria-label="'+d.toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'})+'">'+d.getUTCDate()+'</button>'}).join('')+'</div><div class="cal-foot705"><button type="button" id="calClear705">Очистить</button><button type="button" id="calToday705">Сегодня</button></div>';
+  a.popup.querySelector('#calClose705').onclick=()=>close(true);const move=delta=>{a.month=new Date(Date.UTC(year,month+delta,1));draw()};a.popup.querySelector('#calPrev705').onclick=()=>move(-1);a.popup.querySelector('#calNext705').onclick=()=>move(1);a.popup.querySelector('#calMonth705').onchange=e=>{a.month=new Date(Date.UTC(year,+e.target.value,1));draw()};a.popup.querySelector('#calYear705').onchange=e=>{const y=Math.max(1600,Math.min(2400,Number(e.target.value)||year));a.month=new Date(Date.UTC(y,month,1));draw()};a.popup.querySelector('#calClear705').onclick=()=>choose('');a.popup.querySelector('#calToday705').onclick=()=>choose(t);a.popup.querySelectorAll('[data-cal-day705]').forEach(b=>b.onclick=()=>choose(b.dataset.calDay705));position();if(focusValue)a.popup.querySelector('[data-cal-day705="'+focusValue+'"]')?.focus()
+ }
+ function open(input,button){if(active?.input===input)return close(true);close();const popup=document.createElement('div');popup.className='calendar705';popup.setAttribute('role','dialog');popup.setAttribute('aria-modal','true');popup.setAttribute('aria-label','Выбор даты');document.body.append(popup);const date=parse(input.value)||parse(today());active={input,button,popup,month:new Date(Date.UTC(date.getUTCFullYear(),date.getUTCMonth(),1))};button.setAttribute('aria-expanded','true');popup.onkeydown=e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();close(true)}else if(e.key==='Tab'){const items=[...popup.querySelectorAll('button,input,select')],i=items.indexOf(document.activeElement);if(e.shiftKey&&i===0){e.preventDefault();items.at(-1).focus()}else if(!e.shiftKey&&i===items.length-1){e.preventDefault();items[0].focus()}}else if(e.target.dataset.calDay705&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();const d=parse(e.target.dataset.calDay705),delta={ArrowLeft:-1,ArrowRight:1,ArrowUp:-7,ArrowDown:7}[e.key],next=new Date(+d+delta*86400000);active.month=new Date(Date.UTC(next.getUTCFullYear(),next.getUTCMonth(),1));draw(iso(next))}};draw(input.value||today())}
+ function bind(){for(const input of document.querySelectorAll('#viewStart703,#viewEnd703')){if(input.dataset.calendar705)continue;input.dataset.calendar705='1';input.type='hidden';const button=document.createElement('button');button.type='button';button.className='cal-trigger705';button.dataset.dateFor705=input.id;button.setAttribute('aria-haspopup','dialog');button.setAttribute('aria-expanded','false');button.setAttribute('aria-label',(input.id==='viewStart703'?'С даты':'По дату')+': выбрать дату');button.innerHTML='<span>'+caption(input)+'</span><svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="3" y="4" width="14" height="13" rx="3"/><path d="M3 8h14M7 2v4M13 2v4"/></svg>';input.after(button);button.onclick=()=>open(input,button);input.addEventListener('input',()=>button.querySelector('span').textContent=caption(input))}if(active&&!active.button.isConnected)close()}
+ new MutationObserver(bind).observe($('#modalRoot'),{childList:true,subtree:true});document.addEventListener('pointerdown',e=>{if(active&&!active.popup.contains(e.target)&&!active.button.contains(e.target))close()},true);window.addEventListener('resize',position);visualViewport?.addEventListener('resize',position);visualViewport?.addEventListener('scroll',position);window.addEventListener('scroll',position,true);
+ const style=document.createElement('style');style.textContent='.view-settings703 input[data-calendar705]{display:none!important}.cal-trigger705{width:100%;min-width:0;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;padding:12px;border:1px solid #343438;border-radius:8px;background:#141416;color:#d9d6de;font:12px Inter,system-ui;text-align:left;cursor:pointer}.cal-trigger705:hover,.cal-trigger705[aria-expanded=true]{border-color:#a18dbd;background:#19171e}.cal-trigger705 span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cal-trigger705 svg{flex:none;color:#928a9e}.calendar705{position:fixed;z-index:10000;overflow:auto;box-sizing:border-box;padding:14px;border:1px solid #48404f;border-radius:14px;background:#101012;color:#e9e4ef;box-shadow:0 16px 60px #000a;font:12px Inter,system-ui;color-scheme:dark}.cal-head705{display:flex;align-items:center;justify-content:space-between;color:#98909f;font-size:10px;letter-spacing:.3px;margin-bottom:10px}.calendar705 button{border:0;background:none;color:inherit;cursor:pointer;border-radius:7px;min-width:0}.cal-head705 button{width:28px;height:28px;font-size:20px}.cal-nav705{display:flex;gap:7px;align-items:center;margin-bottom:14px}.cal-nav705>button{width:30px;height:34px;font-size:24px}.cal-nav705 select,.cal-nav705 input{min-width:0;border:1px solid #302b35;border-radius:7px;background:#1b181f;color:#e7dff0;height:34px;font:12px Inter,system-ui;padding:4px 7px;box-sizing:border-box}.cal-nav705 select{flex:1;width:100px}.cal-nav705 input{width:65px;appearance:textfield}.cal-nav705 input::-webkit-inner-spin-button{display:none}.cal-week705,.cal-days705{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}.cal-week705{text-align:center;color:#77717e;font-size:10px;margin-bottom:7px}.cal-days705 button{aspect-ratio:1;min-height:32px;font:12px Inter,system-ui;border:1px solid transparent}.cal-days705 button:hover{background:#2a2432;color:#fff}.cal-days705 button.muted705{color:#56515e}.cal-days705 button.today705{border-color:#60526f;color:#dbc8ef}.cal-days705 button[aria-selected=true]{background:#b9a0df;color:#141018;font-weight:700;border-color:#b9a0df}.calendar705 button:focus-visible,.cal-trigger705:focus-visible{outline:2px solid #c3a5ed;outline-offset:2px}.cal-foot705{display:flex;justify-content:space-between;border-top:1px solid #2c2733;margin-top:12px;padding-top:10px}.cal-foot705 button{padding:9px 11px;font-size:11px}.cal-foot705 button:last-child{color:#c9b3e7;background:#241d2e}.cal-foot705 button:hover{background:#2b2433}@media(max-width:420px){.cal-days705 button{min-height:35px}.cal-trigger705{padding:11px 9px}.calendar705{padding:12px}}';document.head.append(style);return{close,bind};
+})();
+
+const reportStyle706=document.createElement('style');reportStyle706.textContent='.report-dialog706{width:min(580px,calc(100vw - 28px))!important;max-height:90dvh;overflow:auto}.report-options706{display:grid;gap:13px;margin:22px 0}.report-options706>.checkline{padding:12px;background:#141416;border:1px solid #2d2b31;border-radius:8px;line-height:1.5}.report-note706{font-size:12px;color:#d3cbdc}.report-note706 span{color:#8b8194;font-size:10px;margin-left:5px}.report-note706 textarea{width:100%;margin-top:9px;resize:vertical;min-height:90px;box-sizing:border-box;line-height:1.7}.report-dialog706 .modalactions{border-top:1px solid #28262c;padding-top:15px}@media(max-width:540px){.report-dialog706 .modalactions{display:flex}.report-dialog706 .modalactions button{flex:1;min-height:44px}.report-options706>.checkline{font-size:12px}}';document.head.append(reportStyle706);
 startExperience(()=>initDb()).catch(e=>{console.error(e);$('#saveState').textContent='STORAGE UNAVAILABLE';toast('Недоступно локальное хранилище браузера')});
 })();
 </script></body></html>
