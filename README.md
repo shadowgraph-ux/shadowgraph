@@ -1,4 +1,4 @@
-# SHADOWGRAPH 7.0.1
+# SHADOWGRAPH 7.0.3
 
 <p align="center">
   <img src="docs/images/cover.png" alt="SHADOWGRAPH — данные превращаются в связи" width="100%">
@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <code>GitHub Pages</code> · <code>Локальный анализ</code> · <code>4 вида графа</code> · <code>ПК и телефон</code>
+  <code>GitHub Pages</code> · <code>Локальный анализ</code> · <code>7 видов графа</code> · <code>ПК и телефон</code>
 </p>
 
 <p align="center">
@@ -204,3 +204,16 @@ python -m http.server 8080
   <strong>SHADOWGRAPH</strong><br>
   <sub>Ваши материалы. Ваши связи. Ваше рабочее пространство.</sub>
 </p>
+
+
+### Представления 7.0.3
+
+Иерархия (два направления), хронология с периодом и областью без даты, сворачиваемые группы по типам, людям и организациям. Настройки каждого вида и камера сохраняются в проекте. В 3D есть инерция и переключаемое автовращение.
+
+![Выбор представления и настройки графа](docs/images/graph-view-menu.png)
+
+| Иерархия | Хронология |
+|:--:|:--:|
+| ![Иерархия](docs/images/graph-hierarchy.png) | ![Хронология](docs/images/graph-timeline.png) |
+
+![Сворачиваемые группы](docs/images/graph-groups.png)
