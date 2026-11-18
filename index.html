@@ -38,7 +38,7 @@
 
 .chatgpt-signin{display:block;margin:12px 0 22px;color:#111;font-size:12px;text-underline-offset:4px}
 
-</style><link rel="icon" type="image/svg+xml" sizes="any" href="./favicon.svg?v=5.9"><link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png?v=5.9"><link rel="icon" type="image/png" sizes="16x16" href="./favicon-16.png?v=5.9"><link rel="shortcut icon" href="./favicon.ico?v=5.9"><link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png?v=5.9"><link rel="manifest" href="./site.webmanifest?v=5.9"><meta name="application-name" content="SHADOWGRAPH"><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'sha256-IoJr+DvNZ0ujBhiOXUWlRGWIkG8zONvy3vhCek6zqpA=' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tiles.openfreemap.org; media-src 'self' data: blob:; connect-src 'self' data: blob: https://tiles.openfreemap.org; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'"><style>@font-face{font-family:Inter;src:url('./public/vendor/report/NotoSans-Regular.ttf') format('truetype');font-weight:100 500;font-display:swap}@font-face{font-family:Inter;src:url('./public/vendor/report/NotoSans-Bold.ttf') format('truetype');font-weight:600 900;font-display:swap}
+</style><link rel="icon" type="image/svg+xml" sizes="any" href="./favicon.svg?v=5.9"><link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png?v=5.9"><link rel="icon" type="image/png" sizes="16x16" href="./favicon-16.png?v=5.9"><link rel="shortcut icon" href="./favicon.ico?v=5.9"><link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png?v=5.9"><link rel="manifest" href="./site.webmanifest?v=5.9"><meta name="application-name" content="SHADOWGRAPH"><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'sha256-uCK68GC3Syr3eKNLq+VosO5aj7PcD4q3S/j+UIGxJmc=' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tiles.openfreemap.org; media-src 'self' data: blob:; connect-src 'self' data: blob: https://tiles.openfreemap.org; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'"><style>@font-face{font-family:Inter;src:url('./public/vendor/report/NotoSans-Regular.ttf') format('truetype');font-weight:100 500;font-display:swap}@font-face{font-family:Inter;src:url('./public/vendor/report/NotoSans-Bold.ttf') format('truetype');font-weight:600 900;font-display:swap}
 :root{--sg-accent67:#a995e8;--sg-bg67:#09090b;--sg-surface67:#111114;--sg-raised67:#17171c;--sg-border67:#2b2b32;--sg-text67:#eeedf2;--sg-muted67:#96949f}
 .app .label,.app .footer,.app .hint,.app .subbrand,.app .filechip,.app text.type{font-family:ui-monospace,Consolas,monospace!important}.app .top #logoutTop{display:none!important}
 body[data-theme67=graphite]{--sg-bg67:#151619;--sg-surface67:#1b1c20;--sg-raised67:#222329;--sg-border67:#35363e}
@@ -1120,7 +1120,7 @@ const localCreatedBase=keyCreatedScreen;
 keyCreatedScreen=function(data){localCreatedBase(data);$('.key-created .access-kicker').textContent='КЛЮЧ ЛОКАЛЬНОГО ПРОФИЛЯ';$('.key-created p').textContent='Сохраните ключ: он нужен для расшифровки проектов. На сервер он не отправляется. Без него восстановить зашифрованные данные нельзя.';$('#enterWithNewKey').onclick=async()=>{const button=$('#enterWithNewKey');button.disabled=true;try{await enterWorkspace(data.account,data.vaultKey)}catch(error){if($('#enterKeyError'))$('#enterKeyError').textContent=error.message;if($('#enterWithNewKey'))$('#enterWithNewKey').disabled=false}}};
 startExperience=async function(start){workspaceStarter=start;$('.app').classList.add('entry-locked');$('.app').inert=true;if(!sessionStorage.getItem('sg-intro-seen')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)await showIntro();loginScreen()};
 accountButton.onclick=()=>{modal(`<h2>${esc(signedAccount?.name||'Локальный профиль')}</h2><p>Этот профиль и его проекты находятся в текущем браузере. Проекты защищены шифрованием AES-GCM по вашему личному ключу. Ник уникален только среди профилей этого браузера.</p><div class="modalactions"><button class="btn" id="closeAccount">Закрыть</button><button class="btn" id="logoutAccount">Выйти из профиля</button></div>`);$('#closeAccount').onclick=closeModal;$('#logoutAccount').onclick=signOutAccount};
-$('.footer span').innerHTML='<span class="dot"></span>SHADOWGRAPH 7.0.25 · ЛОКАЛЬНЫЕ ЗАШИФРОВАННЫЕ ПРОФИЛИ';
+$('.footer span').innerHTML='<span class="dot"></span>SHADOWGRAPH 7.0.26 · ЛОКАЛЬНЫЕ ЗАШИФРОВАННЫЕ ПРОФИЛИ';
 
 // Conservative identity matching; source evidence is retained on every match.
 applyAnalysis=function(file,origin,result){
@@ -1324,11 +1324,11 @@ const analysisBefore57=applyAnalysis;applyAnalysis=function(file,origin,result){
 
 const normalizeBefore57=Analyzer.analyze;Analyzer.analyze=function(text,options={}){const original=String(text||''),changed=new Map;let normalized=original;if(!/\.(?:json|jsonl|ndjson|csv|tsv)$/i.test(options.name||''))normalized=original.split(/\r?\n/).map((line,i)=>{const m=line.match(/^(\s*(?:[-*•]\s*)?)([^:=—–]{1,45})\s+[—–-]\s+(.+)$/);if(m&&Analyzer.fieldType(m[2].trim())){changed.set(i+1,line);return m[1]+m[2].trim()+': '+m[3]}return line}).join('\n');const result=normalizeBefore57(normalized,options);for(const entity of result.entities)for(const ev of entity.evidence||[]){const m=ev.path?.match(/(?:^|, )строка (\d+)/);if(m&&changed.has(+m[1]))ev.originalLine=changed.get(+m[1])}return result};const evidenceOriginal57=evidenceHtml52;evidenceHtml52=function(ev){return evidenceOriginal57(ev)+(ev.originalLine?'<p class="footnote">Исходная строка: '+esc(ev.originalLine)+'</p>':'')};
 
-generateReport=async function(includeEvidence){const project=structuredClone(current),created=new Date();reportCancelled=false;modal('<h2>Создаю отчёт SHADOWGRAPH</h2><p id="reportProgress">Подготовка графа и оформления…</p><button class="btn" id="stopReport">Отмена</button>');$('#stopReport').onclick=()=>{reportCancelled=true;$('#stopReport').disabled=true};const progress=async value=>{if(reportCancelled)throw Error('Создание отчёта отменено');if($('#reportProgress'))$('#reportProgress').textContent=value;await new Promise(r=>setTimeout(r,0))};try{const [JsPDF,normal,bold,graph]=await Promise.all([loadReportLibrary(),fontData('./public/vendor/report/NotoSans-Regular.ttf'),fontData('./public/vendor/report/NotoSans-Bold.ttf'),graphReportImage()]),doc=new JsPDF({unit:'mm',format:'a4',compress:true,putOnlyUsedFonts:true});doc.addFileToVFS('NotoSans-Regular.ttf',normal);doc.addFont('NotoSans-Regular.ttf','NotoSans','normal');doc.addFileToVFS('NotoSans-Bold.ttf',bold);doc.addFont('NotoSans-Bold.ttf','NotoSans','bold');doc.setFont('NotoSans','normal');doc.setProperties({title:'SHADOWGRAPH - '+project.name,creator:'SHADOWGRAPH 7.0.25',author:'SHADOWGRAPH',subject:'Граф, источники и проверка сведений'});
+generateReport=async function(includeEvidence){const project=structuredClone(current),created=new Date();reportCancelled=false;modal('<h2>Создаю отчёт SHADOWGRAPH</h2><p id="reportProgress">Подготовка графа и оформления…</p><button class="btn" id="stopReport">Отмена</button>');$('#stopReport').onclick=()=>{reportCancelled=true;$('#stopReport').disabled=true};const progress=async value=>{if(reportCancelled)throw Error('Создание отчёта отменено');if($('#reportProgress'))$('#reportProgress').textContent=value;await new Promise(r=>setTimeout(r,0))};try{const [JsPDF,normal,bold,graph]=await Promise.all([loadReportLibrary(),fontData('./public/vendor/report/NotoSans-Regular.ttf'),fontData('./public/vendor/report/NotoSans-Bold.ttf'),graphReportImage()]),doc=new JsPDF({unit:'mm',format:'a4',compress:true,putOnlyUsedFonts:true});doc.addFileToVFS('NotoSans-Regular.ttf',normal);doc.addFont('NotoSans-Regular.ttf','NotoSans','normal');doc.addFileToVFS('NotoSans-Bold.ttf',bold);doc.addFont('NotoSans-Bold.ttf','NotoSans','bold');doc.setFont('NotoSans','normal');doc.setProperties({title:'SHADOWGRAPH - '+project.name,creator:'SHADOWGRAPH 7.0.26',author:'SHADOWGRAPH',subject:'Граф, источники и проверка сведений'});
  const ink='#172033',muted='#657087',violet='#8259ca',margin=18,width=174;let y=25,section='Обзор';const pageSections=new Map([[1,'Обложка']]);function next(label=section,orientation='portrait'){doc.addPage('a4',orientation);section=label;pageSections.set(doc.getNumberOfPages(),label);y=28}function ensure(h=12){if(y+h>274)next()}function text(value,size=9,tone=ink,bold=false){doc.setFont('NotoSans',bold?'bold':'normal');doc.setFontSize(size);doc.setTextColor(tone);const lines=doc.splitTextToSize(String(value||''),width);for(const line of lines){ensure(size*.48+1);doc.text(line,margin,y);y+=size*.48}y+=2.2}function heading(number,title){ensure(28);doc.setDrawColor('#dce0e9');doc.line(margin,y,192,y);y+=9;text(number+' / '+title,16,ink,true);y+=3}function small(value){text(value,8,muted)}const sourceName=id=>project.files.find(f=>f.id===id)?.name||'Источник не указан',review=v=>reviewNames[v||'unreviewed']||reviewNames.unreviewed,numbers=new Map(project.nodes.map((n,i)=>[n.id,i+1]));
  // Dark title page with a restrained graph motif.
  doc.setFillColor('#080b12');doc.rect(0,0,210,297,'F');doc.setFillColor(violet);doc.rect(18,22,14,2,'F');doc.setTextColor('#f0edf9');doc.setFont('NotoSans','bold');doc.setFontSize(24);doc.text('SHADOWGRAPH',18,46);doc.setFont('NotoSans','normal');doc.setFontSize(9);doc.setTextColor('#a69fba');doc.text('INVESTIGATION REPORT / 5.7',18,57);doc.setDrawColor('#40314e');for(const [a,b,c,d]of [[130,32,180,70],[180,70,152,103],[152,103,130,32]])doc.line(a,b,c,d);doc.setFillColor('#b69bea');for(const [a,b,r]of [[130,32,2],[180,70,3],[152,103,2]])doc.circle(a,b,r,'F');y=116;text('ОТЧЁТ ПО РАССЛЕДОВАНИЮ',9,'#a99abf');text(project.name,23,'#ffffff',true);y=Math.max(y+10,164);small('Сформирован: '+created.toLocaleString('ru-RU'));const stats=[['ОБЪЕКТЫ',project.nodes.length],['СВЯЗИ',project.edges.length],['ИСТОЧНИКИ',project.files.length]];for(const [i,[label,count]]of stats.entries()){const x=18+i*60;doc.setFillColor('#141824');doc.roundedRect(x,191,54,33,3,3,'F');doc.setTextColor('#eee9f9');doc.setFont('NotoSans','bold');doc.setFontSize(21);doc.text(String(count),x+6,207);doc.setFont('NotoSans','normal');doc.setFontSize(7);doc.setTextColor('#9f98ae');doc.text(label,x+6,216)}y=248;text('Материалы, связи и основания для проверки.',10,'#c8c1d7');text('Автоматические находки отражают содержание источников. Они не подтверждают истинность сведений или принадлежность контактов.',8,'#9a94a8');
- await progress('Собираю обзор…');next('Обзор исследования');heading('01','Обзор исследования');text(project.name,13,ink,true);small('Версия отчёта: SHADOWGRAPH 7.0.25 · '+created.toLocaleDateString('ru-RU'));text('Состав отчёта',11,ink,true);for(const value of ['Обзор, статусы проверки и состав материалов','Граф в выбранном режиме отображения','Реестр источников с номерами S1, S2…','Карточки объектов N1, N2… и фрагменты доказательств','Связи с источниками и причинами обнаружения'])text(value,9);y+=5;text('Статусы объектов',12,ink,true);const reviewColors={confirmed:'#2c8b70',doubtful:'#bb872f',error:'#b85865',unreviewed:'#8c80a5'};for(const [key,label]of Object.entries(reviewNames)){ensure(15);const count=project.nodes.filter(n=>(n.review||'unreviewed')===key).length;doc.setFillColor('#f0f1f6');doc.roundedRect(18,y-3,174,11,2,2,'F');doc.setFillColor(reviewColors[key]);doc.rect(18,y-3,Math.max(1,Math.min(174,174*count/Math.max(1,project.nodes.length))),1.1,'F');doc.setFontSize(9);doc.setTextColor(ink);doc.text(label,23,y+4);doc.text(String(count),186,y+4,{align:'right'});y+=16}y+=4;text('Как интерпретировать данные',12,ink,true);text('Статусы назначает пользователь. Упоминание в одном профиле не доказывает владение контактом, а совпадение ФИО или адреса не устанавливает личность. Отрицания и исторические сведения необходимо проверять с учётом периода.',9);small('Изображение графа отражает текущие фильтры и режим; реестры ниже содержат весь проект. Перед передачей отчёта проверьте персональные сведения и содержание источников.');
+ await progress('Собираю обзор…');next('Обзор исследования');heading('01','Обзор исследования');text(project.name,13,ink,true);small('Версия отчёта: SHADOWGRAPH 7.0.26 · '+created.toLocaleDateString('ru-RU'));text('Состав отчёта',11,ink,true);for(const value of ['Обзор, статусы проверки и состав материалов','Граф в выбранном режиме отображения','Реестр источников с номерами S1, S2…','Карточки объектов N1, N2… и фрагменты доказательств','Связи с источниками и причинами обнаружения'])text(value,9);y+=5;text('Статусы объектов',12,ink,true);const reviewColors={confirmed:'#2c8b70',doubtful:'#bb872f',error:'#b85865',unreviewed:'#8c80a5'};for(const [key,label]of Object.entries(reviewNames)){ensure(15);const count=project.nodes.filter(n=>(n.review||'unreviewed')===key).length;doc.setFillColor('#f0f1f6');doc.roundedRect(18,y-3,174,11,2,2,'F');doc.setFillColor(reviewColors[key]);doc.rect(18,y-3,Math.max(1,Math.min(174,174*count/Math.max(1,project.nodes.length))),1.1,'F');doc.setFontSize(9);doc.setTextColor(ink);doc.text(label,23,y+4);doc.text(String(count),186,y+4,{align:'right'});y+=16}y+=4;text('Как интерпретировать данные',12,ink,true);text('Статусы назначает пользователь. Упоминание в одном профиле не доказывает владение контактом, а совпадение ФИО или адреса не устанавливает личность. Отрицания и исторические сведения необходимо проверять с учётом периода.',9);small('Изображение графа отражает текущие фильтры и режим; реестры ниже содержат весь проект. Перед передачей отчёта проверьте персональные сведения и содержание источников.');
  next('Карта связей','landscape');doc.setFont('NotoSans','bold');doc.setFontSize(19);doc.setTextColor(ink);doc.text('02 / Карта связей',18,24);doc.setFont('NotoSans','normal');doc.setFontSize(8);doc.setTextColor(muted);doc.text('Выбранное представление: '+(project.graphView==='network'?'круглая сеть':'карточки')+'. Для большой схемы используйте также интерактивный проект.',18,32);doc.setFillColor('#0b0e16');doc.roundedRect(18,42,261,145,3,3,'F');const scale=Math.min(253/graph.width,137/graph.height),iw=graph.width*scale,ih=graph.height*scale;doc.addImage(graph.data,'PNG',22+(253-iw)/2,46+(137-ih)/2,iw,ih,undefined,'FAST');
  next('Источники');heading('03','Реестр источников');if(!project.files.length)small('Прикреплённых файлов нет.');for(const [i,file]of project.files.entries()){await progress('Источники: '+(i+1)+' / '+project.files.length);ensure(30);doc.setFillColor(violet);doc.rect(15,y-3,1,10,'F');text('S'+(i+1)+'  '+file.name,11,ink,true);small(formatBytes(file.size||0)+' · '+(file.type||'Тип не указан'));small('Анализ: '+({completed:'выполнен',disabled:'выключен',unsupported:'без извлечения текста'}[file.analysis]||'не указан')+(file.ocr?' · OCR: '+file.ocr.pages.length+' стр.':''));if(file.added)small('Добавлен: '+new Date(file.added).toLocaleString('ru-RU'));y+=3}
  next('Объекты и находки');heading('04','Объекты и находки');for(const [i,node]of project.nodes.entries()){if(i%12===0)await progress('Объекты: '+(i+1)+' / '+project.nodes.length);ensure(34);doc.setDrawColor('#e0e3eb');doc.line(18,y-4,192,y-4);const accent=/^#[a-f\d]{6}$/i.test(node.color||'')?node.color:violet;doc.setFillColor(accent);doc.rect(15,y-3,1,7,'F');text('N'+(i+1)+'  '+node.label,11,ink,true);const mail=node.type==='email'?ServiceIdentity.mail(node.label):null,social=ServiceIdentity.social(node);small((types[node.type]?.[0]||node.type)+' · '+review(node.review)+(social?' · '+social.label:'')+(mail?' · '+(mail.provider||mail.domain):''));if(node.detail)text(node.detail,9);const sources=[...new Set([node.fileId,...(node.evidence||[]).map(e=>e.fileId)].filter(Boolean))];if(sources.length)small('Материалы: '+sources.map(id=>'S'+(project.files.findIndex(f=>f.id===id)+1)+' '+sourceName(id)).join('; '));if(includeEvidence)for(const ev of (node.evidence||[]).slice(0,3)){ensure(23);small((ev.path||'Фрагмент')+' · '+(ev.rule||'Правило не записано'));text('«'+String(ev.snippet||'').slice(0,360)+'»',8,'#48556b');if(ev.assertion)small(assertionNames52[ev.assertion]||'Требует проверки');if(ev.addressRoles)small('Назначение адреса: '+ev.addressRoles.join(', '));if(ev.ocrMatch?.available&&Number.isFinite(ev.ocrMatch.confidence))small('Минимальная уверенность слов OCR: '+Math.round(ev.ocrMatch.confidence)+'%')}y+=5}
@@ -1650,7 +1650,7 @@ const inspectorBefore64=renderInspector;renderInspector=function(){inspectorBefo
 function labelsDialog64(){modal('<h2>Подписи полей</h2><p class="footnote">Словарь русских и английских подписей. Регистр, пробелы, точки в сокращениях, snake_case и camelCase нормализуются. Неизвестные короткие подписи не угадываются.</p><input class="input" id="labelsSearch64" placeholder="Например: отчество, mobile, ИНН"><div id="labelsList64"></div><button class="btn" id="labelsClose64">Закрыть</button>');const renderList=()=>{const q=Labels64.key($('#labelsSearch64').value);$('#labelsList64').innerHTML=Labels64.entries.filter(e=>e.aliases.some(a=>Labels64.key(a).includes(q))).slice(0,60).map(e=>'<div class="history-entry"><b>'+esc(e.canonical)+'</b><p>'+e.aliases.map(esc).join(' · ')+'</p></div>').join('')};$('#labelsSearch64').oninput=renderList;$('#labelsClose64').onclick=closeModal;renderList()}
 const labelsTool64=toolButton('labels64','Подписи полей RU / EN',()=>{closeModal();labelsDialog64()});labelsTool64.remove();advancedTools.push(labelsTool64);
 function gridPattern64(light){return 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\'%3E%3Ccircle cx=\'1\' cy=\'1\' r=\'0.7\' fill=\'%23'+(light?'a0a0a0':'464646')+'\'/%3E%3C/svg%3E")'}
-const canvasBefore64=canvasBackground;canvasBackground=function(){if(current?.graphView==='straight')return '#171a1a';const v=current?.style?.background;return !v||['#0b1019','#080b10','#090b0e','#080b11'].includes(v.toLowerCase())?'#000000':canvasBefore64()};
+const canvasBefore64=canvasBackground;canvasBackground=function(){if(current?.graphView==='straight')return '#000000';const v=current?.style?.background;return !v||['#0b1019','#080b10','#090b0e','#080b11'].includes(v.toLowerCase())?'#000000':canvasBefore64()};
 const theme64=document.createElement('style');theme64.id='blackTheme64';theme64.textContent=`.app{background:#000;color:#ededed}.app .top,.app .sidebar,.app .inspector,.app .footer{background:#050505!important;background-image:none!important;border-color:#252525!important}.app .toolbar,.app .case-item,.app .stat,.app .history-entry,.app .filechip,.app .hint,.app .zoom{background:#0b0b0b!important;background-image:none!important;border-color:#303030!important;box-shadow:none}.app .tool.active,.app .sideact.active,.app .sideact:hover{background:#1a1a1a!important;background-image:none!important;color:#fff!important;border-color:#777!important}.app .sideact .ico,.app .eyebrow,.app .label{color:#a7a7a7!important}.app .tool,.app .sideact{color:#c5c5c5}.app .btn,.modal .btn{background:#171717;border-color:#383838;color:#ededed;background-image:none}.app .btn.primary,.modal .btn.primary{background:#d2d2d2!important;border-color:#e5e5e5!important;color:#080808!important}.app .btn:hover,.modal .btn:hover{background:#262626}.app .input,.app .search,.modal .input{background:#0b0b0b!important;border-color:#3b3b3b!important;color:#ededed!important}.app .section,.app .inshead,.app .property{border-color:#252525}.app .case-item{border-color:#454545!important}.app #workspace{background-image:none!important}.app .node.selected rect.body{filter:none}.app input[type=checkbox],.modal input[type=checkbox]{accent-color:#ddd}.modalbg .modal{background:#080808!important;background-image:none!important;border-color:#3b3b3b}.modal .eyebrow{color:#bdbdbd}.modal .uploadzone,.modal .queueitem,.modal .history-entry,.modal .sourcepreview{background:#111!important;background-image:none!important;border-color:#363636!important;color:#dedede}.app :focus-visible,.modal :focus-visible{outline-color:#bdbdbd!important}.app .sourcepreview{background:#070707;color:#bdbdbd}`;theme64.textContent+='.app .evidence,.modal .evidence,.app .avatar-panel57{background:#101010!important;border-color:#353535!important;background-image:none!important}.app .evidence blockquote,.modal .evidence blockquote{border-color:#777;color:#ddd}.app .evidence small,.modal .evidence small{color:#aaa}';document.head.append(theme64);
 
 const GraphLayout65=(()=>{
@@ -1813,7 +1813,7 @@ const StraightRoutes724=(()=>{
     const step=58,grid=new Map(),cuts=new Map();
     const sorted=[...draws].sort((a,b)=>
       Number(b.primary)-Number(a.primary)||Number(b.strong)-Number(a.strong)||
-      Number(Boolean(b.r.track))-Number(Boolean(a.r.track))||String(a.e.id).localeCompare(String(b.e.id)));
+      Number(b.branch)-Number(a.branch)||Number(Boolean(b.r.track))-Number(Boolean(a.r.track))||String(a.e.id).localeCompare(String(b.e.id)));
     let budget=350000;
     for(const item of sorted){
       if(budget<=0)break;
@@ -1841,19 +1841,12 @@ const StraightRoutes724=(()=>{
         }
         for(const other of near){
           if(--budget<0)break;
-          if(item.r.track&&other.item.r.track)continue;
+          if(item.primary||item.r.track&&other.item.r.track&&item.branch&&other.item.branch)continue;
           const sx=other.a.x-a.x,sy=other.a.y-a.y,det=cross(dx,dy,other.dx,other.dy);
-          if(Math.abs(det)<.04*len*other.len){
-            const distance=Math.abs(cross(sx,sy,dx,dy))/len;
-            if(distance>1.3)continue;
-            const begin=(sx*dx+sy*dy)/len,end=begin+(other.dx*dx+other.dy*dy)/len;
-            const left=Math.max(0,Math.min(begin,end)),right=Math.min(len,Math.max(begin,end));
-            if(right-left>2)gap(at+left,at+right);
-            continue;
-          }
+          if(Math.abs(det)<.14*len*other.len)continue;
           const t=cross(sx,sy,other.dx,other.dy)/det,u=cross(sx,sy,dx,dy)/det;
           if(t<0||t>1||u<0||u>1)continue;
-          const radius=Math.min(9,5/Math.max(.58,Math.abs(det)/(len*other.len)));
+          const radius=Math.min(3.8,2.7/Math.max(.64,Math.abs(det)/(len*other.len)));
           gap(at+t*len-radius,at+t*len+radius);
         }
         pending.push({seg,cells});
@@ -1956,7 +1949,7 @@ const DenseViews725=(()=>{
       y+=height+gap;
       cross.push(y-gap/2);
     }
-    const group={cross,step,gap};
+    const group={cross,gap};
     columns.forEach((column,col)=>{
       for(const [node,row] of rows(column)){
         positions[node.id]=point(col*step,ys[row]);
@@ -1964,44 +1957,6 @@ const DenseViews725=(()=>{
       }
     });
     return y-top;
-  }
-
-  function routes(boxes,edges,tree,groups,size,makeRoutes){
-    const byId=new Map(boxes.map(box=>[box.id,box]));
-    const local=new Map(),remote=[],general=[];
-    for(const e of edges){
-      const a=byId.get(e.from),b=byId.get(e.to);
-      if(!a||!b)continue;
-      const link=tree.get(e.id),group=groups.get(e.from);
-      if(link&&(!group||Math.abs(Math.abs(a.cx-b.cx)-group.step)<.0001))local.set(e.id,link);
-      else if(group)remote.push({e,a,b,group});
-      else general.push(e);
-    }
-    const uses=new Map();
-    const track=(key,slots)=>{
-      const use=uses.get(key)||0;
-      uses.set(key,use+1);
-      return (use%slots-(slots-1)/2)*Math.min(4*size,17*size/slots);
-    };
-    const result=remote.map(({e,a,b,group})=>{
-      const forward=b.cx>=a.cx?1:-1,same=a.cx===b.cx;
-      const side=same?forward:-forward;
-      const start=point(a.cx+forward*a.w/2,a.y+a.h/2);
-      const end=point(b.cx+side*b.w/2,b.y+b.h/2);
-      if(a===b){start.y-=a.h*.2;end.y+=a.h*.2}
-      const exit=a.cx+forward*group.step*(same?.44:.48)+track(group.cross[0]+':'+a.cx+':'+forward,12);
-      const enter=b.cx+side*group.step*(same?.55:.48)+track(group.cross[0]+':'+b.cx+':'+side,12);
-      const target=(start.y+end.y)/2;
-      const eligible=group.cross.filter(y=>Math.abs(y-target)<group.gap*4);
-      const candidates=(eligible.length?eligible:group.cross).slice().sort((u,v)=>{
-        const cost=y=>Math.abs(y-target)+(uses.get('row:'+y)||0)*group.gap*.38;
-        return cost(u)-cost(v);
-      });
-      const cross=candidates[0],via=cross+track('row:'+cross,7)*Math.min(1,group.gap/(24*size));
-      return{id:e.id,from:e.from,to:e.to,points:[start,point(exit,start.y),point(exit,via),point(enter,via),point(enter,end.y),end]};
-    });
-    return [...StraightRoutes724.curves(boxes,local,edges,size),
-      ...makeRoutes(boxes.filter(b=>!groups.has(b.id)),general,false,size,true),...result];
   }
 
   function maltego(nodes,edges,isSource){
@@ -2038,7 +1993,79 @@ const DenseViews725=(()=>{
     return positions;
   }
 
-  return{pack,routes,maltego,flowEdges};
+  return{pack,maltego,flowEdges};
+})();
+
+const StraightLayout726=(()=>{
+  const point=(x,y)=>({x,y,z:0});
+
+  function compact(positions,cells,gap){
+    const widths=new Map();
+    for(const [id,p] of Object.entries(positions))widths.set(p.x,Math.max(widths.get(p.x)||0,cells.get(id).w));
+    const coordinates=new Map();
+    let right=null;
+    for(const [old,width] of [...widths].sort(([a],[b])=>a-b)){
+      const x=right===null?0:right+gap+width/2;
+      coordinates.set(old,x);
+      right=x+width/2;
+    }
+    for(const p of Object.values(positions))p.x=coordinates.get(p.x);
+  }
+
+  function routes(boxes,edges,groups,size,makeRoutes){
+    const byId=new Map(boxes.map(b=>[b.id,b]));
+    const bounds=new Map();
+    for(const b of boxes){
+      const c=bounds.get(b.cx);
+      if(c){c.left=Math.min(c.left,b.x);c.right=Math.max(c.right,b.x+b.w)}
+      else bounds.set(b.cx,{left:b.x,right:b.x+b.w});
+    }
+    const columns=[...bounds.keys()].sort((a,b)=>a-b);
+    const order=new Map(columns.map((x,i)=>[x,i]));
+    const local=new Map(),remote=[],other=[];
+    for(const e of edges){
+      const a=byId.get(e.from),b=byId.get(e.to);
+      if(!a||!b)continue;
+      if(Math.abs(order.get(a.cx)-order.get(b.cx))===1){
+        local.set(e.id,a.cx<b.cx?{parent:a.id,child:b.id}:{parent:b.id,child:a.id});
+      }else if(groups.has(a.id)){
+        remote.push({e,a,b,group:groups.get(a.id)});
+      }else other.push(e);
+    }
+    const uses=new Map();
+    const lane=(key,slots)=>{
+      const use=uses.get(key)||0;
+      uses.set(key,use+1);
+      return (use%slots+.5)/slots;
+    };
+    function gate(box,side,track){
+      const column=bounds.get(box.cx);
+      const neighbor=bounds.get(columns[order.get(box.cx)+side]);
+      const start=side===1?column.right:column.left;
+      const end=neighbor?(side===1?neighbor.left:neighbor.right):start+side*100*size;
+      return start+(end-start)*track;
+    }
+    const long=remote.map(({e,a,b,group})=>{
+      const forward=b.cx>=a.cx?1:-1,same=a.cx===b.cx;
+      const side=same?forward:-forward;
+      const start=point(a.cx+forward*a.w/2,a.y+a.h/2);
+      const end=point(b.cx+side*b.w/2,b.y+b.h/2);
+      if(a===b){start.y-=a.h*.2;end.y+=a.h*.2}
+      const exit=gate(a,forward,(same?.26:.39)+lane('exit:'+a.cx+':'+forward,12)*.20);
+      const enter=gate(b,side,(same?.57:.39)+lane('enter:'+b.cx+':'+side,12)*.20);
+      const target=(start.y+end.y)/2;
+      const cost=y=>Math.abs(y-target)+(uses.get('row:'+y)||0)*group.gap*.36;
+      const row=group.cross.reduce((best,y)=>cost(y)<cost(best)?y:best);
+      const via=row+(lane('row:'+row,7)-.5)*Math.min(12*size,group.gap*.6);
+      return{id:e.id,from:e.from,to:e.to,points:[start,point(exit,start.y),point(exit,via),point(enter,via),point(enter,end.y),end]};
+    });
+    return [
+      ...StraightRoutes724.curves(boxes,local,edges,size),
+      ...makeRoutes(boxes.filter(b=>!groups.has(b.id)),other,false,size,true),
+      ...long
+    ];
+  }
+  return {compact,routes};
 })();
 
 const Presentation716=(()=>{
@@ -2162,12 +2189,12 @@ const Presentation716=(()=>{
       if(strong){related.add(e.from);related.add(e.to)}
       const coords=r.points.map(project),sample=r.spline||r.track?coords:roundedSamples(coords,Math.max(2,13*scale));
       const hitBox=Network715.bounds(sample);
-      draws.push({r,e,primary,strong,coords,sample,hitBox});
+      draws.push({r,e,primary,strong,branch:branches.has(e.id),coords,sample,hitBox});
     }
     ctx.save();
     ctx.textBaseline='alphabetic';ctx.textAlign='left';
     const visible=draws.filter(({hitBox:b})=>b.maxX>=-12&&b.maxY>=-12&&b.minX<=width+12&&b.minY<=height+12);
-    const cuts=visible.every(x=>x.r.track)?new Map():StraightRoutes724.intersections(visible,width,height);
+    const cuts=StraightRoutes724.intersections(visible,width,height);
     visible.sort((a,b)=>Number(a.primary)-Number(b.primary)||Number(a.strong)-Number(b.strong)||Number(Boolean(a.r.track))-Number(Boolean(b.r.track)));
     for(const {r,e,primary,strong,coords,sample,hitBox} of visible){
       const stroke=strong?'#e0e2e1':'#adb1b0';
@@ -2184,7 +2211,7 @@ const Presentation716=(()=>{
       }:()=>rounded(ctx,coords,Math.max(2,13*scale));
       const dim=Boolean((modeFocus||chosenEdge)&&!strong);
       const source=available.length>80&&[e.from,e.to].some(id=>GraphLayout65.source(byId.get(id).n));
-      const opacity=source?.18:r.track?.81:available.length>95?.43:.65;
+      const opacity=source?.19:branches.has(e.id)?.87:available.length>60?.27:.42;
       wire(ctx,path,fragments,e,strong,dim,o.arrows,stroke,opacity,true);
       hits.push({e,samples:fragments,bounds715:hitBox});
       if(primary||strong&&e.label)tags.push({text:e.label||"Связь",sample,primary,stroke});
@@ -2202,15 +2229,22 @@ const Presentation716=(()=>{
       const active=n.id===selected||n.id===hover;
       const dim=(modeFocus||chosenEdge)&&!related.has(n.id)||query&&!String(n.label||'').toLowerCase().includes(query);
       if(!o.labels&&!active)continue;
-      const font=c.lines.length===1?Math.max(8.5,14*unit):Math.min(Math.max(7.5,14*unit),Math.max(1,box.h/c.lines.length*.86));
+      const font=c.lines.length===1?Math.max(10,15*unit):Math.min(Math.max(8,15*unit),Math.max(1,box.h/c.lines.length*.88));
       const leading=Math.max(font+1,19*unit),x=box.x+12*unit,y=box.y+(box.h-c.lines.length*leading)/2+font;
       ctx.globalAlpha=dim?.32:1;
-      ctx.font=(active||c.root?'600 ':'400 ')+font+'px ui-monospace,monospace';
-      ctx.fillStyle=active?'#ffffff':c.root?'#e2e4e3':'#cfd2d1';
-      for(const [index,line] of c.lines.entries())ctx.fillText(line,x,y+leading*index,Math.max(1,box.w-24*unit));
+      ctx.font=(active||c.root?'600 ':'400 ')+font+'px Consolas,ui-monospace,monospace';
+      ctx.fillStyle=active?'#ffffff':c.root?'#f3f3f3':'#dedede';
+      const extraWidth=unit<.6?Math.min(12,36*unit):0,maxWidth=Math.max(1,box.w-24*unit+extraWidth);
+      for(const [index,line] of c.lines.entries()){
+        const baseline=y+leading*index;
+        if(extraWidth&&ctx.measureText(line).width>box.w-24*unit){
+          ctx.strokeStyle="#000";ctx.lineWidth=2.5;ctx.strokeText(line,x,baseline,maxWidth);
+        }
+        ctx.fillText(line,x,baseline,maxWidth);
+      }
       if(active){
         const last=c.lines.at(-1),under=y+leading*(c.lines.length-1)+3;
-        ctx.beginPath();ctx.moveTo(x,under);ctx.lineTo(x+Math.min(ctx.measureText(last).width,box.w-24*unit),under);
+        ctx.beginPath();ctx.moveTo(x,under);ctx.lineTo(x+Math.min(ctx.measureText(last).width,maxWidth),under);
         ctx.strokeStyle="#d1d4d3";ctx.lineWidth=1;ctx.stroke();
       }
     }
@@ -2220,7 +2254,7 @@ const Presentation716=(()=>{
       const spots=[.5,.32,.68].flatMap(t=>{const p=sample[Math.round((sample.length-1)*t)];return[{x:p.x-w/2,y:p.y-h-5,w,h},{x:p.x-w/2,y:p.y+5,w,h}]});
       const box=spots.find(b=>b.x>=0&&b.y>=0&&b.x+b.w<=width&&b.y+b.h<=height&&!obstacles.some(o=>b.x<o.x+o.w+3&&b.x+b.w+3>o.x&&b.y<o.y+o.h+3&&b.y+b.h+3>o.y));
       if(!box)continue;
-      obstacles.push(box);ctx.lineWidth=3;ctx.strokeStyle="#171a1a";ctx.strokeText(title,box.x+10,box.y+14,w-20);
+      obstacles.push(box);ctx.lineWidth=3;ctx.strokeStyle="#000000";ctx.strokeText(title,box.x+10,box.y+14,w-20);
       ctx.fillStyle="#e0e2e1";ctx.fillText(title,box.x+10,box.y+14,w-20);
     }
     if(!points.length){ctx.fillStyle=pal.quiet;ctx.textAlign='center';ctx.font='14px Inter,system-ui';ctx.fillText('Добавьте объекты, чтобы построить схему',width/2,height/2)}
@@ -2238,7 +2272,7 @@ const Presentation716=(()=>{
 
 const Lines705 = (() => {
   const cells = new Map();
-  let extent = [], routes = [], cachedKey = '', cachedResult, standalone = null, branches = new Map(), tree = new Map();
+  let extent = [], routes = [], cachedKey = '', cachedResult, standalone = null, branches = new Map();
   const textOf = n => {
     const label = String(n.label || 'Без названия'), detail = String(n.detail || '');
     const code = n.type === 'code' || /<[a-z!/][\s\S]*>/i.test(label + ' ' + detail);
@@ -2265,7 +2299,7 @@ const Lines705 = (() => {
     const hierarchy = current.graphView === 'hierarchy';
     const key = JSON.stringify([current.id, hierarchy, vertical, o.spacing, o.nodeSize, nodes.map(n => [n.id,n.label,n.type,n.detail]), edges.map(e => [e.id,e.from,e.to,...(hierarchy?[]:[e.review,Boolean(e.dashed)])])]);
     if (key === cachedKey) return cachedResult;
-    cells.clear(); extent = []; routes = []; standalone = null; branches = new Map(); tree = new Map();
+    cells.clear(); extent = []; routes = []; standalone = null; branches = new Map();
     const byId = new Map(nodes.map(n => [n.id,n])), adj = new Map(nodes.map(n => [n.id,new Set()])), incoming = new Map(nodes.map(n => [n.id,0])), outgoing = new Map(nodes.map(n => [n.id,0]));
     const structure=hierarchy?{edges,dense:new Set()}:DenseViews725.flowEdges(nodes,edges,GraphLayout65.source);
     const selfLinks=new Set(),pairs=hierarchy?null:StraightBranches723.index(structure.edges);
@@ -2296,7 +2330,6 @@ const Lines705 = (() => {
       const links=hierarchy?null:StraightBranches723.plan(root,levels,depths,adj,pairs);
       if(links){
         for(const [id,type] of links.edges)branches.set(id,type);
-        for(const [id,link] of links.links)tree.set(id,link);
       }
       components.push({levels,root,links:links?.links});
     }
@@ -2305,10 +2338,10 @@ const Lines705 = (() => {
       if(!hierarchy){
         const c=textOf(n),actualLabel=String(n.label||'Без названия');
         const value=c.code&&c.text!==actualLabel?actualLabel+'\n'+c.text:c.text;
-        measure.font='600 14px ui-monospace,monospace';
+        measure.font='600 15px Consolas,ui-monospace,monospace';
         let natural=0;
         for(const row of value.split('\n'))natural=Math.max(natural,measure.measureText(row).width);
-        const inner=Math.max(100,Math.min(336,natural+4));
+        const inner=Math.max(93,Math.min(304,natural+5));
         const lines=wrap(value,s=>measure.measureText(s).width,inner);
         cells.set(n.id,{w:(inner+24)*size,h:(Math.max(1,lines.length)*19+13)*size,lines,root:false});
         continue;
@@ -2327,7 +2360,7 @@ const Lines705 = (() => {
     for (const {levels,root,links} of components) {
       cells.get(root.id).root=true;
       if(!hierarchy){
-        const gutter=36*size*gap;
+        const gutter=30*size*gap;
         const height=DenseViews725.pack(levels,cells,positions,stackOffset718,stepX,gutter,packed)
           ??StraightRoutes724.place(levels,links,cells,positions,stackOffset718,stepX,gutter);
         stackOffset718+=height+100*size;
@@ -2344,6 +2377,7 @@ const Lines705 = (() => {
       }));
       offset+=breadth+1.2;
     }
+    if(!hierarchy)StraightLayout726.compact(positions,cells,Math.max(72,94*gap)*size);
     if(isolated.length){
       const gutterX=40*gap*size,gutterY=30*gap*size;
       const width=Math.max(...isolated.map(n=>cells.get(n.id).w));
@@ -2366,7 +2400,7 @@ const Lines705 = (() => {
       const minX=Math.min(...boxes.map(b=>b.x)),minY=Math.min(...boxes.map(b=>b.y)),maxX=Math.max(...boxes.map(b=>b.x+b.w)),maxY=Math.max(...boxes.map(b=>b.y+b.h));
       extent=[{key:'flow707-bounds',x:minX-48,y:minY-48,w:maxX-minX+96,h:maxY-minY+96}];
       const connected=boxes.filter(b=>!isolatedIds.has(b.id));
-      routes=hierarchy?makeRoutes(connected,edges,vertical,size,false):DenseViews725.routes(connected,edges,tree,packed,size,makeRoutes);
+      routes=hierarchy?makeRoutes(connected,edges,vertical,size,false):StraightLayout726.routes(connected,edges,packed,size,makeRoutes);
     }
     cachedKey=key;cachedResult={positions};return cachedResult;
   }
@@ -3945,7 +3979,7 @@ const Scene65 = (() => {
       if(staleMalt||force||!Views703.validCamera(current[cameraKey697()]))fit(false);
       return;
     }
-    if(Views703.special()){const revision707=current.graphView==='straight'?8:current.graphView==='orbits'?5:current.graphView==='lanes'?4:current.graphView==='hierarchy'?2:1,migrate=Views703.compact()&&current.layoutRevision704?.[current.graphView]!==revision707;if(migrate){current.layoutRevision704||={};current.layoutRevision704[current.graphView]=revision707;delete current[cameraKey697()]}const result=Views703.layout(baseEligible704(),current.edges);positions=new Map(Object.entries(result.positions));if(!Views703.compact()&&saved)for(const [id,p]of positions)if([saved[id]?.x,saved[id]?.y,saved[id]?.z].every(Number.isFinite))positions.set(id,{...saved[id]});current[positionsKey697()]=Object.fromEntries(positions);if(!Views703.validCamera(current[cameraKey697()])||force||migrate)fit(false);return}
+    if(Views703.special()){const revision707=current.graphView==='straight'?9:current.graphView==='orbits'?5:current.graphView==='lanes'?4:current.graphView==='hierarchy'?2:1,migrate=Views703.compact()&&current.layoutRevision704?.[current.graphView]!==revision707;if(migrate){current.layoutRevision704||={};current.layoutRevision704[current.graphView]=revision707;delete current[cameraKey697()]}const result=Views703.layout(baseEligible704(),current.edges);positions=new Map(Object.entries(result.positions));if(!Views703.compact()&&saved)for(const [id,p]of positions)if([saved[id]?.x,saved[id]?.y,saved[id]?.z].every(Number.isFinite))positions.set(id,{...saved[id]});current[positionsKey697()]=Object.fromEntries(positions);if(!Views703.validCamera(current[cameraKey697()])||force||migrate)fit(false);return}
     positions = new Map(
       current.nodes.map((n, i) => {
         const a = i * 2.39996323,
@@ -4187,12 +4221,12 @@ const Scene65 = (() => {
       Math.max(
         0.03,
         Math.min(
-          Math.max(80, width - (width < 650 ? 60 : 220)) /
+          Math.max(80, width - (current.graphView==="straight"?(width<650?40:96):width<650?60:220)) /
             Math.max(
               180,
               Math.max(...ps.map((p) => p.x)) - Math.min(...ps.map((p) => p.x)),
             ),
-          Math.max(80, height - (current.graphView==="straight"?146:230)) /
+          Math.max(80, height - (current.graphView==="straight"?122:230)) /
             Math.max(
               180,
               Math.max(...ps.map((p) => p.y)) - Math.min(...ps.map((p) => p.y)),
@@ -4378,7 +4412,7 @@ const Scene65 = (() => {
     ctx.fillStyle = canvasBackground();
     ctx.fillRect(0, 0, width, height);
     if (current.style?.grid !== false) {
-      ctx.fillStyle = current.graphView==="straight"?"#2a2d2d":"#202025";
+      ctx.fillStyle = current.graphView==="straight"?"#161616":"#202025";
       for (let x = 12; x < width; x += 28)
         for (let y = 12; y < height; y += 28) ctx.fillRect(x, y, 1, 1);
     }
@@ -6035,7 +6069,7 @@ const Report66 = (() => {
       doc.setProperties({
         title: "SHADOWGRAPH - " + project.name,
         subject: "Карта, источники и основания связей",
-        creator: "SHADOWGRAPH 7.0.25",
+        creator: "SHADOWGRAPH 7.0.26",
         author: "SHADOWGRAPH",
       });
       const ink = "#181b20",
@@ -6515,7 +6549,7 @@ const Owner67=(()=>{
 
 const Policy67=(()=>{
  const content={rules:['Правила использования','Используйте материалы, с которыми у вас есть право работать. Не применяйте SHADOWGRAPH для преследования, угроз или распространения чужих личных сведений.','Автоматическая находка - предложение для проверки. Сверяйте источник, дату, отрицания и контекст; совпадение имени или контакта не подтверждает личность.','Перед передачей отчётов и проектов проверяйте, какие сведения включены. Экспорт JSON и PDF сохраняется обычными незашифрованными файлами.','Сохраняйте резервные копии. Удаление данных браузера или потеря ключа может сделать проекты недоступными.'],privacy:['Конфиденциальность','Локальные профили и проекты находятся на вашем устройстве. Материалы анализируются в браузере; приложение не отправляет их на сервер анализа.','Онлайн-карта подключается только по вашей кнопке. OpenFreeMap получает запросы тайлов выбранной области и обычные сетевые данные соединения. Файлы проекта и ключ профиля не отправляются. Сохранённый снимок и координаты входят в экспорт проекта.', 'Проекты, описание профиля, аватар и настройки защищены AES-GCM по ключу профиля. Ник и дата регистрации находятся в локальном индексе профилей.','Необязательные счётчики активности и присутствия находятся в этом браузере. В них нет содержимого проектов, имён, IP-адресов или контактов. Их можно отключить в настройках и сбросить в панели владельца.','Хостинг GitHub Pages отдельно сохраняет IP-адреса посетителей для безопасности. Это поведение хостинга, которое приложение не может отключить.','Публичного каталога профилей и страницы владельца нет. Токен владельца открывает локальное меню статистики; он не является ключом расшифровки других профилей.'],storage:['Данные и доступ','Ник уникален среди локальных профилей этого браузера. На другом устройстве список профилей и статистика независимы. Общих аккаунтов и серверных ролей в этой версии нет.','Ваш личный ключ заменяет пароль и нужен для расшифровки. Восстановления через почту или выдуманную seed-фразу нет. Сохраните выданный ключ отдельно.','Проекты можно перенести через экспорт и импорт. Сохраняйте выгрузки в безопасном месте: JSON, PDF и изображения могут содержать все сведения проекта.','Локальная панель владельца не является защищённой серверной админкой. Человек, управляющий браузером и кодом, может изменить её интерфейс и счётчики. Шифрование проектов остаётся привязано к отдельным ключам.','Абсолютная анонимность владельца не гарантируется. Адрес GitHub Pages, репозиторий, история коммитов и сведения домена могут раскрывать аккаунт или другие данные независимо от приложения.']};
- function html(tab='rules'){if(tab==='agreement')return '<section class="sg-agreement712"><span>SHADOWGRAPH / ДОКУМЕНТЫ</span><h2>Договор</h2><p>Условия использования, правила работы с материалами, ответственность за действия в проектах и сведения о хранении данных.</p><div class="sg-agreement-actions712"><a class="btn primary" href="./public/agreement.pdf" target="_blank" rel="noopener">Открыть PDF</a><a class="btn" href="./public/agreement.pdf" download="SHADOWGRAPH-Договор.pdf">Скачать PDF</a></div><small>Редакция 02 от 18.11.2026 · Создатель сайта: @auedurov</small></section>';const c=content[tab]||content.rules;return'<div class="sg-policy67"><h2>'+esc(c[0])+'</h2>'+c.slice(1).map(p=>'<p>'+esc(p)+'</p>').join('')+'<p class="sg-muted67">Локальная версия SHADOWGRAPH 7.0.25.</p>'+(tab==='privacy'?'<a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection" target="_blank" rel="noopener noreferrer">Документация GitHub Pages о данных хостинга ↗</a>':'')+'</div>'}
+ function html(tab='rules'){if(tab==='agreement')return '<section class="sg-agreement712"><span>SHADOWGRAPH / ДОКУМЕНТЫ</span><h2>Договор</h2><p>Условия использования, правила работы с материалами, ответственность за действия в проектах и сведения о хранении данных.</p><div class="sg-agreement-actions712"><a class="btn primary" href="./public/agreement.pdf" target="_blank" rel="noopener">Открыть PDF</a><a class="btn" href="./public/agreement.pdf" download="SHADOWGRAPH-Договор.pdf">Скачать PDF</a></div><small>Редакция 02 от 18.11.2026 · Создатель сайта: @auedurov</small></section>';const c=content[tab]||content.rules;return'<div class="sg-policy67"><h2>'+esc(c[0])+'</h2>'+c.slice(1).map(p=>'<p>'+esc(p)+'</p>').join('')+'<p class="sg-muted67">Локальная версия SHADOWGRAPH 7.0.26.</p>'+(tab==='privacy'?'<a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection" target="_blank" rel="noopener noreferrer">Документация GitHub Pages о данных хостинга ↗</a>':'')+'</div>'}
  function open(tab='rules'){Settings67.open('policy',tab)}return{html,open};
 })();
 const Settings67=(()=>{
@@ -6528,7 +6562,7 @@ const Settings67=(()=>{
  if(currentTab==='appearance')return'<h2>'+tr('Оформление','Appearance')+'</h2><p class="sg-muted67">'+tr('Однотонные поверхности, без градиентов. Экран входа остаётся белым.','Solid surfaces without gradients. The login page stays white.')+'</p><div class="sg-theme-options67"><button class="sg-theme67 '+(p.theme==='black'?'active':'')+'" data-theme67="black"><i style="background:#050505"></i>'+tr('Чёрный','Black')+'</button><button class="sg-theme67 '+(p.theme==='graphite'?'active':'')+'" data-theme67="graphite"><i style="background:#191a1d"></i>'+tr('Графит','Graphite')+'</button></div><div class="sg-setting67"><span><b>'+tr('Акцент меню','Menu accent')+'</b><small>'+tr('Цвета данных графа настраиваются отдельно','Graph colors are configured separately')+'</small></span><div class="sg-accents67">'+['#a995e8','#7eacd1','#82b8a0','#d4b17d','#e1e1e5'].map(c=>'<button aria-label="'+c+'" data-accent67="'+c+'" style="background:'+c+'" class="'+(c===p.accent?'active':'')+'"></button>').join('')+'</div></div>'+toggle('petEnabled67',tr('Питомец Смотритель','Watcher mascot'),p.pet,tr('Встречает на пустой доске и главной странице','Greets you on the home page and empty boards'))+toggle('reduceMotion67',tr('Уменьшить движение','Reduce motion'),p.reduceMotion,tr('Отключает покачивание питомца и анимацию масштаба','Disables mascot motion and zoom animation'))+'<div class="sg-setting67"><span><b>'+tr('Язык меню','Menu language')+'</b><small>'+tr('Главная и настройки; названия и материалы проектов не переводятся','Home and settings; project names and materials are not translated')+'</small></span><select class="input" id="menuLanguage67"><option value="ru" '+(p.language==='ru'?'selected':'')+'>Русский</option><option value="en" '+(p.language==='en'?'selected':'')+'>English</option></select></div>';
  if(currentTab==='notifications')return'<h2>'+tr('Уведомления','Notifications')+'</h2>'+toggle('notifications67',tr('Показывать уведомления о действиях','Show action notifications'),p.notifications,tr('Ошибки сохранения и доступа показываются всегда','Save and access errors are always shown'))+toggle('activity67',tr('Локальная статистика активности','Local activity statistics'),p.activity,tr('Только в этом браузере: открытия, создание, импорт и активные вкладки. Без названий и содержимого проектов.','Only in this browser: opens, creation, imports and active tabs. No project names or content.'))+'<p class="sg-muted67">'+tr('Приложение не запрашивает push-уведомления и не отправляет статистику в сеть.','The app does not request push notifications or send statistics over the network.')+'</p>';
  if(currentTab==='security')return'<h2>'+tr('Безопасность профиля','Profile security')+'</h2><div class="sg-surface67"><b>AES-GCM / 256</b><p>'+tr('Доступ к данным открывается вашим личным ключом. Токен владельца не заменяет этот ключ.','Your personal key unlocks your data. The owner token does not replace it.')+'</p></div><label class="sg-field67">'+tr('Автоблокировка при бездействии','Lock after inactivity')+'<select class="input" id="idleMinutes67">'+[[0,tr('Выключена','Disabled')],[5,'5 '+tr('минут','minutes')],[15,'15 '+tr('минут','minutes')],[30,'30 '+tr('минут','minutes')],[60,'60 '+tr('минут','minutes')]].map(([n,label])=>'<option value="'+n+'" '+(p.idleMinutes===n?'selected':'')+'>'+label+'</option>').join('')+'</select></label><p>'+tr('После блокировки потребуется ваш сохранённый ключ. Восстановления по почте или seed-фразы в локальной версии нет.','After locking, you will need your saved key. The local version has no email recovery or seed phrase.')+'</p><div class="sg-actions67"><button class="btn" id="lockProfile67">'+tr('Заблокировать сейчас','Lock now')+'</button><button class="btn" id="securityExport67">'+tr('Экспортировать проекты','Export projects')+'</button></div><hr><h3>'+tr('Текущее устройство','Current device')+'</h3><p>'+tr('Локальный браузер · активных вкладок','Local browser · active tabs')+': '+Activity67.summary().tabs+'</p><p class="sg-muted67">'+tr('Это не список устройств со всего сайта. Другие браузеры здесь не видны.','This is not a site-wide device list. Other browsers are not visible here.')+'</p>';
- if(currentTab==='device711')return Desk711.deviceHtml();if(currentTab==='storage')return'<h2>'+tr('Версия и хранилище','Version & storage')+'</h2><div class="sg-surface67"><span class="sg-kicker67">SHADOWGRAPH 7.0.25</span><h3>'+tr('Локальное пространство','Local workspace')+'</h3><p>'+tr('Без подписки и серверного аккаунта. Проекты сохраняются на устройстве.','No subscription or server account. Projects are saved on this device.')+'</p></div><p id="storageEstimate67">'+tr('Проверяю доступное место…','Checking available space…')+'</p><p class="sg-muted67">'+tr('Объём относится ко всему хранилищу сайта в этом браузере. Очистка данных браузера может удалить проекты.','Usage refers to this site’s storage in this browser. Clearing browser data can delete projects.')+'</p><div class="sg-actions67"><button class="btn" id="exportProfile67">'+tr('Экспорт проектов','Export projects')+'</button><button class="btn" id="importProfile67">'+tr('Импорт проектов','Import projects')+'</button><button class="btn" id="persistentStorage67">'+tr('Защитить от автоматической очистки','Request persistent storage')+'</button></div><p id="storageStatus67" class="sg-muted67"></p>';
+ if(currentTab==='device711')return Desk711.deviceHtml();if(currentTab==='storage')return'<h2>'+tr('Версия и хранилище','Version & storage')+'</h2><div class="sg-surface67"><span class="sg-kicker67">SHADOWGRAPH 7.0.26</span><h3>'+tr('Локальное пространство','Local workspace')+'</h3><p>'+tr('Без подписки и серверного аккаунта. Проекты сохраняются на устройстве.','No subscription or server account. Projects are saved on this device.')+'</p></div><p id="storageEstimate67">'+tr('Проверяю доступное место…','Checking available space…')+'</p><p class="sg-muted67">'+tr('Объём относится ко всему хранилищу сайта в этом браузере. Очистка данных браузера может удалить проекты.','Usage refers to this site’s storage in this browser. Clearing browser data can delete projects.')+'</p><div class="sg-actions67"><button class="btn" id="exportProfile67">'+tr('Экспорт проектов','Export projects')+'</button><button class="btn" id="importProfile67">'+tr('Импорт проектов','Import projects')+'</button><button class="btn" id="persistentStorage67">'+tr('Защитить от автоматической очистки','Request persistent storage')+'</button></div><p id="storageStatus67" class="sg-muted67"></p>';
  return'<div class="sg-policy-tabs67">'+[['rules','Правила'],['privacy','Конфиденциальность'],['storage','Данные и доступ'],['agreement','Договор']].map(([id,label])=>'<button class="btn '+(policyTab===id?'active':'')+'" data-policy67="'+id+'">'+label+'</button>').join('')+'</div>'+Policy67.html(policyTab)}
  function open(tab=currentTab,policy=policyTab){if(!signedAccount)return;currentTab=tabs.some(t=>t[0]===tab)?tab:'profile';policyTab=policy;avatarDraft=Profile67.prefs.avatar;modal('<h2 class="sg-settings-title67">'+tr('Настройки SHADOWGRAPH','SHADOWGRAPH settings')+'</h2><button class="sg-modal-close67" id="settingsClose67" aria-label="Закрыть">×</button><div class="sg-settings67"><aside><div class="sg-settings-person67">'+avatar()+'<b>'+esc(signedAccount.name)+'</b><small>'+tr('Локальный профиль','Local profile')+'</small></div><nav>'+tabs.map(([id,icon,ru,en])=>'<button data-settings67="'+id+'" class="'+(id===currentTab?'active':'')+'"><span>'+icon+'</span>'+tr(ru,en)+'</button>').join('')+'</nav></aside><main id="settingsBody67">'+body()+'</main></div><div class="sg-settings-footer67"><button class="btn" id="settingsDone67">'+tr('Готово','Done')+'</button></div>');$('#modalRoot .modal').classList.add('sg-settings-wrap67');$('#settingsClose67').onclick=$('#settingsDone67').onclick=closeModal;$$('[data-settings67]').forEach(b=>b.onclick=()=>open(b.dataset.settings67));bind()}
  function bind(){const save=async update=>{try{await Profile67.save(update)}catch(e){toast('Не удалось сохранить настройки: '+e.message)}};if(currentTab==='profile'){$('#profileAvatar67').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{if(f.size>3*1024*1024||!/^image\/(png|jpeg|webp)$/.test(f.type))throw Error('PNG, JPG или WebP до 3 МБ');const bitmap=await createImageBitmap(f);try{const canvas=document.createElement('canvas');canvas.width=canvas.height=256;const c=canvas.getContext('2d'),side=Math.min(bitmap.width,bitmap.height);c.drawImage(bitmap,(bitmap.width-side)/2,(bitmap.height-side)/2,side,side,0,0,256,256);avatarDraft=canvas.toDataURL('image/png');const preview=$('.sg-profile-avatar710');if(preview)preview.innerHTML='<img class="sg-avatar67 large" src="'+avatarDraft+'" alt="Выбранный аватар">';$('#avatarStatus67').textContent=tr('Аватар выбран. Нажмите «Сохранить».','Avatar selected. Click Save.')}finally{bitmap.close()}}catch(error){$('#profileError67').textContent=error.message}};$('#removeAvatar67').onclick=()=>{avatarDraft='';const preview=$('.sg-profile-avatar710');if(preview)preview.innerHTML='<span class="sg-avatar67 large">'+esc((signedAccount?.name||'SG').slice(0,2).toUpperCase())+'</span>';$('#avatarStatus67').textContent=tr('Аватар будет удалён после сохранения.','Avatar will be removed after saving.')};$('#profileForm67').onsubmit=async e=>{e.preventDefault();const button=$('#profileSave67');button.disabled=true;try{await Profile67.rename($('#profileName67').value);await Profile67.save({bio:$('#profileBio67').value,avatar:avatarDraft});open('profile');toast(tr('Профиль сохранён','Profile saved'))}catch(error){if($('#profileError67'))$('#profileError67').textContent=error.message;if($('#profileSave67'))$('#profileSave67').disabled=false}}}
@@ -6662,7 +6696,7 @@ const Cases708=(()=>{
   const result708={data:canvas.toDataURL('image/png'),width:canvas.width,height:canvas.height};graphCache708.set(cacheKey708,result708);if(graphCache708.size>4)graphCache708.delete(graphCache708.keys().next().value);return result708
  }
  async function exportPdf(){if(writing||!editing)return;const c=normalize(structuredClone(editing));if(!c.title.trim()){status('Введите название кейса.',true);$('#caseFields708 [data-case-field708="title"]')?.focus();return}if(!c.sections.some(s=>s.on)){status('Выберите хотя бы один раздел.',true);return}if(c.projectId&&!project(c)){status('Связанный проект недоступен. Выберите другой проект.',true);return}writing=true;$('#caseExport708').disabled=true;status('Создаю PDF…');try{await save();const p=selectedData(c);await pdf(c,p);status('PDF создан. Черновик сохранён.')}catch(e){status('Не удалось создать PDF: '+e.message,true)}finally{writing=false;if($('#caseExport708'))$('#caseExport708').disabled=false}}
- async function pdf(c,p){const account708=signedAccount?.id;const [JsPDF,normal,bold]=await Promise.all([loadReportLibrary(),fontData('./public/vendor/report/NotoSans-Regular.ttf'),fontData('./public/vendor/report/NotoSans-Bold.ttf')]),doc=new JsPDF({unit:'mm',format:'a4',compress:true,putOnlyUsedFonts:true});doc.addFileToVFS('CaseRegular.ttf',normal);doc.addFont('CaseRegular.ttf','Case','normal');doc.addFileToVFS('CaseBold.ttf',bold);doc.addFont('CaseBold.ttf','Case','bold');doc.setProperties({title:safeText(c.title,c),author:safeText(c.author,c),creator:'SHADOWGRAPH 7.0.25',subject:'Исследовательский кейс'});
+ async function pdf(c,p){const account708=signedAccount?.id;const [JsPDF,normal,bold]=await Promise.all([loadReportLibrary(),fontData('./public/vendor/report/NotoSans-Regular.ttf'),fontData('./public/vendor/report/NotoSans-Bold.ttf')]),doc=new JsPDF({unit:'mm',format:'a4',compress:true,putOnlyUsedFonts:true});doc.addFileToVFS('CaseRegular.ttf',normal);doc.addFont('CaseRegular.ttf','Case','normal');doc.addFileToVFS('CaseBold.ttf',bold);doc.addFont('CaseBold.ttf','Case','bold');doc.setProperties({title:safeText(c.title,c),author:safeText(c.author,c),creator:'SHADOWGRAPH 7.0.26',subject:'Исследовательский кейс'});
   const ink='#24232a',muted='#77717f',accent=c.style==='dossier'?'#5d476d':'#746084',left=19,width=172,sectionPages720=new Map(),contents720=[],active=c.sections.filter(s=>s.on),sourceNo=new Map(p.files.map((f,i)=>[f.id,'S'+(i+1)]));let y=36,started=false,label='',part=0;
   const font=(size=9,strong=false,tone=ink)=>{doc.setFont('Case',strong?'bold':'normal');doc.setFontSize(size);doc.setTextColor(tone)};
   const lines=(s,size=9,strong=false,w=width)=>{font(size,strong);return doc.splitTextToSize(safeText(s,c),w)};
@@ -6736,7 +6770,7 @@ function projectCard(p){
  function boards(){const list=collection(),shown=list.slice(0,page==='home'?8:limit);return'<div class="sg-section-title67"><h2>'+tr(page==='home'?'Недавние проекты':page==='favorites'?'Избранное':page==='archive'?'Архив':'Мои проекты',page==='home'?'Recent projects':page==='favorites'?'Favorites':page==='archive'?'Archive':'My projects')+'</h2><select class="input" id="projectSort67"><option value="updated" '+(sort==='updated'?'selected':'')+'>'+tr('Сначала новые','Recently updated')+'</option><option value="name" '+(sort==='name'?'selected':'')+'>'+tr('По названию','By name')+'</option></select></div><div class="sg-project-grid67" id="projectGrid67">'+shown.map(projectCard).join('')+(page!=='archive'?'<button class="sg-create-tile67" id="createTile67"><span>＋</span><b>'+tr('Новый проект','New project')+'</b><small>'+tr('Начать с чистой доски','Start with an empty board')+'</small></button>':'')+'</div>'+(!list.length?'<p class="sg-empty-message67">'+tr(query?'По этому запросу проектов нет.':page==='archive'?'Архив пуст.':page==='favorites'?'Добавьте проект в избранное через меню «···».':'Ваше пространство готово. Создайте первую доску или импортируйте проект.',query?'No projects match this search.':page==='archive'?'The archive is empty.':page==='favorites'?'Add a project to favorites using its menu.':'Your workspace is ready. Create a board or import a project.')+'</p>':'')+(list.length>shown.length?'<button class="btn" id="moreProjects67">'+tr('Показать ещё','Show more')+' ('+(list.length-shown.length)+')</button>':'')}
  function homeHtml(){const active=cases.filter(p=>!p.archived67),nodes=active.reduce((n,p)=>n+p.nodes.length,0),edges=active.reduce((n,p)=>n+p.edges.length,0),files=active.reduce((n,p)=>n+p.files.length,0);return'<div class="sg-title67"><div><span class="sg-kicker67">YOUR MATERIALS. YOUR CONNECTIONS.</span><h1>'+tr('Рабочее пространство','Your workspace')+'</h1><p>'+tr('Собирайте материалы. Проверяйте находки. Видьте связи.','Collect materials. Verify findings. See connections.')+'</p></div><button class="btn primary" id="createProject67">＋ '+tr('Создать проект','Create project')+'</button></div><section class="sg-welcome67"><div><span class="sg-kicker67">SHADOWGRAPH / PRIVATE WORKSPACE</span><h2>'+tr('С возвращением, ','Welcome back, ')+esc(signedAccount.name)+'.</h2><p>'+tr('Здесь ваши исследования и их источники. Всё остаётся в вашем локальном профиле.','Your investigations and their sources live here. Everything stays in your local profile.')+'</p><button class="sg-link67" id="welcomeCreate67">'+tr('Начать новое исследование','Start an investigation')+' ↗</button></div><img class="sg-mascot67" src="'+mascot+'" alt="'+tr('Смотритель - питомец SHADOWGRAPH','Watcher - SHADOWGRAPH companion')+'"></section><div class="sg-stats67">'+[[tr('Проектов','Projects'),active.length],[tr('Узлов','Nodes'),nodes],[tr('Связей','Links'),edges],[tr('Материалов','Materials'),files]].map(([label,n])=>'<div><b>'+n+'</b><span>'+label+'</span></div>').join('')+'</div>'+boards()+supportLinks701()}
  function templatesHtml(){return'<div class="sg-title67"><div><span class="sg-kicker67">START WITH A VIEW</span><h1>'+tr('Шаблоны пространства','Workspace templates')+'</h1><p>'+tr('Оформление и представление графа. Никаких выдуманных людей или находок.','View and appearance presets. No fictional people or findings.')+'</p></div></div><div class="sg-template-grid67">'+templates.map(t=>'<button class="sg-template67" data-template67="'+t.id+'"><span>'+t.icon+'</span><h2>'+tr(t.ru,t.en)+'</h2><p>'+esc(t.hint)+'</p><small>'+tr('Создать проект','Create project')+' ↗</small></button>').join('')+'</div>'}
- function renderHome(){if(!signedAccount)return;const nav=[['home','▦','Главная','Home'],['boards','▤','Мои проекты','My projects'],['favorites','☆','Избранное','Favorites'],['pdfcases','▧','PDF-кейсы','PDF cases'],['templates','◈','Шаблоны','Templates'],['guide','?','Инструкция','Guide'],['archive','⌑','Архив','Archive']];root.innerHTML='<aside class="sg-home-side67"><button class="sg-home-brand67" id="brandHome67"><img src="./public/brand/shadowgraph-avatar.png?v=5.9" alt="SG"><span><b>SHADOWGRAPH</b><small>INVESTIGATION WORKSPACE</small></span></button><nav>'+nav.map(([id,icon,ru,en])=>'<button data-home-page67="'+id+'" class="'+(page===id?'active':'')+'"><span>'+icon+'</span>'+tr(ru,en)+'</button>').join('')+'<div class="sg-nav-divider67"></div><button id="homeImport67"><span>⇧</span>'+tr('Импорт проектов','Import projects')+'</button><button id="homeSettings67"><span>⚙</span>'+tr('Настройки','Settings')+'</button><button id="homeRules67"><span>§</span>'+tr('Правила и политики','Rules & privacy')+'</button></nav><div class="sg-home-side-bottom67"><button class="sg-user67 sg-menu-trigger67" id="sideUser67">'+Settings67.avatar()+'<span>'+esc(signedAccount.name)+'<small>'+tr('Локальный профиль','Local profile')+'</small></span><i>⌄</i></button></div></aside><div class="sg-home-main67"><header class="sg-home-top67"><button class="sg-mobile-nav67 btn" id="mobileNav67" aria-label="Меню">☰</button><label class="sg-search67"><span>⌕</span><input id="projectSearch67" type="search" placeholder="'+tr('Поиск проектов…','Search projects…')+'" value="'+esc(query)+'" aria-label="'+tr('Поиск проектов','Search projects')+'"></label><div class="sg-home-top-right67">'+profileButton()+'</div></header><main class="sg-home-content67" id="homeContent67">'+(page==='home'?homeHtml():page==='templates'?templatesHtml():page==='guide'?Help67.html():page==='pdfcases'?Cases708.html():page==='owner'?Owner67.html():'<div class="sg-title67"><div><span class="sg-kicker67">SHADOWGRAPH / BOARDS</span><h1>'+tr(page==='archive'?'Архив':page==='favorites'?'Избранное':'Мои проекты',page==='archive'?'Archive':page==='favorites'?'Favorites':'My projects')+'</h1><p>'+tr('Ваши доски, источники и связи в одном месте.','Your boards, sources and connections in one place.')+'</p></div><button class="btn primary" id="createProject67">＋ '+tr('Создать проект','Create project')+'</button></div>'+boards())+'</main><footer class="sg-home-footer67"><span>SHADOWGRAPH 7.0.25</span><button id="footerPolicy67">'+tr('Конфиденциальность','Privacy')+' ↗</button></footer></div>';bind()}
+ function renderHome(){if(!signedAccount)return;const nav=[['home','▦','Главная','Home'],['boards','▤','Мои проекты','My projects'],['favorites','☆','Избранное','Favorites'],['pdfcases','▧','PDF-кейсы','PDF cases'],['templates','◈','Шаблоны','Templates'],['guide','?','Инструкция','Guide'],['archive','⌑','Архив','Archive']];root.innerHTML='<aside class="sg-home-side67"><button class="sg-home-brand67" id="brandHome67"><img src="./public/brand/shadowgraph-avatar.png?v=5.9" alt="SG"><span><b>SHADOWGRAPH</b><small>INVESTIGATION WORKSPACE</small></span></button><nav>'+nav.map(([id,icon,ru,en])=>'<button data-home-page67="'+id+'" class="'+(page===id?'active':'')+'"><span>'+icon+'</span>'+tr(ru,en)+'</button>').join('')+'<div class="sg-nav-divider67"></div><button id="homeImport67"><span>⇧</span>'+tr('Импорт проектов','Import projects')+'</button><button id="homeSettings67"><span>⚙</span>'+tr('Настройки','Settings')+'</button><button id="homeRules67"><span>§</span>'+tr('Правила и политики','Rules & privacy')+'</button></nav><div class="sg-home-side-bottom67"><button class="sg-user67 sg-menu-trigger67" id="sideUser67">'+Settings67.avatar()+'<span>'+esc(signedAccount.name)+'<small>'+tr('Локальный профиль','Local profile')+'</small></span><i>⌄</i></button></div></aside><div class="sg-home-main67"><header class="sg-home-top67"><button class="sg-mobile-nav67 btn" id="mobileNav67" aria-label="Меню">☰</button><label class="sg-search67"><span>⌕</span><input id="projectSearch67" type="search" placeholder="'+tr('Поиск проектов…','Search projects…')+'" value="'+esc(query)+'" aria-label="'+tr('Поиск проектов','Search projects')+'"></label><div class="sg-home-top-right67">'+profileButton()+'</div></header><main class="sg-home-content67" id="homeContent67">'+(page==='home'?homeHtml():page==='templates'?templatesHtml():page==='guide'?Help67.html():page==='pdfcases'?Cases708.html():page==='owner'?Owner67.html():'<div class="sg-title67"><div><span class="sg-kicker67">SHADOWGRAPH / BOARDS</span><h1>'+tr(page==='archive'?'Архив':page==='favorites'?'Избранное':'Мои проекты',page==='archive'?'Archive':page==='favorites'?'Favorites':'My projects')+'</h1><p>'+tr('Ваши доски, источники и связи в одном месте.','Your boards, sources and connections in one place.')+'</p></div><button class="btn primary" id="createProject67">＋ '+tr('Создать проект','Create project')+'</button></div>'+boards())+'</main><footer class="sg-home-footer67"><span>SHADOWGRAPH 7.0.26</span><button id="footerPolicy67">'+tr('Конфиденциальность','Privacy')+' ↗</button></footer></div>';bind()}
  function bind(){root.querySelectorAll('[data-home-page67]').forEach(b=>b.onclick=()=>{query='';limit=innerWidth<=800?8:24;show(b.dataset.homePage67)});$('#brandHome67').onclick=()=>show();$('#homeSettings67').onclick=()=>Settings67.open('profile');$('#homeRules67').onclick=()=>Policy67.open();$('#footerPolicy67').onclick=()=>Policy67.open('privacy');$('#homeImport67').onclick=importProjects;$('#homeUser67').onclick=e=>userMenu(e.currentTarget);$('#sideUser67').onclick=e=>userMenu(e.currentTarget);const menu=$('#mobileNav67');menu.innerHTML='<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M8 3v14"/></svg>';const syncMenu=()=>{const expanded=innerWidth<=800?root.classList.contains('nav-open67'):!root.classList.contains('nav-collapsed710');menu.setAttribute('aria-expanded',String(expanded));menu.setAttribute('aria-label',expanded?'Скрыть меню':'Показать меню');menu.title=menu.getAttribute('aria-label')};menu.setAttribute('aria-controls','homeNav710');root.querySelector('.sg-home-side67').id='homeNav710';menu.onclick=()=>{root.classList.toggle(innerWidth<=800?'nav-open67':'nav-collapsed710');syncMenu()};syncMenu();$('#projectSearch67').oninput=e=>{query=e.target.value;if(page==='templates'||page==='owner')page='boards';const content=$('#homeContent67'),selection=e.target.selectionStart;content.innerHTML=page==='home'?homeHtml():boards();bindContent();try{$('#projectSearch67').setSelectionRange(selection,selection)}catch{}};bindContent()}
  function bindContent(){for(const id of ['createProject67','welcomeCreate67','createTile67'])if($('#'+id))$('#'+id).onclick=()=>createDialog();$$('[data-open67]').forEach(b=>b.onclick=()=>openBoard(b.dataset.open67));$$('[data-project-menu67]').forEach(b=>b.onclick=e=>projectMenu(e.currentTarget,b.dataset.projectMenu67));$$('[data-template67]').forEach(b=>b.onclick=()=>createDialog(b.dataset.template67));if($('#projectSort67'))$('#projectSort67').onchange=e=>{sort=e.target.value;renderHome()};if($('#moreProjects67'))$('#moreProjects67').onclick=()=>{page='boards';limit+=innerWidth<=800?8:24;renderHome()};if(page==='owner')Owner67.bind();if(page==='guide')Help67.bind();if(page==='pdfcases'){Cases708.bind();$('#projectSearch67').closest('label').style.visibility='hidden'}}
  function show(next='home'){if(!signedAccount)return;Cases708.save().catch(e=>toast(e.message));if(busy&&next==='owner')return toast('Дождитесь завершения обработки');page=next;root.classList.remove('nav-open67');Smooth67.stop();Scene65.stop();stopRouting();document.body.classList.add('home67');root.hidden=false;renderHome();Activity67.heartbeat()}
