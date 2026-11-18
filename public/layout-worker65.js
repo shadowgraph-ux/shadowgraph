@@ -71,4 +71,171 @@ function MaltegoLayout697(nodes,edges){
 function CirclesLayout698(nodes,edges){const result=MaltegoLayout697(nodes,edges);for(const p of Object.values(result.positions))p.z=0;return result}
 function SpaceLayout698(nodes,edges){const model=GraphLayout65.groups(nodes,edges),groups=model.groups.filter(g=>g.id!=='sources65'),positions={},gold=Math.PI*(3-Math.sqrt(5));for(const [index,g]of groups.entries()){const ids=g.ids.filter(id=>id!==g.root).sort(),radius=Math.max(260,92*Math.sqrt(Math.max(1,ids.length))),shell=Math.floor(Math.max(0,index-1)/12),slot=Math.max(0,index-1)%12,u=(slot+.5)/Math.min(12,Math.max(1,groups.length-1)),v=1-2*u,rr=Math.sqrt(Math.max(0,1-v*v)),angle=(slot+shell*.7)*gold,dist=(Math.max(700,92*Math.sqrt(groups[0]?.ids.length||1))+radius+360)+shell*740,center=index?{x:Math.cos(angle)*rr*dist,y:v*dist,z:Math.sin(angle)*rr*dist}:{x:0,y:0,z:0};if(g.root)positions[g.root]={...center};ids.forEach((id,i)=>{const y=1-2*(i+.5)/Math.max(1,ids.length),r=Math.sqrt(Math.max(0,1-y*y)),a=i*gold+.8,range=radius*(.82+.18*(i%3)/2);positions[id]={x:center.x+Math.cos(a)*r*range,y:center.y+y*range,z:center.z+Math.sin(a)*r*range}})}const sources=model.groups.find(g=>g.id==='sources65');sources?.ids.forEach((id,i)=>positions[id]={x:(i%10)*230,y:Math.floor(i/10)*230,z:-1500});return{positions,groups:model.groups.map(g=>({id:g.id,title:g.title,ids:g.ids}))}}
 
+const Geometry712=(()=>{
+  const compare=(first,second)=>String(first).localeCompare(String(second),'ru');
+  const midpoint=(a,b)=>({x:(a.x+b.x)/2,y:(a.y+b.y)/2});
+  function pack(panels,aspect,gap){
+    if(!panels.length)return [];
+    const ordered=[...panels].sort((a,b)=>b.h-a.h||b.w-a.w);
+    const maxWidth=ordered.reduce((max,p)=>Math.max(max,p.w),1);
+    const area=ordered.reduce((sum,p)=>sum+(p.w+gap)*(p.h+gap),0);
+    const ideal=Math.sqrt(area*aspect);
+    let best=null;
+    for(const limit of new Set([maxWidth,...[.75,.95,1,1.18,1.4,1.7].map(weight=>Math.max(maxWidth,ideal*weight))])){
+      const rows=[];
+      for(const panel of ordered){
+        let row=rows.find(candidate=>candidate.w+gap+panel.w<=limit);
+        if(!row){row={w:0,h:panel.h,items:[]};rows.push(row)}
+        const x=row.w?row.w+gap:0;
+        row.items.push({...panel,x});
+        row.w=x+panel.w;
+      }
+      const w=rows.reduce((max,row)=>Math.max(max,row.w),1);
+      const h=rows.reduce((sum,row)=>sum+row.h+gap,-gap);
+      const score=Math.max(w/aspect,h)+.12*(w/aspect+h);
+      if(best&&score>=best.score)continue;
+      let y=0;
+      const placed=[];
+      for(const row of rows){
+        for(const panel of row.items)placed.push({...panel,x:panel.x+(w-row.w)/2,y});
+        y+=row.h+gap;
+      }
+      best={score,placed};
+    }
+    return best.placed;
+  }
+  function cards(nodes,edges,aspect=1.6){
+    const model=GraphLayout65.groups(nodes,edges),positions=Object.create(null);
+    const stepX=394,stepY=204;
+    aspect=Math.min(2.3,Math.max(.65,aspect||1.6));
+    const raw=model.groups.map(group=>{
+      const ids=group.ids.filter(id=>id!==group.root);
+      const keys=new Set(ids);
+      const sorted=ids.sort((a,b)=>compare(model.map.get(a).type,model.map.get(b).type)||compare(model.map.get(a).label,model.map.get(b).label)||compare(a,b));
+      const visited=new Set(),ordered=[];
+      for(const seed of sorted){
+        if(visited.has(seed))continue;
+        const queue=[seed];
+        visited.add(seed);
+        for(let index=0;index<queue.length;index++){
+          const id=queue[index];
+          ordered.push(id);
+          for(const other of model.adj.get(id)||[])if(keys.has(other)&&!visited.has(other)){visited.add(other);queue.push(other)}
+        }
+      }
+      const cols=Math.min(8,Math.max(1,Math.round(Math.sqrt((ordered.length+(group.root?1:0))*aspect*stepY/stepX))));
+      const columns=Array.from({length:cols},(_,index)=>{
+        const start=Math.round(index*ordered.length/cols),end=Math.round((index+1)*ordered.length/cols);
+        return ordered.slice(start,end);
+      });
+      const rows=columns.reduce((max,column)=>Math.max(max,column.length),1);
+      const anchor=Math.floor(cols/2),local=Object.create(null);
+      if(group.root)local[group.root]={x:184+anchor*stepX,y:124+(rows-1)*stepY/2};
+      for(const [index,column] of columns.entries()){
+        const x=184+(index+(group.root&&index>=anchor?1:0))*stepX;
+        column.forEach((id,row)=>{local[id]={x,y:124+(row+(rows-column.length)/2)*stepY}});
+      }
+      if(!ordered.length)return{...group,local,w:368,h:226};
+      return{...group,local,w:368+(cols+(group.root?1:0)-1)*stepX,h:226+(rows-1)*stepY};
+    });
+    const panels=pack(raw,aspect,128);
+    for(const panel of panels)for(const id of panel.ids)positions[id]={x:panel.x+panel.local[id].x,y:panel.y+panel.local[id].y};
+    const cells=new Map(),clearX=334,clearY=166;
+    const cell=(x,y)=>x+','+y;
+    function occupy(p){
+      const key=cell(Math.floor(p.x/clearX),Math.floor(p.y/clearY));
+      if(!cells.has(key))cells.set(key,[]);
+      cells.get(key).push(p);
+    }
+    function blocked(p){
+      const x=Math.floor(p.x/clearX),y=Math.floor(p.y/clearY);
+      for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++)
+        if(cells.get(cell(x+dx,y+dy))?.some(other=>Math.abs(other.x-p.x)<clearX&&Math.abs(other.y-p.y)<clearY))return true;
+      return false;
+    }
+    for(const node of nodes)if(node.pinned){
+      positions[node.id]={x:Number.isFinite(node.x)?node.x:0,y:Number.isFinite(node.y)?node.y:0};
+      occupy(positions[node.id]);
+    }
+    for(const node of nodes)if(!node.pinned){
+      const origin=positions[node.id];
+      let p=origin;
+      for(let distance=1;blocked(p);distance++){
+        const row=Math.ceil(distance/2);
+        p={x:origin.x,y:origin.y+(distance%2?1:-1)*row*stepY};
+      }
+      positions[node.id]=p;
+      occupy(p);
+    }
+    return{positions,panels:panels.map(({local,...panel})=>{
+      const bounds=panel.ids.reduce((acc,id)=>{
+        const p=positions[id];
+        return{left:Math.min(acc.left,p.x-180),right:Math.max(acc.right,p.x+180),top:Math.min(acc.top,p.y-116),bottom:Math.max(acc.bottom,p.y+98)};
+      },{left:Infinity,right:-Infinity,top:Infinity,bottom:-Infinity});
+      return{...panel,x:bounds.left,y:bounds.top,w:bounds.right-bounds.left,h:bounds.bottom-bounds.top};
+    })};
+  }
+  function space(nodes,edges){
+    const model=GraphLayout65.groups(nodes,edges),positions=Object.create(null),gold=Math.PI*(3-Math.sqrt(5));
+    const raw=model.groups.map(group=>{
+      const ids=group.ids.filter(id=>id!==group.root).sort((a,b)=>compare(model.map.get(a).type,model.map.get(b).type)||compare(a,b));
+      const radius=ids.length>1?Math.max(142,76*Math.sqrt(ids.length)):group.root&&ids.length?148:0;
+      return{...group,ids, radius,w:2*radius+180,h:2*radius+154};
+    });
+    for(const [index,panel] of pack(raw,1.45,94).entries()){
+      const center={x:panel.x+panel.w/2,y:panel.y+panel.h/2,z:Math.sin(index*gold)*110};
+      if(panel.root)positions[panel.root]=center;
+      panel.ids.forEach((id,slot)=>{
+        const fraction=(slot+.5)/panel.ids.length,vertical=1-2*fraction;
+        const radial=Math.sqrt(Math.max(0,1-vertical*vertical)),angle=slot*gold+.82;
+        positions[id]={x:center.x+Math.cos(angle)*radial*panel.radius,y:center.y+vertical*panel.radius,z:center.z+Math.sin(angle)*radial*panel.radius*.88};
+      });
+    }
+    return{positions,groups:model.groups.map(({id,title,ids})=>({id,title,ids}))};
+  }
+  function parallel(edges){
+    const lists=new Map(),offsets=new Map();
+    for(const edge of edges){
+      const key=JSON.stringify(edge.from<edge.to?[edge.from,edge.to]:[edge.to,edge.from]);
+      if(!lists.has(key))lists.set(key,[]);
+      lists.get(key).push(edge);
+    }
+    for(const list of lists.values()){
+      list.sort((a,b)=>String(a.id).localeCompare(String(b.id)));
+      const step=Math.min(24,156/Math.max(1,list.length-1));
+      list.forEach((edge,index)=>offsets.set(edge.id,edge.from===edge.to?index:(index-(list.length-1)/2)*step*(edge.from<edge.to?1:-1)));
+    }
+    return offsets;
+  }
+  function curve(a,b,offset,three,rectangular,self,direction){
+    let start,end,first,second;
+    if(self){
+      const r=a.r,reach=22+Math.min(offset,12)*9+r;
+      start={x:a.x-r*.74,y:a.y-r*.72};end={x:a.x+r*.86,y:a.y-r*.72};
+      first={x:a.x-reach,y:a.y-reach*1.7};second={x:a.x+reach,y:a.y-reach*1.7};
+    }else{
+      const dx=b.x-a.x,dy=b.y-a.y,length=Math.hypot(dx,dy);
+      if(length<a.r+b.r+4)return null;
+      const ux=dx/length,uy=dy/length,nx=-uy,ny=ux;
+      const radius=p=>rectangular&&p.n.type!=='person'?p.r/Math.max(Math.abs(ux),Math.abs(uy)):p.r;
+      const gapA=radius(a)+2,gapB=radius(b)+4;
+      if(length<=gapA+gapB)return null;
+      start={x:a.x+ux*gapA,y:a.y+uy*gapA};
+      end={x:b.x-ux*gapB,y:b.y-uy*gapB};
+      const mid=midpoint(start,end),swing=offset+direction*(three?Math.min(24,length*.08):Math.min(12,length*.05));
+      first={x:(start.x+mid.x)/2+nx*swing,y:(start.y+mid.y)/2+ny*swing};
+      second={x:(end.x+mid.x)/2+nx*swing,y:(end.y+mid.y)/2+ny*swing};
+    }
+    function point(t){
+      const u=1-t;
+      return{x:u*u*u*start.x+3*u*u*t*first.x+3*u*t*t*second.x+t*t*t*end.x,y:u*u*u*start.y+3*u*u*t*first.y+3*u*t*t*second.y+t*t*t*end.y};
+    }
+    return{start,end,first,second,point};
+  }
+  return{cards,space,parallel,curve};
+})();
+
+GraphLayout66.cards=Geometry712.cards;
+SpaceLayout698=Geometry712.space;
+
 self.onmessage=({data})=>{try{let result;if(data.mode==='space698')result=SpaceLayout698(data.nodes,data.edges);else if(data.mode==='circles698')result=CirclesLayout698(data.nodes,data.edges);else if(data.mode==='maltego')result=MaltegoLayout697(data.nodes,data.edges);else if(data.mode==='network')result=GraphLayout65.network(data.nodes,data.edges);else if(data.mode==='sources'){const r=DossierLayout.arrange(data.nodes,data.edges,{aspect:data.aspect||1.5,mode:'dossier'});result={positions:Object.fromEntries(r.positions),panels:r.panels}}else result=GraphLayout66.cards(data.nodes,data.edges,data.aspect||1.5);self.postMessage({id:data.id,...result})}catch(e){self.postMessage({id:data.id,error:String(e.message)})}};
