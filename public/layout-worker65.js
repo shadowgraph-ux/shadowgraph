@@ -232,10 +232,63 @@ const Geometry712=(()=>{
     }
     return{start,end,first,second,point};
   }
-  return{cards,space,parallel,curve};
+  return{cards,space,parallel,curve,pack716:pack};
 })();
 
 GraphLayout66.cards=Geometry712.cards;
 SpaceLayout698=Geometry712.space;
+function Maltego716(nodes,edges){
+  const map=new Map(nodes.map(n=>[n.id,n])),adj=new Map(nodes.map(n=>[n.id,new Set()])),positions=Object.create(null);
+  for(const e of edges)if(e.from!==e.to&&adj.has(e.from)&&adj.has(e.to)){adj.get(e.from).add(e.to);adj.get(e.to).add(e.from)}
+  const primary=n=>n.type==='person'?5:n.type==='organization'?3:0;
+  const rank=(a,b)=>adj.get(b.id).size-adj.get(a.id).size||primary(b)-primary(a)||String(a.label).localeCompare(String(b.label),'ru')||String(a.id).localeCompare(String(b.id));
+  const seen=new Set(),panels=[];
+  for(const root of [...nodes].sort(rank)){
+    if(seen.has(root.id))continue;
+    const queue=[root.id],depth=new Map([[root.id,0]]);
+    seen.add(root.id);
+    for(let index=0;index<queue.length;index++){
+      const id=queue[index],neighbours=[...adj.get(id)].sort((a,b)=>rank(map.get(a),map.get(b)));
+      for(const other of neighbours)if(!seen.has(other)){seen.add(other);depth.set(other,depth.get(id)+1);queue.push(other)}
+    }
+    const local=new Map([[root.id,{x:0,y:0}]]),angles=new Map([[root.id,0]]);
+    let offset=1,radius=0,ring=0;
+    while(offset<queue.length){
+      const ids=queue.slice(offset,offset+12+ring*8);
+      const parents=id=>[...adj.get(id)].find(link=>angles.has(link)&&depth.get(link)<depth.get(id))||root.id;
+      const anchors=new Map(ids.map(id=>[id,angles.get(parents(id))]));
+      ids.sort((a,b)=>anchors.get(a)-anchors.get(b)||rank(map.get(a),map.get(b)));
+      radius=Math.max(radius+210,ids.length*155/(Math.PI*2));
+      const slots=ids.map((_,index)=>{
+        const angle=-Math.PI*.64+(index+.36+ring*.22)*Math.PI*2/ids.length;
+        return{angle,x:Math.cos(angle)*radius,y:Math.sin(angle)*radius*.83};
+      });
+      const live=new Map(ids.map((id,index)=>[id,slots[index]]));
+      const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+      const loss=(id,sibling,at)=>{let sum=0;for(const other of adj.get(id)){if(other===sibling)continue;const target=live.get(other)||local.get(other);if(target)sum+=distance(at,target)}return sum};
+      for(let pass=0;pass<4;pass++){
+        for(let i=0;i<ids.length;i++){
+          const j=(i+(pass%2===0?1:2))%ids.length;
+          if(j===i)continue;
+          const x=ids[i],y=ids[j],a=slots[i],b=slots[j];
+          if(loss(x,y,b)+loss(y,x,a)+.5<loss(x,y,a)+loss(y,x,b)){
+            [ids[i],ids[j]]=[y,x];live.set(x,b);live.set(y,a);
+          }
+        }
+      }
+      for(const [index,id] of ids.entries()){
+        const {angle,x,y}=slots[index];angles.set(id,angle);local.set(id,{x,y});
+      }
+      offset+=ids.length;ring++;
+    }
+    panels.push({root,local,w:radius*2+312,h:radius*1.66+200});
+  }
+  const arranged=Geometry712.pack716(panels,1.55,72);
+  for(const panel of arranged)for(const [id,p] of panel.local){
+    positions[id]={x:panel.x+panel.w/2+p.x,y:panel.y+panel.h/2+p.y,z:0};
+  }
+  return{positions,groups:arranged.map(({root,local})=>({id:root.id,title:root.label,ids:[...local.keys()]}))};
+}
 
-self.onmessage=({data})=>{try{let result;if(data.mode==='space698')result=SpaceLayout698(data.nodes,data.edges);else if(data.mode==='circles698')result=CirclesLayout698(data.nodes,data.edges);else if(data.mode==='maltego')result=MaltegoLayout697(data.nodes,data.edges);else if(data.mode==='network')result=GraphLayout65.network(data.nodes,data.edges);else if(data.mode==='sources'){const r=DossierLayout.arrange(data.nodes,data.edges,{aspect:data.aspect||1.5,mode:'dossier'});result={positions:Object.fromEntries(r.positions),panels:r.panels}}else result=GraphLayout66.cards(data.nodes,data.edges,data.aspect||1.5);self.postMessage({id:data.id,...result})}catch(e){self.postMessage({id:data.id,error:String(e.message)})}};
+
+self.onmessage=({data})=>{try{let result;if(data.mode==='space698')result=SpaceLayout698(data.nodes,data.edges);else if(data.mode==='circles698')result=CirclesLayout698(data.nodes,data.edges);else if(data.mode==='maltego')result=Maltego716(data.nodes,data.edges);else if(data.mode==='network')result=GraphLayout65.network(data.nodes,data.edges);else if(data.mode==='sources'){const r=DossierLayout.arrange(data.nodes,data.edges,{aspect:data.aspect||1.5,mode:'dossier'});result={positions:Object.fromEntries(r.positions),panels:r.panels}}else result=GraphLayout66.cards(data.nodes,data.edges,data.aspect||1.5);self.postMessage({id:data.id,...result})}catch(e){self.postMessage({id:data.id,error:String(e.message)})}};
