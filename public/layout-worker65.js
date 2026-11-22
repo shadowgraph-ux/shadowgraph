@@ -104,11 +104,30 @@ const Geometry712=(()=>{
     }
     return best.placed;
   }
+  function cardGroups735(model){
+    return model.groups.flatMap(group=>{
+      if(!['other65','shared65'].includes(group.id)||group.ids.length<2)return [group];
+      const remaining=new Set(group.ids),components=[],isolated=[];
+      for(const seed of group.ids){
+        if(!remaining.delete(seed))continue;
+        const ids=[seed];
+        for(let i=0;i<ids.length;i++){
+          for(const neighbor of model.adj.get(ids[i]))if(remaining.delete(neighbor))ids.push(neighbor);
+        }
+        if(ids.length===1)isolated.push(seed);
+        else components.push({id:group.id+'-'+seed,title:model.map.get(seed).label,ids});
+      }
+      if(!components.length)return [group];
+      if(isolated.length)components.push({id:group.id+'-isolated',title:group.title,ids:isolated});
+      return components;
+    });
+  }
+
   function cards(nodes,edges,aspect=1.6){
     const model=GraphLayout65.groups(nodes,edges),positions=Object.create(null);
     const stepX=394,stepY=204;
     aspect=Math.min(2.3,Math.max(.65,aspect||1.6));
-    const raw=model.groups.map(group=>{
+    const raw=cardGroups735(model).map(group=>{
       const ids=group.ids.filter(id=>id!==group.root);
       const keys=new Set(ids);
       const sorted=ids.sort((a,b)=>compare(model.map.get(a).type,model.map.get(b).type)||compare(model.map.get(a).label,model.map.get(b).label)||compare(a,b));
