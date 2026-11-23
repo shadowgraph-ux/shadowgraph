@@ -5,14 +5,14 @@ body{margin:0;background:#0d0e0e;color:#ebebe5;font:16px/1.65 ArticleSans,system
 a{color:inherit;text-underline-offset:.24em}
 a:hover{color:#d8bf8f}
 a:focus-visible{outline:2px solid #d8bf8f;outline-offset:4px}
-.site-header{min-height:64px;padding:12px max(22px,calc((100% - 1080px)/2));display:flex;justify-content:space-between;align-items:center;gap:18px;border-bottom:1px solid #30312d;font-size:14px}
+.site-header{min-height:64px;padding:12px max(22px,calc((100% - 1080px)/2));display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 18px;border-bottom:1px solid #30312d;font-size:14px}
 .brand{font-weight:700;letter-spacing:.1em;text-decoration:none}
 .article{max-width:1130px;margin:auto;padding:0 24px}
 .article-heading{padding:clamp(44px,8vw,100px) 0 32px;max-width:940px}
 .byline{margin:0 0 16px;color:#dfc38e;font-size:13px}
 .byline span{margin-left:13px;padding-left:13px;border-left:1px solid #615747;color:#aba99f}
 h1,h2,p{margin-top:0}
-h1{font-size:clamp(35px,6.5vw,76px);line-height:1.05;letter-spacing:-.055em;font-weight:600;margin-bottom:21px}
+h1{font-size:clamp(35px,6.5vw,76px);line-height:1.05;letter-spacing:-.055em;font-weight:600;overflow-wrap:anywhere;margin-bottom:21px}
 h2{font-size:clamp(22px,3vw,30px);line-height:1.25;letter-spacing:-.03em;margin-bottom:14px}
 .lead{font-size:clamp(16px,2vw,21px);max-width:750px;line-height:1.6;color:#c7c5ba;margin-bottom:0}
 .hero{margin:0 0 32px}
@@ -22,6 +22,6 @@ h2{font-size:clamp(22px,3vw,30px);line-height:1.25;letter-spacing:-.03em;margin-
 .article-index{align-self:start;display:grid;gap:8px;color:#cfcabc;font-size:14px;position:sticky;top:22px}
 .article-body section{margin-bottom:36px;max-width:760px;scroll-margin-top:24px}
 .article-body p{color:#ccc9bf}
-video{display:block;width:min(100%,390px);max-height:70vh;background:#181818;border:1px solid #3a3934;border-radius:8px}
+video{display:block;width:min(100%,390px);height:auto;aspect-ratio:576 / 938;max-height:70vh;object-fit:contain;background:#181818;border:1px solid #3a3934;border-radius:8px}
 .article-footer{margin:0 0 28px;padding:18px 0;border-top:1px solid #33342f;display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;font-size:14px}
 @media(max-width:620px){.article{padding:0 18px}.article-body{display:block}.article-index{position:static;display:flex;gap:12px;flex-wrap:wrap;margin:0 0 28px}.site-header{padding-inline:18px}.site-header a{font-size:12px}}

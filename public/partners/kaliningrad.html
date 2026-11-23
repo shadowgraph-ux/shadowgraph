@@ -17,7 +17,7 @@
       <p class="lead">В публикации RosGuardian к сообщению о сиренах приложены снимок карты авиадвижения и видеозапись. Причину тревоги авторы оставили открытой.</p>
     </header>
     <figure class="hero">
-      <img src="kaliningrad736.webp" alt="Снимок карты авиадвижения, приложенный к публикации RosGuardian" width="1000">
+      <img src="kaliningrad736.webp" alt="Снимок карты авиадвижения, приложенный к публикации RosGuardian" width="1000" height="612">
       <figcaption>Снимок карты из предоставленной публикации RosGuardian.</figcaption>
     </figure>
     <div class="article-body">
@@ -31,7 +31,12 @@
         </section>
         <section id="video">
           <h2>Приложенное видео</h2>
-          <video controls playsinline preload="metadata" poster="kaliningrad-poster736.webp" src="kaliningrad736.mp4" aria-label="Видеозапись из публикации RosGuardian"></video>
+          <video controls playsinline preload="metadata" poster="kaliningrad-poster736.webp" width="576" height="938" aria-label="Видеозапись из публикации RosGuardian">
+            <source src="kaliningrad736.mp4" type="video/mp4">
+            <track kind="captions" src="kaliningrad740-ru.vtt" srclang="ru" label="Русские субтитры">
+            Браузер не воспроизводит это видео. <a href="kaliningrad736.mp4">Скачать MP4</a>.
+          </video>
+          <p><a href="kaliningrad736.mp4" download>Скачать видео в MP4</a></p>
         </section>
         <section id="source">
           <h2>Источник</h2><p>Материалы предоставлены сообществом RosGuardian.</p>
