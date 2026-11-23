@@ -125,7 +125,7 @@ const Geometry712=(()=>{
 
   function cards(nodes,edges,aspect=1.6){
     const model=GraphLayout65.groups(nodes,edges),positions=Object.create(null);
-    const stepX=394,stepY=204;
+    const dense=nodes.length>=180,stepX=dense?350:394,stepY=dense?174:204;
     aspect=Math.min(2.3,Math.max(.65,aspect||1.6));
     const raw=cardGroups735(model).map(group=>{
       const ids=group.ids.filter(id=>id!==group.root);
@@ -142,6 +142,13 @@ const Geometry712=(()=>{
           for(const other of model.adj.get(id)||[])if(keys.has(other)&&!visited.has(other)){visited.add(other);queue.push(other)}
         }
       }
+      if(dense){
+        const orderedIds=group.root?[group.root,...ordered]:ordered;
+        const cols=Math.min(13,Math.max(1,Math.round(Math.sqrt(orderedIds.length*aspect*stepY/stepX))));
+        const rows=Math.max(1,Math.ceil(orderedIds.length/cols)),local=Object.create(null);
+        orderedIds.forEach((id,index)=>{local[id]={x:184+(index%cols)*stepX,y:114+Math.floor(index/cols)*stepY}});
+        return {...group,local,w:368+(cols-1)*stepX,h:222+(rows-1)*stepY};
+      }
       const cols=Math.min(8,Math.max(1,Math.round(Math.sqrt((ordered.length+(group.root?1:0))*aspect*stepY/stepX))));
       const columns=Array.from({length:cols},(_,index)=>{
         const start=Math.round(index*ordered.length/cols),end=Math.round((index+1)*ordered.length/cols);
@@ -157,7 +164,7 @@ const Geometry712=(()=>{
       if(!ordered.length)return{...group,local,w:368,h:226};
       return{...group,local,w:368+(cols+(group.root?1:0)-1)*stepX,h:226+(rows-1)*stepY};
     });
-    const panels=pack(raw,aspect,128);
+    const panels=pack(raw,aspect,dense?76:128);
     for(const panel of panels)for(const id of panel.ids)positions[id]={x:panel.x+panel.local[id].x,y:panel.y+panel.local[id].y};
     const cells=new Map(),clearX=334,clearY=166;
     const cell=(x,y)=>x+','+y;
