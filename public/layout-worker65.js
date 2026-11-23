@@ -25,7 +25,7 @@ function arrange(nodes,edges,{aspect=1.4,mode='dossier'}={}){
  for(const e of edges){const a=map.get(e.from),b=map.get(e.to);if(!a||!b)continue;if(isSource(a)&&!isSource(b))owners.get(b.id).add(a.id);if(isSource(b)&&!isSource(a))owners.get(a.id).add(b.id)}
  for(const n of nodes)for(const ev of n.evidence||[]){const source=sources.find(s=>s.fileId===ev.fileId);if(source&&!isSource(n))owners.get(n.id).add(source.id)}
  const definitions=sources.map(n=>({id:n.id,title:n.label,subtitle:'Материалы этого источника',source:n.id,ids:[n.id]})),shared={id:'shared',title:'Общие находки',subtitle:'Упоминаются в нескольких источниках',ids:[]},manual={id:'other',title:sources.length?'Другие объекты':'Карта связей',subtitle:'Ручные объекты и связи',ids:[]};
- for(const n of nodes.filter(n=>!isSource(n))){const ids=[...owners.get(n.id)];if(ids.length>1)shared.ids.push(n.id);else if(ids.length===1)definitions.find(g=>g.id===ids[0]).ids.push(n.id);else manual.ids.push(n.id)}
+ for(const n of nodes.filter(n=>!isSource(n))){const ids=[...owners.get(n.id)];if(ids.length>1)shared.ids.push(n.id);else if(ids.length===1)(definitions.find(g=>g.id===ids[0])||manual).ids.push(n.id);else manual.ids.push(n.id)}
  // Relate unassigned manual objects to a source only when directly linked to a sourced object.
  const groups=[...definitions,...(shared.ids.length?[shared]:[]),...(manual.ids.length?[manual]:[])],points=new Map,panelData=[];
  const rank={person:0,phone:1,email:2,username:3,address:4,organization:5,document:-1,image:-1};
