@@ -1,0 +1,72 @@
+.app button,#homeRoot67 button,#modalRoot button,#entryRoot button,.sg-popover67 button{
+  transition:background-color .18s ease,border-color .18s ease,color .18s ease,box-shadow .18s ease,transform .16s cubic-bezier(.2,.7,.3,1);
+}
+:is(.app,#homeRoot67,#modalRoot,#entryRoot) :is(.btn,.tool,.sideact,.sg-home-side67 button,.tabs747 button,.access-primary):not(:disabled):active,
+.sg-popover67 button:not(:disabled):active{
+  transform:scale(.96);
+}
+@media(hover:hover){
+  :is(.app,#homeRoot67,#modalRoot) :is(.btn,.tool,.sideact,.sg-home-side67 button,.tabs747 button):not(:disabled):hover{
+    box-shadow:inset 0 0 0 1px color-mix(in srgb,currentColor 17%,transparent);
+  }
+}
+#homeRoot67 .sg-home-side67 button:is(:hover,[aria-current="page"]){border-radius:9px}
+#entryRoot .auth744 .login-form738{animation:panel-in749 .25s ease-out both}
+#entryRoot .auth744 .login-form738 nav{margin-bottom:21px}
+#entryRoot .auth744 .login-form738 h1{font-size:clamp(28px,2.95vw,41px);text-wrap:balance}
+#entryRoot .auth744 .login-form738 input:focus-visible{outline-offset:3px}
+#entryRoot .auth744 .access-primary>span:last-child{transition:transform .2s ease}
+#entryRoot .auth744 .access-primary:not(:disabled):hover>span:last-child{transform:translateX(4px)}
+#entryRoot:has(.key-created){background:#101918!important;color:#f4f6ed!important}
+#entryRoot .key-created{background:#16211e;border-color:#42554d;color:#f4f6ed}
+#entryRoot .key-created :is(p,.access-kicker){color:#bdcec5}
+#entryRoot .key-created input[readonly],#entryRoot .key-created .key-actions button{background:#101916;border-color:#55685e;color:#f4f6ed}
+#entryRoot .key-created .access-primary{background:#c4e7c9;border-color:#c4e7c9;color:#14231b}
+#entryRoot .key-created .access-primary:hover:not(:disabled){background:#d9f3dd;border-color:#d9f3dd}
+#entryRoot .key-created .saved-key-confirm input{accent-color:#c4e7c9}
+.name-meter749{display:flex;gap:5px;margin-top:2px}
+.name-meter749 i{height:3px;flex:1;border-radius:8px;background:#53625b;transition:background-color .2s,transform .22s}
+.name-meter749[data-state="invalid"] i:first-child{background:#ffb2aa;transform:scaleY(1.28)}
+.name-meter749[data-state="valid"] i{background:#b9e8c2}
+.name-hint749{font-size:12px;color:#b6c7c0;margin:0 0 6px;min-height:1.4em}
+.name-hint749[data-state="invalid"],#zipStatus749:not(:empty){color:inherit}
+.auth744 .name-hint749[data-state="invalid"]{color:#ffd0c6}
+.auth744 .name-hint749[data-state="valid"]{color:#b9e8c2}
+#entryRoot .auth744 .login-form738 input[aria-invalid="true"]{border-color:#f8aea4}
+.field-error749{animation:field-error749 .3s ease-out both}
+#zipStatus749{overflow-wrap:anywhere}
+#zipStatus749:empty{display:none}
+.drop-stage749{
+  position:fixed;z-index:120;inset:0;display:grid;place-items:center;pointer-events:none;
+  background:#08090dbb;padding:16px;color:#f4f1fa;
+}
+.drop-stage749[hidden] {display:none}
+.drop-card749{
+  display:grid;justify-items:center;align-content:center;gap:18px;text-align:center;
+  width:min(100%,360px);min-height:208px;padding:26px;border:1px dashed #b8a6df;
+  border-radius:22px;background:#211c2e;box-shadow:0 20px 80px #0009;
+  animation:panel-in749 .22s ease-out both;
+}
+.drop-symbol749{position:relative;width:66px;height:64px;display:grid;place-items:center}
+.drop-symbol749 i{
+  position:absolute;width:43px;height:54px;background:#403557;border:1px solid #bcaae1;
+  border-radius:9px;color:#f4eafe;display:grid;place-items:center;font:600 26px/1 system-ui;
+}
+.drop-symbol749 i:first-child{transform:translateX(-13px) rotate(-14deg)}
+.drop-symbol749 i:nth-child(2){transform:translateX(13px) rotate(14deg)}
+.drop-symbol749 i:last-child{animation:file-hover749 1.05s ease-in-out infinite alternate}
+.drop-stage749.received749 .drop-card749{animation:drop-received749 .4s ease-out both}
+@keyframes panel-in749{from{opacity:0;transform:translateY(7px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes file-hover749{from{transform:translateY(0)}to{transform:translateY(-7px)}}
+@keyframes drop-received749{0%{transform:scale(1)}35%{transform:scale(.96);border-color:#a7e0bf}100%{transform:translateY(5px);opacity:0}}
+@keyframes field-error749{0%,100%{transform:translateX(0)}25%,75%{transform:translateX(-4px)}50%{transform:translateX(4px)}}
+@media(prefers-reduced-motion:reduce){
+  :is(.app,#homeRoot67,#modalRoot,#entryRoot) button,#entryRoot .auth744 .login-form738,
+  .name-meter749 i,.field-error749,.drop-card749,.drop-symbol749 i:last-child,.drop-stage749.received749 .drop-card749{
+    animation:none!important;transition:none!important;
+  }
+}
+body[data-motion67="reduced"] :is(.app,#homeRoot67,#modalRoot,#entryRoot) button,
+body[data-motion67="reduced"] :is(.login-form738,.name-meter749 i,.field-error749,.drop-card749,.drop-symbol749 i:last-child){
+  animation:none!important;transition:none!important;
+}
