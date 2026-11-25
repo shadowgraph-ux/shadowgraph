@@ -43,7 +43,7 @@ function arrange(nodes,edges,{aspect=1.4,mode='dossier'}={}){
  // Preserve pinned objects, and move other cards away from all existing card rectangles.
  const occupied=[];for(const n of nodes.filter(n=>n.pinned)){const p={x:Number(n.x)||0,y:Number(n.y)||0};result.set(n.id,p);occupied.push(p)}
  const collision=p=>occupied.some(q=>Math.abs(p.x-q.x)<320&&Math.abs(p.y-q.y)<166);
- for(const n of nodes.filter(n=>!n.pinned)){const base=result.get(n.id)||{x:0,y:0};let p=base,i=0;while(collision(p)){i++;p={x:base.x+(i%2)*338,y:base.y+Math.ceil(i/2 )*216}}result.set(n.id,p);occupied.push(p)}
+ for(const n of nodes.filter(n=>!n.pinned)){const base=result.get(n.id)||{x:0,y:0};let p=base,i=0;while(i<occupied.length&&collision(p)){i++;p={x:base.x,y:base.y+i*336}}result.set(n.id,p);occupied.push(p)}
  for(const p of panels){const ps=p.ids.map(id=>result.get(id));p.x=Math.min(...ps.map(n=>n.x))-170;p.y=Math.min(...ps.map(n=>n.y))-112;p.w=Math.max(...ps.map(n=>n.x))+170-p.x;p.h=Math.max(...ps.map(n=>n.y))+100-p.y}
  return{positions:result,panels:mode==='plain'?[]:panels};
 }
