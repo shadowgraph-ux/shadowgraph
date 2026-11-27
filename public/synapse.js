@@ -55,12 +55,85 @@
     return null;
   }
 
+  const workplace = /работа\s+(?:в|на|за)|работает|работал|место работы|работодатель|место трудоустройства/iu;
+  function careerReply(question,nodes,byId,pairs){
+    const text=normalize(question).replace(/[^\p{L}\p{N}\s-]+/gu,' ').trim().replace(/\s+/g,' ');
+    const work=/(?:^| )(?:работа(?:ет|ют|л[аи]?|ть)?|мест[оа] работы|работодател\p{L}*|должност\p{L}*|професси\p{L}*)(?= |$)/u.test(text);
+    const income=/(?:^| )(?:доход\p{L}*|зарплат\p{L}*|оклад\p{L}*|заработ\p{L}*)(?= |$)/u.test(text);
+    if(!work&&!income)return null;
+
+    const people=nodes.filter(node=>node.type==='person');
+    const target=text.match(/(?:^| )у (.+?)(?: на доске)?$/u)?.[1]
+      || text.match(/^где (?:работает|работал[а]?) (?!на доске$)(.+?)(?: на доске)?$/u)?.[1];
+    const boardQuestion=/^(?:кто|где|покажи|перечисли|у кого|сколько) |(?:^| )(?:на доске|по доске)(?: |$)/u.test(text);
+    if(!target&&!boardQuestion)return null;
+
+    const title=work&&income?'Работа и доход по доске':work?'Работа по доске':'Доход по доске';
+    const nameStem=word=>word.length>3?word.replace(/(?:ого|ому|ыми|ами|ой|й|ь|ы|а|я|у|е|ю)$/u,''):word;
+    const requestedNames=target?words(target).map(nameStem):[];
+    const selected=target?people.filter(person=>{
+      const name=words(person.label).map(nameStem);
+      return requestedNames.length&&requestedNames.every(part=>name.includes(part));
+    }):people;
+    if(target&&selected.length!==1)return selected.length
+      ?response('Нашёл несколько людей',['Уточни полное имя.'],capped(selected,8).map(cardRef))
+      :response('Человек не найден',['Напиши имя так, как оно указано на карточке.']);
+
+    function neighbors(node,accept){
+      const found=new Map();
+      for(const edge of pairs.get(node.id)||[]){
+        const other=byId.get(edge.from===node.id?edge.to:edge.from);
+        if(other.id!==node.id&&accept(other,edge))found.set(other.id,other);
+      }
+      return [...found.values()];
+    }
+    const result=[];
+    for(const person of selected){
+      const jobs=neighbors(person,node=>node.type==='employment');
+      const organizations=neighbors(person,(node,edge)=>node.type==='organization'&&workplace.test(edge.label));
+      const salaries=neighbors(person,node=>node.type==='income');
+      const rows=[];
+      const refs=new Map([[person.id,person]]);
+      const seen=new Set();
+      function row(label,cards){
+        if(seen.has(label))return;
+        seen.add(label);
+        rows.push('• '+label);
+        for(const card of cards)refs.set(card.id,card);
+      }
+      const listedOrganizations=new Set();
+      if(work)for(const job of jobs){
+        const employers=neighbors(job,(node,edge)=>node.type==='organization'&&workplace.test(edge.label));
+        for(const employer of employers)listedOrganizations.add(employer.id);
+        row([job.label,...employers.map(node=>node.label)].join(' · '),[job,...employers]);
+      }
+      if(work)for(const organization of organizations)if(!listedOrganizations.has(organization.id))row(organization.label,[organization]);
+      if(income){
+        for(const job of jobs){
+          if(neighbors(job,node=>node.type==='person').length!==1)continue;
+          salaries.push(...neighbors(job,(node,edge)=>node.type==='income'&&/доход|зарплат|оклад/iu.test(edge.label)));
+        }
+        for(const salary of salaries)row('Доход — '+salary.label,[salary]);
+      }
+      if(!rows.length&&!target)continue;
+      if(work&&!jobs.length&&!organizations.length)rows.push('• Работа не указана.');
+      if(income&&!salaries.length)rows.push('• Доход не указан.');
+      const limited=capped(rows,12);
+      if(rows.length>limited.length)limited.push('Ещё записей: '+(rows.length-limited.length)+'.');
+      result.push({text:[person.label,...limited].join('\n'),refs:[...refs.values()]});
+    }
+    if(!result.length)return response(title,['На доске нет связанных карточек по этому запросу.']);
+    const visible=capped(result,8),paragraphs=visible.map(item=>item.text);
+    if(result.length>visible.length)paragraphs.push('Ещё людей: '+(result.length-visible.length)+'. Можно спросить по имени.');
+    paragraphs.push('Сведения взяты из карточек доски. Указанные периоды сохранены.');
+    const refs=new Map(visible.flatMap(item=>item.refs).map(node=>[node.id,node]));
+    return response(title,paragraphs,capped([...refs.values()],24).map(cardRef));
+  }
+
   function summarize(question,project,model,typeName) {
     const {nodes,edges,files}=project;
     const classified=model?classify(question,model)?.name:null;
     const intent=classified==='code'?null:classified;
-    if (intent&&!nodes.length&&!files.length)
-      return response('На доске пока пусто',['Добавь карточку или файл, чтобы разобрать материалы проекта.']);
     const byId=new Map(nodes.map(node=>[node.id,node])),degree=new Map(),pairs=new Map();
     for(const edge of edges) {
       if(!byId.has(edge.from)||!byId.has(edge.to))continue;
@@ -70,6 +143,10 @@
         pairs.get(id).push(edge);
       }
     }
+    const career=careerReply(question,nodes,byId,pairs);
+    if(career)return career;
+    if (intent&&!nodes.length&&!files.length)
+      return response('На доске пока пусто',['Добавь карточку или файл, чтобы разобрать материалы проекта.']);
     const counts='Карточки: '+nodes.length+' · Связи: '+edges.length+' · Файлы: '+files.length+'.';
     const review=nodes.filter(node=>node.review!=='confirmed');
     const origins=new Map();
@@ -135,20 +212,40 @@
     return /\u0060{3}|(?:напиши|сгенерируй|сделай|приведи|исправь|разбери)\s+(?:(?:мне|пример)\s+)?(?:код|скрипт|функци|программ)|\b(?:python|javascript|typescript|html|css|sql|rust)\b/i.test(text)
       || Boolean(model&&classify(text,model)?.name==='code');
   }
-  function weatherQuery(question){
-    const text=question.normalize('NFKC').trim();
-    const match=text.match(/^(?:(?:какая|какой)\s+)?(?:погода|погоду|прогноз\s+погоды)(?=$|\s|[:?])/iu);
-    if(!match)return null;
-    const tomorrow=/завтра/iu.test(text);
-    const place=text.slice(match[0].length).replace(/[?!:]+/g,' ')
-      .replace(/(?:^|\s)(?:сейчас|сегодня|завтра)(?=$|\s)/giu,' ')
-      .trim().replace(/^(?:в|во|для)\s+/iu,'').trim();
-    const aliases={'шахтах':'Шахты','москве':'Москва','ростове-на-дону':'Ростов-на-Дону','санкт-петербурге':'Санкт-Петербург'};
-    return {place:Object.hasOwn(aliases,normalize(place))?aliases[normalize(place)]:place,tomorrow};
+  const weatherPlaces = {
+    'шахтах':'Шахты', 'москве':'Москва', 'ростове':'Ростов-на-Дону',
+    'ростове-на-дону':'Ростов-на-Дону', 'санкт-петербурге':'Санкт-Петербург'
+  };
+  const weatherPlace = /^[\p{L}][\p{L}\p{M}\s,.'’-]{1,69}$/u;
+  function weatherQuery(question,previous=null){
+    const text=question.normalize('NFKC').trim().replace(/[‐‑–—]/g,'-');
+    const explicit=text.match(/^(?:(?:какая|какой)\s+)?(?:погода|погоду|прогноз\s+погоды)(?=$|\s|[:?])/iu);
+    if(!explicit&&!previous)return null;
+
+    const tail=(explicit?text.slice(explicit[0].length):text.replace(/^а\s+/iu,''))
+      .replace(/[?!:]+/g,' ').trim();
+    const day=/(?:^|\s)(сейчас|сегодня|завтра)(?=$|\s)/iu;
+    const requestedDay=tail.match(day)?.[1].toLowerCase();
+    const where=tail.replace(day,' ').trim();
+    const prefix=where.match(/^(?:в|во|для)\s+(.+)$/iu);
+    const glued=normalize(where).match(/^в(.+)$/u)?.[1];
+    const gluedAlias=glued&&Object.hasOwn(weatherPlaces,glued)?weatherPlaces[glued]:null;
+    const place=prefix?.[1]||gluedAlias||where;
+    if(!explicit){
+      const waitingForPlace=!previous.place&&where.split(/\s+/u).length<=3&&!stopWords.has(normalize(where.split(/\s/u,1)[0]));
+      if(where&&(!(prefix||gluedAlias||waitingForPlace)||!weatherPlace.test(place)))return null;
+      if(!where&&!requestedDay)return null;
+    }
+
+    const alias=normalize(place);
+    return {
+      place:place?(Object.hasOwn(weatherPlaces,alias)?weatherPlaces[alias]:place):previous?.place||'',
+      tomorrow:requestedDay?requestedDay==='завтра':previous?.tomorrow??false
+    };
   }
   async function weatherReply(query,signal){
-    if(!/^[\p{L}][\p{L}\p{M}\s,.'’-]{1,69}$/u.test(query.place))
-      return response('Уточни город',['Например, «погода Шахты» или «погода Москва завтра».']);
+    if(!weatherPlace.test(query.place))
+      return response('Уточни город',['Например, «погода Москва завтра».']);
     async function fetchJson(url,params){
       const result=await fetch(url+'?'+new URLSearchParams(params),{signal,credentials:'omit',referrerPolicy:'no-referrer'});
       if(!result.ok)throw Error('Forecast service unavailable');
@@ -157,7 +254,7 @@
     const found=await fetchJson('https://geocoding-api.open-meteo.com/v1/search',{name:query.place,count:5,language:'ru'});
     const city=found.results?.find(result=>normalize(result.name)===normalize(query.place))||found.results?.[0];
     if(!city||!Number.isFinite(city.latitude)||!Number.isFinite(city.longitude))
-      return response('Город не найден',['Проверь название или добавь область, например «Шахты, Ростовская область».']);
+      return response('Город не найден',['Проверь написание или укажи полное название города.']);
     const forecast=await fetchJson('https://api.open-meteo.com/v1/forecast',{latitude:city.latitude,longitude:city.longitude,
       current:'temperature_2m,apparent_temperature,wind_speed_10m',daily:'temperature_2m_max,temperature_2m_min,precipitation_probability_max',timezone:'auto',forecast_days:2});
     const label=[city.name,city.admin1!==city.name?city.admin1:null,city.country].filter(Boolean).join(', ');
