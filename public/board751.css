@@ -103,6 +103,10 @@ body:not(.home67):has(#synapse751:not([hidden])) #toast{top:calc(var(--top65,64p
 }
 .synapse-question751{align-self:flex-end;max-width:92%;background:color-mix(in srgb,var(--sg-accent67,#aa96e9) 23%,var(--surface736,#17151c))}
 .synapse-answer751 h3{font-size:14px;margin:0 0 5px}
+.synapse-status755{border-inline-start:2px solid var(--accent736,#bba5e6)}
+.synapse-process755{margin-top:10px;padding-top:8px;border-top:1px solid var(--border736,#494053);font-size:12px}
+.synapse-process755 summary{cursor:pointer;width:fit-content}
+.synapse-process755 ol{margin:7px 0 0;padding-inline-start:19px;display:grid;gap:4px}
 .synapse-answer751 p{margin:4px 0;white-space:pre-wrap}
 .synapse-code753{
   margin:9px 0;overflow:hidden;border:1px solid var(--border736,#433951);
