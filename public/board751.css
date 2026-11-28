@@ -107,6 +107,21 @@ body:not(.home67):has(#synapse751:not([hidden])) #toast{top:calc(var(--top65,64p
 .synapse-process755{margin-top:10px;padding-top:8px;border-top:1px solid var(--border736,#494053);font-size:12px}
 .synapse-process755 summary{cursor:pointer;width:fit-content}
 .synapse-process755 ol{margin:7px 0 0;padding-inline-start:19px;display:grid;gap:4px}
+.synapse-answer751 .synapse-process755{margin:6px 0 10px;padding:0 0 8px;border-top:0;border-bottom:1px solid var(--border736,#494053)}
+.synapse-working756{max-width:100%;padding:8px 10px 8px 12px;color:var(--text736,#ece5f6);font-size:12px}
+.synapse-working756 summary{cursor:pointer}
+.synapse-working756 summary>span:first-child::before{content:'';display:inline-block;width:.48em;height:.48em;margin-inline-end:.5em;vertical-align:.14em;border-radius:50%;background:var(--accent736,#bba5e6);animation:synapse-pulse756 1.6s ease-in-out infinite}
+@keyframes synapse-pulse756{0%,100%{opacity:1}50%{opacity:.35}}
+@media(prefers-reduced-motion:reduce){.synapse-working756 summary>span:first-child::before{animation:none}}
+.synapse-working756 summary>span:last-child{margin-inline-start:8px;opacity:.72;font-variant-numeric:tabular-nums;white-space:nowrap}
+.synapse-working756 ol{padding-inline-start:19px;margin:7px 0 0;display:grid;gap:4px;opacity:.85}
+.synapse-working756 li:last-child::marker{color:var(--accent736,#bba5e6)}
+.synapse-draft756{white-space:pre-wrap;overflow-wrap:anywhere}
+.synapse-table756{max-width:100%;overflow:auto;border:1px solid var(--border736,#494053);border-radius:8px;margin:8px 0}
+.synapse-table756 table{border-collapse:collapse;width:100%;font-size:12px;line-height:1.45}
+.synapse-table756 :is(th,td){text-align:start;vertical-align:top;padding:7px 9px;min-width:78px;white-space:pre-wrap;overflow-wrap:anywhere;border-bottom:1px solid var(--border736,#494053)}
+.synapse-table756 th{background:var(--active736,#362d43);font-weight:700}
+.synapse-table756 tbody tr:last-child td{border-bottom:0}
 .synapse-answer751 p{margin:4px 0;white-space:pre-wrap}
 .synapse-code753{
   margin:9px 0;overflow:hidden;border:1px solid var(--border736,#433951);
